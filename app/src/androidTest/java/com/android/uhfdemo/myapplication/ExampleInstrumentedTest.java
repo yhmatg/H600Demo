@@ -1,4 +1,4 @@
-package uhfdemo.android.com.myapplication;
+package com.android.uhfdemo.myapplication;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
