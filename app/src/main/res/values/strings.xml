@@ -15,7 +15,7 @@
     <string name="sound">声音提示</string>
     <string name="tag_num">标签数量：</string>
     <string name="read_num">读取次数：</string>
-    <string name="ascii_char">ASCII字符</string>
+    <string name="ascii_char">16进制显示</string>
     <string name="scann_start">开始扫描</string>
     <string name="scann_stop">停止扫描</string>
     <string name="clear_card">清空显示</string>
@@ -35,7 +35,7 @@
     <string name="data_content">数据内容：</string>
     <string name="data_type">16进制数</string>
     <string name="data_description">(说明：十六进制输入，以字为单位，如AAAB,12141414)</string>
-    <string name="read_data">读入数据</string>
+    <string name="read_data">读取数据</string>
     <string name="write_data">写入数据</string>
     <string name="read_failed">读取失败</string>
     <string name="read_suc">读取成功</string>
@@ -92,4 +92,5 @@
     <string name="not_get_storage_permission">请先获取存储空间权限！</string>
     <string name="update_success">升级成功！</string>
     <string name="update_failed">升级失败！</string>
+    <string name="update_error">升级错误！</string>
 </resources>

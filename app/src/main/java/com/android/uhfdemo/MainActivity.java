@@ -191,6 +191,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        try {
+            newUHFDeviceControl.PowerOffDevice();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         if (unBinder != null && unBinder != Unbinder.EMPTY) {
             unBinder.unbind();
             unBinder = null;
@@ -210,5 +215,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
 }
 

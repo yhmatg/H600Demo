@@ -305,10 +305,9 @@ public class InventoryFragment extends BaseFragment {
 
     @Override
     public void onDestroy(){
-        super.onDestroy();
-        loopFlag = false;
-        mDriver.stopRead();
+        stopInventory();
         mainActivity.unregisterReceiver(receiver);
+        super.onDestroy();
     }
 
     public void startOrStopScan(){
@@ -346,6 +345,5 @@ public class InventoryFragment extends BaseFragment {
                 break;
         }
     }
-
 
 }

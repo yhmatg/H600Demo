@@ -202,6 +202,11 @@ public class SettingsFragment extends BaseFragment {
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                String temp = mDriver.readUM7fwOnce();
+                if ("-1000".equals(temp) ||"-1020" .equals(temp)) {
+                    Toast.makeText(mainActivity, R.string.update_error, Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if (fileName != null && fileName.endsWith("bin")) {
                     new DownLoadThread().start();
                 } else {
@@ -220,10 +225,10 @@ public class SettingsFragment extends BaseFragment {
     }
 
     private void filterClear() {
-        if ( mData.getText().toString().length() == 0) {
+        /*if ( mData.getText().toString().length() == 0) {
             Toast.makeText(mainActivity, R.string.data_null, Toast.LENGTH_SHORT).show();
             return;
-        }
+        }*/
         int Status = 0;
         int ads = 0;
         int len = 0;
@@ -276,7 +281,7 @@ public class SettingsFragment extends BaseFragment {
             return;
         }
         if (-1020 == val) {
-            Toast.makeText(mainActivity, R.string.set_failed, Toast.LENGTH_SHORT).show();
+            Toast.makeText(mainActivity, R.string.get_failed, Toast.LENGTH_SHORT).show();
             return;
         }
         mModeSpinner.setSelection(val);

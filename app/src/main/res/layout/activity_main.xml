@@ -32,7 +32,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        app:logo="@drawable/info"
+        app:logo="@mipmap/app_icon"
         android:theme="@style/MyToolbarTheme"
         app:popupTheme="@style/OverFlowMenuTheme"
         android:background="?attr/colorPrimary">
