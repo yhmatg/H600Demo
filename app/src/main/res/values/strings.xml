@@ -21,7 +21,7 @@
     <string name="clear_card">清空显示</string>
     <string name="current_tem">当前温度: </string>
     <string name="area_name">存储区：</string>
-    <string name="ruf_type">RUF</string>
+    <string name="ruf_type">RESV</string>
     <string name="epc_type">EPC</string>
     <string name="tid_type">TID</string>
     <string name="usr_type">USR</string>

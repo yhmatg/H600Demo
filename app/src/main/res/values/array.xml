@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="area_array">
-        <item>China1</item>
-        <item>China2</item>
-        <item>Europe</item>
-        <item>USA</item>
-        <item>Korea</item>
-        <item>Japan</item>
+        <item>China1(840-845MHz)</item>
+        <item>China2(920-925MHz)</item>
+        <item>Europe(865-868MHz)</item>
+        <item>USA(902-928MHz)</item>
+        <item>Korea(910-914MHz)</item>
+        <item>Japan(952-954MHz)</item>
     </string-array>
 
     <string-array name="output_array">
