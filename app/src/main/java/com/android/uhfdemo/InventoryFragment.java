@@ -84,7 +84,7 @@ public class InventoryFragment extends BaseFragment {
     @Override
     protected void initEventAndData() {
         soundPool = new SoundPool(10, AudioManager.STREAM_SYSTEM, 5);
-        soundId = soundPool.load(mainActivity, R.raw.beep, 1);
+        soundId = soundPool.load(mainActivity, R.raw.barcodebeep, 1);
         adapter = new SimpleAdapter(mainActivity, tagList, R.layout.item,
                 new String[]{"sn", "epc", "count", "rssi"}, new int[]{
                 R.id.sn, R.id.epc, R.id.count, R.id.rssi});
