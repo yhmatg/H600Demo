@@ -36,7 +36,7 @@ public class LockFragment extends BaseFragment {
     public static final String TAG = "LockFragment";
     @Override
     protected void initEventAndData() {
-        String[] spinnerItems = {"EPC","TID","USR"};
+        String[] spinnerItems = {"EPC","TID","USER"};
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(mainActivity,
                 R.layout.simple_spinner_item, spinnerItems);
         spinnerAdapter.setDropDownViewResource(R.layout.my_spinner_opt_item);

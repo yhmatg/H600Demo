@@ -7,9 +7,9 @@
     <application
         android:name=".UhfApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/app_icon"
+        android:icon="@mipmap/ic_uhf"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/app_icon"
+        android:roundIcon="@mipmap/ic_uhf_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity

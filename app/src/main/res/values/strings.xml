@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">H600Demo</string>
+    <string name="app_name">UHFdemo</string>
     <string name="inventory">盘存</string>
     <string name="read_write">读写</string>
     <string name="lock_tag">锁定</string>
@@ -24,7 +24,7 @@
     <string name="ruf_type">RESV</string>
     <string name="epc_type">EPC</string>
     <string name="tid_type">TID</string>
-    <string name="usr_type">USR</string>
+    <string name="usr_type">USER</string>
     <string name="password">访问密码：</string>
     <string name="kill_password">kill密码：</string>
     <string name="default_pass">00000000</string>
