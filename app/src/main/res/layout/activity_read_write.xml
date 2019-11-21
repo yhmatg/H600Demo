@@ -67,7 +67,9 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:maxLength="8"
-            android:inputType="number"
+            android:hint="@string/data_type"
+            android:digits="0123456789ABCDEF"
+            android:inputType="textCapCharacters|textNoSuggestions"
             android:text="@string/default_pass" />
     </LinearLayout>
 
