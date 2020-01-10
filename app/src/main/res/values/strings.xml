@@ -96,4 +96,5 @@
     <string name="start_search">开始查找</string>
     <string name="stop_search">停止查找</string>
     <string name="current_search_tag">当前识别标签</string>
+    <string name="export_inventory">导出</string>
 </resources>

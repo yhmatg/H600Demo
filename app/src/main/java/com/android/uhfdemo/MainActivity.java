@@ -1,12 +1,17 @@
 package com.android.uhfdemo;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.serialport.DeviceControlSpd;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,8 +21,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String MAIN_SCAN = "com.spd.action.start_uhf_mainactivity";
     public static final String STOP_SCAN = "com.spd.action.stop_uhf";
+    private InventoryFragment minventoryFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,7 +96,8 @@ public class MainActivity extends AppCompatActivity {
         titles.add("锁定");
         titles.add("销毁");
         titles.add("设置");
-        fragments.add(new InventoryFragment());
+        minventoryFragment = new InventoryFragment();
+        fragments.add(minventoryFragment);
         fragments.add(new ReadAndWriteFragment());
         fragments.add(new LockFragment());
         fragments.add(new DestoryFragment());
@@ -133,6 +144,10 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.action_tem:
                 getTempeature();
+                return true;
+            case R.id.action_export:
+                //todo 导出数据
+                minventoryFragment.requestPermission();
                 return true;
             default:
                 return false;
@@ -208,13 +223,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(KeyEvent.KEYCODE_F1 == keyCode){
+        if (KeyEvent.KEYCODE_F1 == keyCode) {
             Intent intent = new Intent();
             intent.setAction(MAIN_SCAN);
             sendBroadcast(intent);
         }
         return super.onKeyDown(keyCode, event);
     }
+
 
 }
 
