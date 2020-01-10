@@ -93,4 +93,7 @@
     <string name="update_success">升级成功！</string>
     <string name="update_failed">升级失败！</string>
     <string name="update_error">升级错误！</string>
+    <string name="start_search">开始查找</string>
+    <string name="stop_search">停止查找</string>
+    <string name="current_search_tag">当前识别标签</string>
 </resources>
