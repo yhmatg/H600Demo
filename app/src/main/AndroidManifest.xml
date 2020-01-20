@@ -15,6 +15,8 @@
         <activity
             android:name="com.android.uhfdemo.MainActivity"
             android:screenOrientation="portrait">
+        </activity>
+        <activity android:name="com.android.dongfang.DfActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

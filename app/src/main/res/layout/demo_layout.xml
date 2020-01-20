@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/tb_init"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="初始化" />
+
+    <Button
+        android:id="@+id/tb_close"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="关闭" />
+
+    <Button
+        android:id="@+id/tb_single_read"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="单次扫" />
+
+    <Button
+        android:id="@+id/tb_scan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="开启连续扫" />
+
+    <Button
+        android:id="@+id/tb_stop_scan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="关闭连续扫" />
+
+    <Button
+        android:id="@+id/tb_write_epc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="EPC写入" />
+
+    <Button
+        android:id="@+id/tb_set_power"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="设置功率" />
+    <Button
+        android:id="@+id/tb_get_power"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="获取功率" />
+
+    <Button
+        android:id="@+id/read_diff_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="按区域读取" />
+
+    <Button
+        android:id="@+id/write_epc_by_tid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="根据TID写入EPC" />
+
+    <Button
+        android:id="@+id/tb_write_user"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="USER区写入数据" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="测试数据" />
+    </ScrollView>
+
+
+</LinearLayout>
