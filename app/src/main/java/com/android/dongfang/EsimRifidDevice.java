@@ -1,21 +1,25 @@
 package com.android.dongfang;
 
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.serialport.DeviceControlSpd;
 import android.util.Log;
+
 import java.io.IOException;
+
 import cn.com.example.rfid.driver.Driver;
 import cn.com.example.rfid.driver.RfidDriver;
+
 import static android.serialport.DeviceControlSpd.PowerType.EXPAND;
 
 public class EsimRifidDevice implements IRfidDevice {
     private static final String TAG = "EsimRifidDevice";
-    private Driver driver;
+    static private Driver driver;
     private DeviceControlSpd newUHFDeviceControl;
     //是否已经初始化
     private boolean isOpen;
     //是否开启连续盘点
-    private boolean isStartScan;
+    private static boolean isStartScan;
 
     /**
      * 初始化设备
@@ -96,7 +100,7 @@ public class EsimRifidDevice implements IRfidDevice {
                 e.printStackTrace();
                 return false;
             }
-        }else {
+        } else {
             return false;
         }
     }
@@ -108,14 +112,14 @@ public class EsimRifidDevice implements IRfidDevice {
      */
     @Override
     public RFIDTagInfo singleScan() {
+        RFIDTagInfo rfidTagInfo = new RFIDTagInfo();
         if (isOpen && !isStartScan) {
             //参数为超时时间 暂时有问题
             String s = driver.SingleRead(10);
-            RFIDTagInfo rfidTagInfo = new RFIDTagInfo();
             rfidTagInfo.setEpcID(s);
             return rfidTagInfo;
         } else {
-            return null;
+            return rfidTagInfo;
         }
 
     }
@@ -135,6 +139,50 @@ public class EsimRifidDevice implements IRfidDevice {
                         //new TagThread(rfidCallback).start();
                         MasyncTask masyncTask = new MasyncTask(rfidCallback);
                         masyncTask.execute();
+                        //test 0121 start
+                        /*while (isStartScan) {
+                            String[] strEpc1 = {driver.GetBufData()};
+                            String strEpc = strEpc1[0];
+                            if (strEpc != null && strEpc.length() != 0) {
+                                int Hb = 0;
+                                int Lb = 0;
+                                int rssi = 0;
+                                String[] tmp = new String[3];
+                                //去除头4位
+                                String text = strEpc.substring(4);
+                                //epc长度原始16进制数据
+                                String len = strEpc.substring(0, 2);
+                                //实际epc长度
+                                int epcLen = (Integer.parseInt(len, 16) / 8) * 4;
+                                //tid
+                                tmp[0] = text.substring(epcLen, text.length() - 6);
+                                //epc
+                                tmp[1] = text.substring(0, epcLen);
+                                //rssi
+                                tmp[2] = text.substring(text.length() - 6, text.length() - 2);
+                                if (4 != tmp[2].length()) {
+                                    tmp[2] = "0000";
+                                } else {
+                                    Hb = Integer.parseInt(tmp[2].substring(0, 2), 16);
+                                    Lb = Integer.parseInt(tmp[2].substring(2, 4), 16);
+                                    rssi = ((Hb - 256 + 1) * 256 + (Lb - 256)) / 10;
+                                    //初始范围 -80 -- -30
+                                    rssi = (rssi + 80) * 2;
+                                    if (rssi > 100) {
+                                        rssi = 100;
+                                    }
+                                    if (rssi < 1) {
+                                        rssi = 0;
+                                    }
+                                }
+                                RFIDTagInfo rfidTagInfo = new RFIDTagInfo();
+                                rfidTagInfo.setTid(tmp[0]);
+                                rfidTagInfo.setEpcID(tmp[1]);
+                                rfidTagInfo.setOptimizedRSSI(rssi);
+                                rfidCallback.onResponse(rfidTagInfo);
+                            }
+                        }*/
+                        //test 0121 end
                     } else {
                         rfidCallback.onError(-1);
                     }
@@ -328,7 +376,7 @@ public class EsimRifidDevice implements IRfidDevice {
      * Progress：后台任务执行的进度的类型
      * Result：后台任务执行的最终结果值
      */
-    private class MasyncTask extends AsyncTask<Void, RFIDTagInfo, Void> {
+    static class MasyncTask extends AsyncTask<Void, RFIDTagInfo, Void> {
         RFIDCallback mRfidCallback;
 
         public MasyncTask(RFIDCallback mRfidCallback) {

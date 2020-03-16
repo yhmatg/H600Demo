@@ -20,6 +20,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
@@ -309,6 +310,7 @@ public class InventoryFragment extends BaseFragment {
     }
 
     private void initReceive() {
+        //这边会将手柄出发的动作改为uhf
         IntentFilter filter = new IntentFilter();
        /* filter.addAction(START_SCAN);
         filter.addAction(STOP_SCAN);*/
@@ -322,6 +324,7 @@ public class InventoryFragment extends BaseFragment {
     public void onDestroy() {
         stopInventory();
         mainActivity.unregisterReceiver(receiver);
+        SystemProperties.set("persist.sys.PistolKey", "scan");
         super.onDestroy();
     }
 
