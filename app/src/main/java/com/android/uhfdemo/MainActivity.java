@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.SystemProperties;
 import android.serialport.DeviceControlSpd;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -85,6 +86,8 @@ public class MainActivity extends AppCompatActivity {
         if (Fw_buffer.equals("-1000") || Fw_buffer.equals("-1020") || Fw_buffer == null) {
             ToastUtils.showShort(R.string.device_connect_failed);
         }
+        //将手持机手柄出发动作改为uhf
+        SystemProperties.set("persist.sys.PistolKey", "uhf");
 
     }
 

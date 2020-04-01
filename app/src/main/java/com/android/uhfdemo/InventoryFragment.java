@@ -314,8 +314,6 @@ public class InventoryFragment extends BaseFragment {
         filter.addAction(STOP_SCAN);*/
         filter.addAction(MAIN_SCAN);
         mainActivity.registerReceiver(receiver, filter);
-        //将手持机手柄出发动作改为uhf
-        SystemProperties.set("persist.sys.PistolKey", "uhf");
     }
 
 
@@ -323,7 +321,6 @@ public class InventoryFragment extends BaseFragment {
     public void onDestroy() {
         stopInventory();
         mainActivity.unregisterReceiver(receiver);
-        SystemProperties.set("persist.sys.PistolKey", "scan");
         handler.removeMessages(0);
         super.onDestroy();
     }
