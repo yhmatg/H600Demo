@@ -347,11 +347,11 @@ public class InventoryFragment extends BaseFragment {
             case 1:
                 iIndex = 0;
                 stopInventory();
-                try {
+                /*try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                }
+                }*/
                 mStartOrStop.setText(R.string.scann_start);
                 flag = 0;
                 //GetCnt = 0;
@@ -439,4 +439,9 @@ public class InventoryFragment extends BaseFragment {
         return "RFID" + "_" + sdf.format(new Date()) + FILE_EXTENSION;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        stopInventory();
+    }
 }
