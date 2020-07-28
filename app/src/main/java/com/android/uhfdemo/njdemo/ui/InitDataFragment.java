@@ -1,4 +1,4 @@
-package com.android.uhfdemo.njdemo;
+package com.android.uhfdemo.njdemo.ui;
 
 import android.content.Context;
 import android.util.Log;

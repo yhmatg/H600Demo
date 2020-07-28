@@ -1,4 +1,4 @@
-package com.android.uhfdemo.njdemo;
+package com.android.uhfdemo.njdemo.ui;
 
 import android.Manifest;
 import android.content.BroadcastReceiver;
