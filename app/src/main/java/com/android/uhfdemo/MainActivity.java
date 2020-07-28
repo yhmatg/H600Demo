@@ -22,6 +22,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.android.uhfdemo.njdemo.HandleDataFragment;
+import com.android.uhfdemo.njdemo.InitDataFragment;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -55,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String MAIN_SCAN = "com.spd.action.start_uhf_mainactivity";
     public static final String STOP_SCAN = "com.spd.action.stop_uhf";
-    private InventoryFragment minventoryFragment;
+    private HandleDataFragment minventoryFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
     private void initDataAndView() {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        titles.add("盘存");
+       /* titles.add("盘存");
         titles.add("读写");
         titles.add("锁定");
         titles.add("销毁");
@@ -104,7 +107,12 @@ public class MainActivity extends AppCompatActivity {
         fragments.add(new ReadAndWriteFragment());
         fragments.add(new LockFragment());
         fragments.add(new DestoryFragment());
-        fragments.add(new SettingsFragment());
+        fragments.add(new SettingsFragment());*/
+        titles.add("异常处理");
+        titles.add("RFID数据初始化");
+        minventoryFragment = new HandleDataFragment();
+        fragments.add(minventoryFragment);
+        fragments.add(new InitDataFragment());
         for (int i = 0; i < titles.size(); i++) {
             mTablayout.addTab(mTablayout.newTab());
         }

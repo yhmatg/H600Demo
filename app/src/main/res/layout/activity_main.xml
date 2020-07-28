@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         app:tabIndicatorColor="@color/indicator_color"
         app:tabIndicatorHeight="2dp"
-        app:tabMode="scrollable"
+        app:tabMode="fixed"
         app:tabPadding="5dp"
         app:tabSelectedTextColor="@color/black"
         app:tabTextColor="@color/black" />
