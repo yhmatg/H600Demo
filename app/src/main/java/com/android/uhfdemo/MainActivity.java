@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         unBinder = ButterKnife.bind(this);
-        initRfid();
+        //initRfid();
         initDataAndView();
     }
 
@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_activity_main, menu);
+        //getMenuInflater().inflate(R.menu.menu_activity_main, menu);
         return true;
     }
 

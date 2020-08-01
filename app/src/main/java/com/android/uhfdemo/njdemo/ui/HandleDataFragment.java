@@ -16,6 +16,8 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,6 +31,9 @@ import android.widget.Toast;
 import com.android.uhfdemo.BaseFragment;
 import com.android.uhfdemo.MainActivity;
 import com.android.uhfdemo.R;
+import com.android.uhfdemo.njdemo.http.RetrofitClient;
+import com.android.uhfdemo.njdemo.http.WmsApi;
+import com.android.uhfdemo.njdemo.responsebean.LableReportBean;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -37,10 +42,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.com.example.rfid.driver.Driver;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.ResourceObserver;
+import io.reactivex.schedulers.Schedulers;
 
 public class HandleDataFragment extends BaseFragment {
     private static final String FILE_EXTENSION = ".txt";
@@ -57,11 +67,15 @@ public class HandleDataFragment extends BaseFragment {
     @BindView(R.id.char_type)
     CheckBox mCharType;
     @BindView(R.id.rv_inv_epcs)
-    ListView mListView;
+    RecyclerView mListView;
     @BindView(R.id.open_or_stop)
     TextView mStartOrStop;
     @BindView(R.id.clear_btn)
     TextView mClear;
+    @BindView(R.id.tv_destory)
+    TextView mDestory;
+    @BindView(R.id.tv_return)
+    TextView mReturn;
 
     Driver mDriver;
     private SoundPool soundPool;
@@ -71,10 +85,10 @@ public class HandleDataFragment extends BaseFragment {
     //开始停止盘点标记
     private int flag = 0;
     //listview 需要的集合
-    private ArrayList<HashMap<String, String>> tagList = new ArrayList<HashMap<String, String>>();
+    private ArrayList<EpcBean> tagList = new ArrayList<>();
     //存放单条读取信息
-    private HashMap<String, String> hmap = new HashMap<>();
-    private SimpleAdapter adapter;
+    private HashMap<String, EpcBean> hmap = new HashMap<>();
+    private EpcItemAdapter adapter;
     //标签编号
     int iIndex = 0;
     //读取次数p
@@ -99,32 +113,12 @@ public class HandleDataFragment extends BaseFragment {
     protected void initEventAndData() {
         soundPool = new SoundPool(10, AudioManager.STREAM_SYSTEM, 5);
         soundId = soundPool.load(mainActivity, R.raw.barcodebeep, 1);
-        adapter = new SimpleAdapter(mainActivity, tagList, R.layout.item,
-                new String[]{"sn", "epc", "count", "rssi"}, new int[]{
-                R.id.sn, R.id.epc, R.id.count, R.id.rssi});
-        mListView.setAdapter(adapter);
-        //mListView长按事件
-        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                TextView tv = (TextView) view.findViewById(R.id.epc);
-                ClipboardManager manager = (ClipboardManager) mainActivity.getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData mClipData = ClipData.newPlainText("Label", tv.getText());
-                manager.setPrimaryClip(mClipData);
-                Toast.makeText(mainActivity, R.string.copy_sucess, Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
+        mListView.setLayoutManager(new LinearLayoutManager(mainActivity));
+        adapter = new EpcItemAdapter(tagList, mainActivity);
         handler = new Handler() {
-
             @Override
             public void handleMessage(Message msg) {
-                addEPCToList(msg.obj + "", hmap, tagList);
-
-                adapter.notifyDataSetChanged();
-                Ct++;
-                mEpcCount.setText("" + hmap.size());
-                mEpcSum.setText("" + Ct);
+                handleEpc((String) msg.obj);
             }
         };
         initReceive();
@@ -139,10 +133,10 @@ public class HandleDataFragment extends BaseFragment {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_inventory;
+        return R.layout.fragment_handledata;
     }
 
-    @OnClick({R.id.open_or_stop, R.id.clear_btn})
+    @OnClick({R.id.open_or_stop, R.id.clear_btn,R.id.tv_destory, R.id.tv_return})
     void performClick(View view) {
         switch (view.getId()) {
             case R.id.open_or_stop:
@@ -150,14 +144,28 @@ public class HandleDataFragment extends BaseFragment {
                 break;
             case R.id.clear_btn:
                 tagList.clear();
-                //mListView.setAdapter(adapter);
-                //map.clear();
                 adapter.notifyDataSetChanged();
                 hmap.clear();
                 iIndex = 0;
                 Ct = 0;
                 mEpcSum.setText("");
                 mEpcCount.setText("");
+                break;
+            case R.id.tv_destory:
+                List<EpcBean> selectedLabelEpcs = adapter.getSelectedepcBeans();
+                ArrayList<String> labelEpcs = new ArrayList<>();
+                for (EpcBean selectedepcBean : selectedLabelEpcs) {
+                    labelEpcs.add(selectedepcBean.getEpc());
+                }
+                lableReport(labelEpcs);
+                break;
+            case R.id.tv_return:
+                List<EpcBean> selectedReturnEpc = adapter.getSelectedepcBeans();
+                ArrayList<String> ReturnEpcs = new ArrayList<>();
+                for (EpcBean selectedepcBean : selectedReturnEpc) {
+                    ReturnEpcs.add(selectedepcBean.getEpc());
+                }
+                returnBasket(ReturnEpcs);
                 break;
         }
     }
@@ -243,8 +251,7 @@ public class HandleDataFragment extends BaseFragment {
         }
     }
 
-    private void addEPCToList(String epc, HashMap<String, String> hmap, ArrayList<HashMap<String, String>> tagList) {
-
+    private void handleEpc(String epc){
         int Hb = 0;
         int Lb = 0;
         int rssi = 0;
@@ -253,8 +260,11 @@ public class HandleDataFragment extends BaseFragment {
         String text = epc.substring(4);
         String len = epc.substring(0, 2);
         int epclen = (Integer.parseInt(len, 16) / 8) * 4;
+        //tid
         tmp[0] = text.substring(epclen, text.length() - 6);
+        //epc
         tmp[1] = text.substring(0, epclen);
+        //rssi
         tmp[2] = text.substring(text.length() - 6, text.length() - 2);
 
         if (4 != tmp[2].length()) {
@@ -272,28 +282,25 @@ public class HandleDataFragment extends BaseFragment {
         if (!mCharType.isChecked()) {
             tmp[1] = AsciiStringToString(tmp[1]);
         }
-
-        int count = 0;
-        temp.put("epc", tmp[1]);
-        if (hmap.containsKey(tmp[1])) {
-            String strTemp = hmap.get(tmp[1]);
-            if (null != strTemp) {
-                int sn = Integer.valueOf(strTemp.split(",")[1]);
-                count = Integer.valueOf(strTemp.split(",")[0]) + 1;
-                temp.put("sn", "" + sn);
-                temp.put("count", "" + count);
-                temp.put("rssi", "" + rssi);
-                hmap.put(tmp[1], String.valueOf(count) + "," + String.valueOf(sn) + "," + rssi);
-                tagList.set(sn, temp);
+        if(hmap.containsKey(tmp[1])){
+            EpcBean epcBean = hmap.get(tmp[1]);
+            if(epcBean != null){
+                int count = epcBean.getCount() + 1;
+                epcBean.setCount(count);
+                epcBean.setRssi(rssi);
             }
-        } else {
-            hmap.put(tmp[1], "1," + iIndex + "," + rssi);
-            temp.put("sn", "" + iIndex);
-            temp.put("count", "1");
-            temp.put("rssi", "" + rssi);
-            tagList.add(temp);
+        }else {
             iIndex++;
+            EpcBean epcBean = new EpcBean(tmp[1], iIndex, 1, rssi, false);
+            hmap.put(tmp[1],epcBean);
+            if (tagList.contains(epcBean)){
+                tagList.add(epcBean);
+            }
         }
+        adapter.notifyDataSetChanged();
+        Ct++;
+        mEpcCount.setText(String.valueOf(tagList.size()));
+        mEpcSum.setText(String.valueOf(Ct));
     }
 
     private void stopInventory() {
@@ -328,8 +335,6 @@ public class HandleDataFragment extends BaseFragment {
         switch (flag) {
             case 0:
                 tagList.clear();
-                //mListView.setAdapter(adapter);
-                //map.clear();
                 adapter.notifyDataSetChanged();
                 hmap.clear();
                 iIndex = 0;
@@ -346,14 +351,8 @@ public class HandleDataFragment extends BaseFragment {
             case 1:
                 iIndex = 0;
                 stopInventory();
-                /*try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }*/
                 mStartOrStop.setText(R.string.scann_start);
                 flag = 0;
-                //GetCnt = 0;
                 break;
             default:
                 break;
@@ -397,8 +396,9 @@ public class HandleDataFragment extends BaseFragment {
         content += UNIQUE_COUNT + hmap.size() + "\n";
         content += TOTAL_COUNT + Ct + "\n";
         for (int i = 0; i < tagList.size(); i++) {
-            HashMap<String, String> itemMap = tagList.get(i);
-            content += itemMap + "\n";
+            //todo
+            EpcBean epcBean = tagList.get(i);
+            content += epcBean.toString() + "\n";
         }
         try {
             write(fileName, content);
@@ -443,4 +443,51 @@ public class HandleDataFragment extends BaseFragment {
         super.onPause();
         stopInventory();
     }
+
+    //注销上报功能
+    public void lableReport(List<String> epcs){
+        RetrofitClient.getInstance().create(WmsApi.class).lableReport(epcs)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ResourceObserver<LableReportBean>() {
+                    @Override
+                    public void onNext(LableReportBean lableReportBean) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    //还筐上报功能
+    public void returnBasket(List<String> epcs){
+        RetrofitClient.getInstance().create(WmsApi.class).returnBasket(epcs)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ResourceObserver<LableReportBean>() {
+                    @Override
+                    public void onNext(LableReportBean lableReportBean) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
 }
