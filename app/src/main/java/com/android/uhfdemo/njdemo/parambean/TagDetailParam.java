@@ -1,8 +1,16 @@
 package com.android.uhfdemo.njdemo.parambean;
 
+import com.android.uhfdemo.njdemo.http.RetrofitClient;
+import com.android.uhfdemo.njdemo.http.WmsApi;
+
 public class TagDetailParam {
     private String flg;
     private String tagnumber;
+
+    public TagDetailParam(String flg, String tagnumber) {
+        this.flg = flg;
+        this.tagnumber = tagnumber;
+    }
 
     public String getFlg() {
         return flg;

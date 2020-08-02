@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
@@ -19,6 +20,7 @@ public class EpcItemAdapter extends RecyclerView.Adapter<EpcItemAdapter.MyHoder>
     private List<EpcBean> epcBeans;
     private  Context mContext;
     private List<EpcBean>  selectedepcBeans;
+    private OnItemClickListener mOnItemClickListener;
 
     public EpcItemAdapter(List<EpcBean> epcBeans, Context mContext) {
         this.epcBeans = epcBeans;
@@ -55,6 +57,14 @@ public class EpcItemAdapter extends RecyclerView.Adapter<EpcItemAdapter.MyHoder>
                 notifyDataSetChanged();
             }
         });
+        myHoder.epcLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mOnItemClickListener != null){
+                    mOnItemClickListener.onEpcItemClick(epcBean);
+                }
+            }
+        });
 
     }
 
@@ -70,6 +80,7 @@ public class EpcItemAdapter extends RecyclerView.Adapter<EpcItemAdapter.MyHoder>
         private TextView epc;
         private TextView count;
         private TextView rssi;
+        private LinearLayout epcLayout;
 
         private MyHoder(View itemView) {
             super(itemView);
@@ -79,10 +90,20 @@ public class EpcItemAdapter extends RecyclerView.Adapter<EpcItemAdapter.MyHoder>
             epc = (TextView) itemView.findViewById(R.id.epc);
             count = (TextView) itemView.findViewById(R.id.count);
             rssi = (TextView) itemView.findViewById(R.id.rssi);
+            epcLayout = (LinearLayout) itemView.findViewById(R.id.epc_layout);
         }
     }
 
     public List<EpcBean> getSelectedepcBeans() {
         return selectedepcBeans;
+    }
+
+    public interface OnItemClickListener {
+        void onEpcItemClick(EpcBean fileBean);
+
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.mOnItemClickListener = onItemClickListener;
     }
 }

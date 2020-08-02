@@ -52,7 +52,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.ResourceObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class HandleDataFragment extends BaseFragment {
+public class HandleDataFragment extends BaseFragment implements EpcItemAdapter.OnItemClickListener {
     private static final String FILE_EXTENSION = ".txt";
     private static final String INVENTORY_SUMMARY = "INVENTORY SUMMARY";
     private static final String UNIQUE_COUNT = "UNIQUE COUNT:";
@@ -115,6 +115,7 @@ public class HandleDataFragment extends BaseFragment {
         soundId = soundPool.load(mainActivity, R.raw.barcodebeep, 1);
         mListView.setLayoutManager(new LinearLayoutManager(mainActivity));
         adapter = new EpcItemAdapter(tagList, mainActivity);
+        adapter.setOnItemClickListener(this);
         mListView.setAdapter(adapter);
         handler = new Handler() {
             @Override
@@ -221,6 +222,10 @@ public class HandleDataFragment extends BaseFragment {
             result += Math.pow(16, max - i) * algorism;
         }
         return result;
+    }
+
+    @Override
+    public void onEpcItemClick(EpcBean fileBean) {
     }
 
     class TagThread extends Thread {
