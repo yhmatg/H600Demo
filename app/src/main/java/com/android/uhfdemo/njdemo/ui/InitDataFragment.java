@@ -1,8 +1,11 @@
 package com.android.uhfdemo.njdemo.ui;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -11,55 +14,43 @@ import android.widget.Toast;
 import com.android.uhfdemo.BaseFragment;
 import com.android.uhfdemo.MainActivity;
 import com.android.uhfdemo.R;
+import com.android.uhfdemo.njdemo.http.RetrofitClient;
+import com.android.uhfdemo.njdemo.http.WmsApi;
+import com.android.uhfdemo.njdemo.parambean.WriteTagInfoParam;
+import com.android.uhfdemo.njdemo.responsebean.LableReportBean;
+import com.android.uhfdemo.njdemo.responsebean.WriteTagInfoBean;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.com.example.rfid.driver.Driver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.ResourceObserver;
+import io.reactivex.schedulers.Schedulers;
 
 public class InitDataFragment extends BaseFragment {
-
-    @BindView(R.id.rg_areas)
-    RadioGroup mRadioGroup;
-    @BindView(R.id.et_password)
-    EditText mPassword;
-    @BindView(R.id.et_start)
-    EditText mStart;
-    @BindView(R.id.et_length)
-    EditText mLength;
-    @BindView(R.id.et_data)
-    EditText mData;
-    @BindView(R.id.read_button)
-    TextView mRead;
-    @BindView(R.id.write_btn)
-    TextView mWrite;
-    int selectType = 1;
+    @BindView(R.id.bt_k)
+    Button mButtonK;
+    @BindView(R.id.bt_t)
+    Button mButtonT;
+    @BindView(R.id.tv_current_box)
+    TextView mCurrentBox;
+    @BindView(R.id.et_tag_num)
+    EditText mEpcSum;
+    @BindView(R.id.rv_write_epcs)
+    RecyclerView mListView;
+    private ArrayList<WriteEpcBean> tagList = new ArrayList<>();
+    private WriteEpcItemAdapter adapter;
     MainActivity mainActivity;
     Driver mDriver;
     public static final String TAG = "ReadAndWriteFragment";
 
     @Override
     protected void initEventAndData() {
-        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                int myCheckedId = group.getCheckedRadioButtonId();
-                switch (myCheckedId) {
-                    case R.id.rb_ruf:
-                        selectType = 0;
-                        break;
-                    case R.id.rb_epc:
-                        selectType = 1;
-                        break;
-                    case R.id.rb_tid:
-                        selectType = 2;
-                        break;
-                    case R.id.rb_usr:
-                        selectType = 3;
-                        break;
-                }
-
-            }
-        });
+        adapter = new WriteEpcItemAdapter(tagList,mainActivity);
+        mListView.setLayoutManager(new LinearLayoutManager(mainActivity));
+        mListView.setAdapter(adapter);
     }
 
     @Override
@@ -71,77 +62,58 @@ public class InitDataFragment extends BaseFragment {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_read_write;
+        return R.layout.fragment_initdata_layout;
     }
 
-    @OnClick({R.id.read_button, R.id.write_btn})
+    @OnClick({R.id.bt_k, R.id.bt_t})
     void performClick(View view) {
         switch (view.getId()) {
-            case R.id.read_button:
-                readTag();
+            case R.id.bt_k:
+                mCurrentBox.setText("当前选项：框");
+                String kStr = mEpcSum.getText().toString();
+                if(kStr.isEmpty()){
+                    kStr = "10";
+                }
+                labelWrite(new WriteTagInfoParam("k",kStr));
                 break;
-            case R.id.write_btn:
-                writeTag();
+            case R.id.bt_t:
+                mCurrentBox.setText("当前选项：托");
+                String tStr = mEpcSum.getText().toString();
+                if(tStr.isEmpty()){
+                    tStr = "10";
+                }
+                labelWrite(new WriteTagInfoParam("k",tStr));
                 break;
         }
     }
 
-    public void readTag() {
-        if (!checkOutEditext(false)) {
-            return;
-        }
-        String Status;
-        String PwdRread = mPassword.getText().toString();
-        int MbRead = selectType;
-        int ads = Integer.valueOf(mStart.getText().toString());
-        int len = Integer.valueOf(mLength.getText().toString());
-        Status = mDriver.Read_Data_Tag(PwdRread, 0, 0, 0, "0", MbRead, ads, len);
-        Log.e(TAG, "Status===" + Status);
-        if (null == Status) {
-            Toast.makeText(mainActivity, R.string.read_failed, Toast.LENGTH_SHORT).show();
-        } else {
-            mData.setText(Status);
-            Toast.makeText(mainActivity, R.string.read_suc, Toast.LENGTH_SHORT).show();
-        }
-    }
+    public void labelWrite(WriteTagInfoParam infoParam){
+        RetrofitClient.getInstance().create(WmsApi.class).labelWrite(infoParam)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ResourceObserver<WriteTagInfoBean>() {
 
-    public void writeTag() {
-        if (!checkOutEditext(true)) {
-            return;
-        }
-        int Status = 0;
-        String PwdWr = mPassword.getText().toString();
-        int MbWr = selectType;
-        int ads = Integer.valueOf(mStart.getText().toString());
-        int len = Integer.valueOf(mLength.getText().toString());
-        String data = mData.getText().toString();
+                    @Override
+                    public void onNext(WriteTagInfoBean writeTagInfoBean) {
+                        if("00000000".equals(writeTagInfoBean.getErrorMsg())){
+                            tagList.clear();
+                            for (int i = 0; i < writeTagInfoBean.getTagnumber().size(); i++) {
+                                WriteEpcBean writeEpcBean = new WriteEpcBean(writeTagInfoBean.getTagnumber().get(i), i, false);
+                                tagList.add(writeEpcBean);
+                            }
+                        }
+                        adapter.notifyDataSetChanged();
+                    }
 
-        if (1 == MbWr) {
-            Status = mDriver.Write_Epc_Data(PwdWr, ads, len, data);
-        } else {
-            Status = mDriver.Write_Data_Tag(PwdWr, 0, 0, 0, "0", MbWr, ads, len, data);
-        }
-        Log.e(TAG, "Status===" + Status);
-        if (-1 == Status) {
-            Toast.makeText(mainActivity, R.string.write_failed, Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(mainActivity, R.string.write_suc, Toast.LENGTH_SHORT).show();
-        }
-    }
+                    @Override
+                    public void onError(Throwable e) {
 
-    public boolean checkOutEditext(boolean isWrite) {
-        boolean result = false;
-        if ( mPassword.getText().toString().length() == 0) {
-            Toast.makeText(mainActivity, R.string.passwork_null, Toast.LENGTH_SHORT).show();
-        } else if (mStart.getText().toString().length() ==0 ) {
-            Toast.makeText(mainActivity, R.string.start_area_null, Toast.LENGTH_SHORT).show();
-        } else if (mLength.getText().toString().length() == 0) {
-            Toast.makeText(mainActivity, R.string.length_null, Toast.LENGTH_SHORT).show();
-        } else if (isWrite && mData.getText().toString().length() == 0) {
-            Toast.makeText(mainActivity, R.string.data_null, Toast.LENGTH_SHORT).show();
-        }else {
-            result =  true;
-        }
-        return result;
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }

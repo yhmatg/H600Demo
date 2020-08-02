@@ -115,6 +115,7 @@ public class HandleDataFragment extends BaseFragment {
         soundId = soundPool.load(mainActivity, R.raw.barcodebeep, 1);
         mListView.setLayoutManager(new LinearLayoutManager(mainActivity));
         adapter = new EpcItemAdapter(tagList, mainActivity);
+        mListView.setAdapter(adapter);
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {

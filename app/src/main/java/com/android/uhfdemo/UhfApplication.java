@@ -5,8 +5,11 @@ import android.app.Application;
 import com.xuexiang.xlog.XLog;
 import com.xuexiang.xlog.crash.CrashHandler;
 
+import cn.com.example.rfid.driver.Driver;
+
 public class UhfApplication extends Application {
     private static UhfApplication instance;
+    private static Driver mDriver;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -18,5 +21,13 @@ public class UhfApplication extends Application {
 
     public static synchronized UhfApplication getInstance() {
         return instance;
+    }
+
+    public static Driver getDriver(){
+        return mDriver;
+    }
+
+    public static void setDriver(Driver driver){
+        mDriver = driver;
     }
 }

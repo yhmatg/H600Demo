@@ -19,4 +19,9 @@ public class WriteTagInfoParam {
     public void setNum(String num) {
         this.num = num;
     }
+
+    public WriteTagInfoParam(String flg, String num) {
+        this.flg = flg;
+        this.num = num;
+    }
 }

@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         unBinder = ButterKnife.bind(this);
-        //initRfid();
+        initRfid();
         initDataAndView();
     }
 
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         }
         //将手持机手柄出发动作改为uhf
         SystemProperties.set("persist.sys.PistolKey", "uhf");
-
+        UhfApplication.setDriver(driver);
     }
 
     private void initDataAndView() {

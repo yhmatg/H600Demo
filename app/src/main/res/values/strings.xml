@@ -99,4 +99,7 @@
     <string name="export_inventory">导出</string>
     <string name="des_str">注销</string>
     <string name="return_str">归还</string>
+    <string name="k_str">框</string>
+    <string name="t_str">托</string>
+    <string name="tag_nums">标签数量</string>
 </resources>
