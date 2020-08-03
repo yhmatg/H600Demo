@@ -299,7 +299,7 @@ public class HandleDataFragment extends BaseFragment implements EpcItemAdapter.O
             iIndex++;
             EpcBean epcBean = new EpcBean(tmp[1], iIndex, 1, rssi, false);
             hmap.put(tmp[1],epcBean);
-            if (tagList.contains(epcBean)){
+            if (!tagList.contains(epcBean)){
                 tagList.add(epcBean);
             }
         }

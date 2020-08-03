@@ -59,7 +59,7 @@ public class EpcItemDetailActivity extends AppCompatActivity {
                 .subscribe(new ResourceObserver<TagDetailBean>() {
                     @Override
                     public void onNext(TagDetailBean tagDetailBean) {
-                        if("00000000".equals(tagDetailBean.getRtnCode())){
+                        if("0000000".equals(tagDetailBean.getRtnCode())){
                             mReqName.setText(tagDetailBean.getRecipients());
                             mTypeName.setText(tagDetailBean.getPtype());
                             mFruitName.setText(tagDetailBean.getPmode());

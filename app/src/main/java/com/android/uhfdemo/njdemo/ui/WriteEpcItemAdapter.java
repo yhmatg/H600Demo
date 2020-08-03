@@ -11,12 +11,13 @@ import android.widget.TextView;
 
 import com.android.uhfdemo.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WriteEpcItemAdapter extends RecyclerView.Adapter<WriteEpcItemAdapter.MyHoder> {
     private List<WriteEpcBean> epcBeans;
     private  Context mContext;
-    private List<WriteEpcBean>  selectedepcBeans;
+    private List<WriteEpcBean>  selectedepcBeans = new ArrayList<>();
 
     public WriteEpcItemAdapter(List<WriteEpcBean> epcBeans, Context mContext) {
         this.epcBeans = epcBeans;

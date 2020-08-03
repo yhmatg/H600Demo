@@ -82,7 +82,7 @@ public class InitDataFragment extends BaseFragment {
                 if(tStr.isEmpty()){
                     tStr = "10";
                 }
-                labelWrite(new WriteTagInfoParam("k",tStr));
+                labelWrite(new WriteTagInfoParam("t",tStr));
                 break;
         }
     }
@@ -95,7 +95,7 @@ public class InitDataFragment extends BaseFragment {
 
                     @Override
                     public void onNext(WriteTagInfoBean writeTagInfoBean) {
-                        if("00000000".equals(writeTagInfoBean.getErrorMsg())){
+                        if("0000000".equals(writeTagInfoBean.getRtnCode())){
                             tagList.clear();
                             for (int i = 0; i < writeTagInfoBean.getTagnumber().size(); i++) {
                                 WriteEpcBean writeEpcBean = new WriteEpcBean(writeTagInfoBean.getTagnumber().get(i), i, false);
@@ -104,7 +104,6 @@ public class InitDataFragment extends BaseFragment {
                         }
                         adapter.notifyDataSetChanged();
                     }
-
                     @Override
                     public void onError(Throwable e) {
 

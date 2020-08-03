@@ -14,12 +14,13 @@ import android.widget.TextView;
 
 import com.android.uhfdemo.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EpcItemAdapter extends RecyclerView.Adapter<EpcItemAdapter.MyHoder> {
     private List<EpcBean> epcBeans;
     private  Context mContext;
-    private List<EpcBean>  selectedepcBeans;
+    private List<EpcBean>  selectedepcBeans = new ArrayList<>();
     private OnItemClickListener mOnItemClickListener;
 
     public EpcItemAdapter(List<EpcBean> epcBeans, Context mContext) {

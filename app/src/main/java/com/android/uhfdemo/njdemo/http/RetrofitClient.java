@@ -51,7 +51,7 @@ public class RetrofitClient {
         return SingletonHolder.INSTANCE;
     }
     private RetrofitClient() {
-        url = "http://ip:port";
+        url = "http://101.37.15.178:8033";
         retrofit = createRetrofit(provideClient(), url);
 
     }
