@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="36dp"
     android:gravity="center_vertical"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:layout_marginBottom="4dp"
+    android:layout_marginTop="4dp">
 
     <TextView
         android:id="@+id/sn"
@@ -22,13 +24,15 @@
         android:text="123456123456123456123456"
         android:gravity="center" />
 
-    <TextView
+    <Button
         android:id="@+id/write_status"
-        android:layout_width="0dp"
-        android:layout_weight="1"
+        android:layout_width="60dp"
+        android:background="@drawable/button_background_two"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
         android:gravity="center"
-        android:text="写入状态"
+        android:text="写入"
+        android:layout_marginEnd="10dp"
         android:textAlignment="center" />
 
 </LinearLayout>

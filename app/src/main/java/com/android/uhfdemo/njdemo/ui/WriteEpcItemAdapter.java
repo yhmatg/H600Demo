@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -38,8 +39,14 @@ public class WriteEpcItemAdapter extends RecyclerView.Adapter<WriteEpcItemAdapte
         final WriteEpcBean epcBean = epcBeans.get(i);
         myHoder.sn.setText(String.valueOf(i+1));
         myHoder.epc.setText(epcBean.getEpc());
-        String status = epcBean.isWrite() ? "已写":"未写";
-        myHoder.writeStatus.setText(status);
+        myHoder.writeStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(writeClickListener != null){
+                    writeClickListener.onWriteEpcClick(epcBean);
+                }
+            }
+        });
         myHoder.writeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,7 +67,7 @@ public class WriteEpcItemAdapter extends RecyclerView.Adapter<WriteEpcItemAdapte
 
         private TextView sn;
         private TextView epc;
-        private TextView writeStatus;
+        private Button writeStatus;
         private LinearLayout writeLayout;
 
         private MyHoder(View itemView) {
@@ -68,7 +75,7 @@ public class WriteEpcItemAdapter extends RecyclerView.Adapter<WriteEpcItemAdapte
 
             sn = (TextView) itemView.findViewById(R.id.sn);
             epc = (TextView) itemView.findViewById(R.id.epc);
-            writeStatus = (TextView) itemView.findViewById(R.id.write_status);
+            writeStatus = (Button) itemView.findViewById(R.id.write_status);
             writeLayout = (LinearLayout) itemView.findViewById(R.id.write_layout);
         }
     }

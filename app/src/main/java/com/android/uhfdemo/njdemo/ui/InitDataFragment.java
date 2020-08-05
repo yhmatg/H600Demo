@@ -133,6 +133,12 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
 
     @Override
     public void onWriteEpcClick(WriteEpcBean fileBean) {
-
+        String s = mCurrentBox.getText().toString();
+        String type = "框".equals(s) ? "K" : "T";
+        Intent intent = new Intent();
+        intent.putExtra("epcode", fileBean.getEpc());
+        intent.putExtra("typeode", type);
+        intent.setClass(mainActivity, WriteEpcActivity.class);
+        startActivity(intent);
     }
 }

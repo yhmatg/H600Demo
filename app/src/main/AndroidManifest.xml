@@ -25,6 +25,9 @@
         <activity
             android:name=".njdemo.ui.EpcItemDetailActivity"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".njdemo.ui.WriteEpcActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

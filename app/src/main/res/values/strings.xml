@@ -102,4 +102,10 @@
     <string name="k_str">框</string>
     <string name="t_str">托</string>
     <string name="tag_nums">标签数量</string>
+    <string name="identify_tips">扣动扳机 识别标签</string>
+    <string name="identify_success">识别完成</string>
+    <string name="identify_tags">一次只能写入一个标签</string>
+    <string name="write_tips">请将待写入标签贴近手持机前端</string>
+    <string name="write_attention">注意：标签写入时，请尽量远离其他标签，避免干扰</string>
+    <string name="confirm_write">确认写入</string>
 </resources>

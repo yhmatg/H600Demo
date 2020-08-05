@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:text="标签写入"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/iv_spin"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/tv_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/spin_icon" />
+
+    <LinearLayout
+        android:layout_below="@+id/iv_spin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/identify_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:textSize="18sp"
+            android:text="@string/identify_tips"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="13dp"
+            android:textSize="15sp"
+            android:text="@string/write_tips"/>
+
+        <Button
+            android:id="@+id/btn_confirm_write"
+            android:layout_width="345dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="40dp"
+            android:text="@string/confirm_write"
+            android:background="@drawable/button_background_three"
+            android:enabled="false"
+            android:textColor="@color/white"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:layout_width="275dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="24dp"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:text="@string/write_attention"/>
+    </LinearLayout>
+
+</RelativeLayout>
