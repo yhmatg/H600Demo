@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.uhfdemo.R;
 import com.android.uhfdemo.UhfApplication;
@@ -60,10 +61,13 @@ public class EpcItemDetailActivity extends AppCompatActivity {
                     @Override
                     public void onNext(TagDetailBean tagDetailBean) {
                         if("0000000".equals(tagDetailBean.getRtnCode())){
-                            mReqName.setText(tagDetailBean.getRecipients());
-                            mTypeName.setText(tagDetailBean.getPtype());
-                            mFruitName.setText(tagDetailBean.getPmode());
-                            mLevelName.setText(tagDetailBean.getPrule());
+                            mReqName.setText(tagDetailBean.getRecipients() == null ? "" :tagDetailBean.getRecipients());
+                            mTypeName.setText(tagDetailBean.getPtype() == null ? "" : tagDetailBean.getPtype());
+                            mFruitName.setText(tagDetailBean.getPmode() == null ? "" : tagDetailBean.getPmode());
+                            mLevelName.setText(tagDetailBean.getPrule() == null ? "" : tagDetailBean.getPrule());
+                        }else {
+                            String errMes = "还框上报失败 " + (tagDetailBean.getErrorMsg() == null ? "" : tagDetailBean.getErrorMsg());
+                            Toast.makeText(EpcItemDetailActivity.this, errMes, Toast.LENGTH_SHORT).show();
                         }
                     }
 

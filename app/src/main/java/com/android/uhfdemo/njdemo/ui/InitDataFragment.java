@@ -1,6 +1,7 @@
 package com.android.uhfdemo.njdemo.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,7 +31,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.ResourceObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class InitDataFragment extends BaseFragment {
+public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapter.WriteEpcItemClickListener {
     @BindView(R.id.bt_k)
     Button mButtonK;
     @BindView(R.id.bt_t)
@@ -50,6 +51,7 @@ public class InitDataFragment extends BaseFragment {
     @Override
     protected void initEventAndData() {
         adapter = new WriteEpcItemAdapter(tagList,mainActivity);
+        adapter.setWriteClickListener(this);
         mListView.setLayoutManager(new LinearLayoutManager(mainActivity));
         mListView.addItemDecoration(new DividerItemDecoration(mainActivity,LinearLayoutManager.VERTICAL));
         mListView.setAdapter(adapter);
@@ -116,5 +118,21 @@ public class InitDataFragment extends BaseFragment {
 
                     }
                 });
+    }
+
+    @Override
+    public void onEpcItemClick(WriteEpcBean fileBean) {
+        String s = mCurrentBox.getText().toString();
+        String type = "框".equals(s) ? "K" : "T";
+        Intent intent = new Intent();
+        intent.putExtra("epcode", fileBean.getEpc());
+        intent.putExtra("typeode", type);
+        intent.setClass(mainActivity, EpcItemDetailActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onWriteEpcClick(WriteEpcBean fileBean) {
+
     }
 }

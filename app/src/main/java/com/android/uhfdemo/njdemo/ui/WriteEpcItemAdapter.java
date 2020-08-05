@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.uhfdemo.R;
@@ -18,6 +19,7 @@ public class WriteEpcItemAdapter extends RecyclerView.Adapter<WriteEpcItemAdapte
     private List<WriteEpcBean> epcBeans;
     private  Context mContext;
     private List<WriteEpcBean>  selectedepcBeans = new ArrayList<>();
+    private WriteEpcItemClickListener writeClickListener;
 
     public WriteEpcItemAdapter(List<WriteEpcBean> epcBeans, Context mContext) {
         this.epcBeans = epcBeans;
@@ -38,6 +40,14 @@ public class WriteEpcItemAdapter extends RecyclerView.Adapter<WriteEpcItemAdapte
         myHoder.epc.setText(epcBean.getEpc());
         String status = epcBean.isWrite() ? "已写":"未写";
         myHoder.writeStatus.setText(status);
+        myHoder.writeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(writeClickListener != null){
+                    writeClickListener.onEpcItemClick(epcBean);
+                }
+            }
+        });
 
     }
 
@@ -51,6 +61,7 @@ public class WriteEpcItemAdapter extends RecyclerView.Adapter<WriteEpcItemAdapte
         private TextView sn;
         private TextView epc;
         private TextView writeStatus;
+        private LinearLayout writeLayout;
 
         private MyHoder(View itemView) {
             super(itemView);
@@ -58,10 +69,20 @@ public class WriteEpcItemAdapter extends RecyclerView.Adapter<WriteEpcItemAdapte
             sn = (TextView) itemView.findViewById(R.id.sn);
             epc = (TextView) itemView.findViewById(R.id.epc);
             writeStatus = (TextView) itemView.findViewById(R.id.write_status);
+            writeLayout = (LinearLayout) itemView.findViewById(R.id.write_layout);
         }
     }
 
     public List<WriteEpcBean> getSelectedepcBeans() {
         return selectedepcBeans;
+    }
+
+    public interface WriteEpcItemClickListener {
+        void onEpcItemClick(WriteEpcBean fileBean);
+        void onWriteEpcClick(WriteEpcBean fileBean);
+    }
+
+    public void setWriteClickListener(WriteEpcItemClickListener writeClickListener) {
+        this.writeClickListener = writeClickListener;
     }
 }
