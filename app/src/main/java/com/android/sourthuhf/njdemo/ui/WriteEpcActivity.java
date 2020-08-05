@@ -21,6 +21,8 @@ import com.android.sourthuhf.UhfApplication;
 import com.android.sourthuhf.njdemo.http.RetrofitClient;
 import com.android.sourthuhf.njdemo.http.WmsApi;
 import com.android.sourthuhf.njdemo.parambean.TagDetailParam;
+import com.android.sourthuhf.njdemo.parambean.WriteTagResultParam;
+import com.android.sourthuhf.njdemo.responsebean.LableReportBean;
 import com.android.sourthuhf.njdemo.responsebean.TagDetailBean;
 
 import java.util.ArrayList;
@@ -51,6 +53,7 @@ public class WriteEpcActivity extends AppCompatActivity {
     List<String> scanEpcs = new ArrayList<>();
     private Animation anim1;
     private String epcode;
+    private String hexEpcode;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,9 +64,8 @@ public class WriteEpcActivity extends AppCompatActivity {
         rotateAnim1();
         Intent intent = getIntent();
         epcode = intent.getStringExtra("epcode");
-        epcode = asciiToHex(epcode);
+        hexEpcode = asciiToHex(epcode);
         String typeode = intent.getStringExtra("typeode");
-        getTagDetail(new TagDetailParam(typeode, epcode));
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -96,14 +98,19 @@ public class WriteEpcActivity extends AppCompatActivity {
         stopInventory();
     }
 
-    public void getTagDetail(TagDetailParam detailParam){
-        RetrofitClient.getInstance().create(WmsApi.class).getTagDetail(detailParam)
+    public void reportWriteResult(WriteTagResultParam resultParam){
+        RetrofitClient.getInstance().create(WmsApi.class).reportWriteResult(resultParam)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ResourceObserver<TagDetailBean>() {
+                .subscribe(new ResourceObserver<LableReportBean>() {
                     @Override
-                    public void onNext(TagDetailBean tagDetailBean) {
-
+                    public void onNext(LableReportBean lableReportBean) {
+                        if ("0000000".equals(lableReportBean.getRtnCode())) {
+                            Toast.makeText(WriteEpcActivity.this, "写标签上报成功", Toast.LENGTH_SHORT).show();
+                        } else {
+                            String errMes = "写标签上报失败 " + (lableReportBean.getErrorMsg() == null ? "" : lableReportBean.getErrorMsg());
+                            Toast.makeText(WriteEpcActivity.this, errMes, Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
@@ -225,9 +232,16 @@ public class WriteEpcActivity extends AppCompatActivity {
             case R.id.btn_confirm_write:
                 if(mDriver != null){
                     String selectEpc = scanEpcs.size() > 0? scanEpcs.get(0) : "";
-                    int reslut = writeEpcTag(selectEpc, epcode);
+                    int reslut = writeEpcTag(selectEpc, hexEpcode);
                     if(0 == reslut){
                         Toast.makeText(this, "写入成功", Toast.LENGTH_SHORT).show();
+                        WriteTagResultParam writeTagResultParam = new WriteTagResultParam();
+                        ArrayList<String> sucList = new ArrayList<>();
+                        ArrayList<String> errList = new ArrayList<>();
+                        sucList.add(epcode);
+                        writeTagResultParam.setOkboxs(sucList);
+                        writeTagResultParam.setErrboxs(errList);
+                        reportWriteResult(writeTagResultParam);
                     }else {
                         Toast.makeText(this, "写入失败，请重试", Toast.LENGTH_SHORT).show();
                     }
