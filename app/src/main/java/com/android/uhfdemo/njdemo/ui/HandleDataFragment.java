@@ -16,6 +16,7 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -114,6 +115,7 @@ public class HandleDataFragment extends BaseFragment implements EpcItemAdapter.O
         soundPool = new SoundPool(10, AudioManager.STREAM_SYSTEM, 5);
         soundId = soundPool.load(mainActivity, R.raw.barcodebeep, 1);
         mListView.setLayoutManager(new LinearLayoutManager(mainActivity));
+        mListView.addItemDecoration(new DividerItemDecoration(mainActivity,LinearLayoutManager.VERTICAL));
         adapter = new EpcItemAdapter(tagList, mainActivity);
         adapter.setOnItemClickListener(this);
         mListView.setAdapter(adapter);
@@ -138,13 +140,14 @@ public class HandleDataFragment extends BaseFragment implements EpcItemAdapter.O
         return R.layout.fragment_handledata;
     }
 
-    @OnClick({R.id.open_or_stop, R.id.clear_btn,R.id.tv_destory, R.id.tv_return})
+    @OnClick({R.id.open_or_stop, R.id.clear_btn, R.id.tv_destory, R.id.tv_return})
     void performClick(View view) {
         switch (view.getId()) {
             case R.id.open_or_stop:
                 startOrStopScan();
                 break;
             case R.id.clear_btn:
+                adapter.clearSelectedepcBeans();
                 tagList.clear();
                 adapter.notifyDataSetChanged();
                 hmap.clear();
@@ -257,7 +260,7 @@ public class HandleDataFragment extends BaseFragment implements EpcItemAdapter.O
         }
     }
 
-    private void handleEpc(String epc){
+    private void handleEpc(String epc) {
         int Hb = 0;
         int Lb = 0;
         int rssi = 0;
@@ -285,21 +288,22 @@ public class HandleDataFragment extends BaseFragment implements EpcItemAdapter.O
             soundPool.play(soundId, 1, 1, 0, 1, 1);
         }
         //显示读取ecp个格式，默认16进制
-        if (!mCharType.isChecked()) {
+       /* if (!mCharType.isChecked()) {
             tmp[1] = AsciiStringToString(tmp[1]);
-        }
-        if(hmap.containsKey(tmp[1])){
+        }*/
+        tmp[1] = AsciiStringToString(tmp[1]);
+        if (hmap.containsKey(tmp[1])) {
             EpcBean epcBean = hmap.get(tmp[1]);
-            if(epcBean != null){
+            if (epcBean != null) {
                 int count = epcBean.getCount() + 1;
                 epcBean.setCount(count);
                 epcBean.setRssi(rssi);
             }
-        }else {
+        } else {
             iIndex++;
             EpcBean epcBean = new EpcBean(tmp[1], iIndex, 1, rssi, false);
-            hmap.put(tmp[1],epcBean);
-            if (!tagList.contains(epcBean)){
+            hmap.put(tmp[1], epcBean);
+            if (!tagList.contains(epcBean)) {
                 tagList.add(epcBean);
             }
         }
@@ -451,19 +455,24 @@ public class HandleDataFragment extends BaseFragment implements EpcItemAdapter.O
     }
 
     //注销上报功能
-    public void lableReport(List<String> epcs){
+    public void lableReport(List<String> epcs) {
         RetrofitClient.getInstance().create(WmsApi.class).lableReport(epcs)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new ResourceObserver<LableReportBean>() {
                     @Override
                     public void onNext(LableReportBean lableReportBean) {
-
+                        if ("0000000".equals(lableReportBean.getRtnCode())) {
+                            Toast.makeText(mainActivity, "注销上报成功", Toast.LENGTH_SHORT).show();
+                        } else {
+                            String errMes = "注销上报失败 " + (lableReportBean.getErrorMsg() == null ? "" : lableReportBean.getErrorMsg());
+                            Toast.makeText(mainActivity, errMes, Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        Log.e("HandleDataFragment", e.toString());
                     }
 
                     @Override
@@ -474,19 +483,24 @@ public class HandleDataFragment extends BaseFragment implements EpcItemAdapter.O
     }
 
     //还筐上报功能
-    public void returnBasket(List<String> epcs){
+    public void returnBasket(List<String> epcs) {
         RetrofitClient.getInstance().create(WmsApi.class).returnBasket(epcs)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new ResourceObserver<LableReportBean>() {
                     @Override
                     public void onNext(LableReportBean lableReportBean) {
-
+                        if ("0000000".equals(lableReportBean.getRtnCode())) {
+                            Toast.makeText(mainActivity, "还框上报成功", Toast.LENGTH_SHORT).show();
+                        } else {
+                            String errMes = "还框上报失败 " + (lableReportBean.getErrorMsg() == null ? "" : lableReportBean.getErrorMsg());
+                            Toast.makeText(mainActivity, errMes, Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        Log.e("HandleDataFragment", e.toString());
                     }
 
                     @Override

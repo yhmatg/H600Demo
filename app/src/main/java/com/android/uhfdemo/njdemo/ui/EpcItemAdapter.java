@@ -99,6 +99,10 @@ public class EpcItemAdapter extends RecyclerView.Adapter<EpcItemAdapter.MyHoder>
         return selectedepcBeans;
     }
 
+    public void clearSelectedepcBeans() {
+        selectedepcBeans.clear();
+    }
+
     public interface OnItemClickListener {
         void onEpcItemClick(EpcBean fileBean);
 

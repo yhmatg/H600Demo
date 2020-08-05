@@ -1,6 +1,7 @@
 package com.android.uhfdemo.njdemo.ui;
 
 import android.content.Context;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -50,6 +51,7 @@ public class InitDataFragment extends BaseFragment {
     protected void initEventAndData() {
         adapter = new WriteEpcItemAdapter(tagList,mainActivity);
         mListView.setLayoutManager(new LinearLayoutManager(mainActivity));
+        mListView.addItemDecoration(new DividerItemDecoration(mainActivity,LinearLayoutManager.VERTICAL));
         mListView.setAdapter(adapter);
     }
 
@@ -74,7 +76,7 @@ public class InitDataFragment extends BaseFragment {
                 if(kStr.isEmpty()){
                     kStr = "10";
                 }
-                labelWrite(new WriteTagInfoParam("k",kStr));
+                labelWrite(new WriteTagInfoParam("K",kStr));
                 break;
             case R.id.bt_t:
                 mCurrentBox.setText("当前选项：托");
@@ -82,7 +84,7 @@ public class InitDataFragment extends BaseFragment {
                 if(tStr.isEmpty()){
                     tStr = "10";
                 }
-                labelWrite(new WriteTagInfoParam("t",tStr));
+                labelWrite(new WriteTagInfoParam("T",tStr));
                 break;
         }
     }

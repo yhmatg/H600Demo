@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="36dp"
     android:id="@+id/epc_layout"
+    android:gravity="center_vertical"
     android:orientation="horizontal">
 
     <CheckBox
@@ -26,16 +27,16 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="4"
-        android:text="123456123456123456123456"
-        android:textAlignment="textStart" />
+        android:gravity="center"
+        android:text="123456123456123456123456" />
 
     <TextView
         android:id="@+id/count"
-        android:layout_width="65dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="100"
-        android:textAlignment="center" />
+        android:layout_weight="1" />
 
     <TextView
         android:id="@+id/rssi"
