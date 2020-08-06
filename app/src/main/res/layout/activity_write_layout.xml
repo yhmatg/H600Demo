@@ -9,6 +9,7 @@
         android:layout_height="50dp"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
+        android:paddingTop="10dp"
         android:background="@color/colorPrimary"
         android:gravity="center"
         android:text="标签写入"
@@ -65,5 +66,12 @@
             android:gravity="center"
             android:text="@string/write_attention"/>
     </LinearLayout>
+
+    <View
+        android:id="@+id/navigationbar_back"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/reall_black" />
 
 </RelativeLayout>

@@ -69,5 +69,21 @@ public class SharePreferenceUtils {
     public int  getWorkMode() {
         return mPreferences.getInt("work_mode", 0);
     }
+
+    public void setUserName(String name) {
+        mPreferences.edit().putString("user_name", name).apply();
+    }
+
+    public String getUserName() {
+        return mPreferences.getString("user_name", "");
+    }
+
+    public void setPassWord(String passWord) {
+        mPreferences.edit().putString("pass_word", passWord).apply();
+    }
+
+    public String getPassWord() {
+        return mPreferences.getString("pass_word", "");
+    }
 }
 

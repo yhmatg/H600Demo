@@ -32,7 +32,6 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        app:logo="@mipmap/app_icon"
         android:theme="@style/MyToolbarTheme"
         app:popupTheme="@style/OverFlowMenuTheme"
         android:background="?attr/colorPrimary">
@@ -41,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity = "center"
-            android:text="UHF DEMO"
+            android:text="UHF PRO"
             android:textSize="20dp"
             android:textColor="@color/white"/>
 

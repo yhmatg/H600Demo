@@ -38,6 +38,11 @@ public class WriteEpcItemAdapter extends RecyclerView.Adapter<WriteEpcItemAdapte
         final WriteEpcBean epcBean = epcBeans.get(i);
         myHoder.sn.setText(String.valueOf(i+1));
         myHoder.epc.setText(epcBean.getEpc());
+        if(epcBean.isWrite()){
+            myHoder.writeStatus.setText("已写");
+        }else {
+            myHoder.writeStatus.setText("写入");
+        }
         myHoder.writeStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -1,9 +1,11 @@
 package com.android.sourthuhf.njdemo.http;
 
+import com.android.sourthuhf.njdemo.parambean.LoginParam;
 import com.android.sourthuhf.njdemo.parambean.TagDetailParam;
 import com.android.sourthuhf.njdemo.parambean.WriteTagInfoParam;
 import com.android.sourthuhf.njdemo.parambean.WriteTagResultParam;
 import com.android.sourthuhf.njdemo.responsebean.LableReportBean;
+import com.android.sourthuhf.njdemo.responsebean.LoginResponse;
 import com.android.sourthuhf.njdemo.responsebean.TagDetailBean;
 import com.android.sourthuhf.njdemo.responsebean.WriteTagInfoBean;
 
@@ -14,6 +16,10 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 public interface WmsApi {
+    //登录功能
+    @POST("/app/login")
+    Observable<LoginResponse> login(@Body LoginParam loginParam);
+
     //注销上报功能
     @POST("/app/labelReport")
     Observable<LableReportBean> lableReport(@Body List<String> epcs);

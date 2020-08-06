@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String MAIN_SCAN = "com.spd.action.start_uhf_mainactivity";
     public static final String STOP_SCAN = "com.spd.action.stop_uhf";
     private HandleDataFragment minventoryFragment;
+    private InitDataFragment initDataFragment;
+    private Boolean canRfid = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -102,7 +104,8 @@ public class MainActivity extends AppCompatActivity {
         titles.add("RFID数据初始化");
         minventoryFragment = new HandleDataFragment();
         fragments.add(minventoryFragment);
-        fragments.add(new InitDataFragment());
+        initDataFragment = new InitDataFragment();
+        fragments.add(initDataFragment);
         for (int i = 0; i < titles.size(); i++) {
             mTablayout.addTab(mTablayout.newTab());
         }
@@ -224,12 +227,27 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (KeyEvent.KEYCODE_F1 == keyCode) {
+        /*if (KeyEvent.KEYCODE_F1 == keyCode) {
             Intent intent = new Intent();
             intent.setAction(MAIN_SCAN);
             sendBroadcast(intent);
+        }*/
+        if(canRfid){
+            if (driver!= null && keyCode == KeyEvent.KEYCODE_F1) {
+                boolean minventoryHint = minventoryFragment.getUserVisibleHint();
+                if(minventoryHint){
+                    minventoryFragment.startOrStopScan();
+                }
+            }
+            canRfid = false;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        canRfid = true;
+        return super.onKeyUp(keyCode, event);
     }
 
 
