@@ -77,9 +77,11 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
     private String epcode;
     private String hexEpcode;
     private WriteEpcBean currentWrite;
+    private Toast mTost;
 
     @Override
     protected void initEventAndData() {
+        mTost = Toast.makeText(mainActivity, "", Toast.LENGTH_SHORT);;
         adapter = new WriteEpcItemAdapter(tagList,mainActivity);
         adapter.setWriteClickListener(this);
         mListView.setLayoutManager(new LinearLayoutManager(mainActivity));
@@ -106,10 +108,12 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
                         writeTagResultParam.setErrboxs(errList);
                         reportWriteResult(writeTagResultParam);
                     }else {
-                        Toast.makeText(mainActivity, "写入失败，请重试", Toast.LENGTH_SHORT).show();
+                        mTost.setText("写入失败，请重试");
+                        mTost.show();
                     }
                 }else {
-                    Toast.makeText(mainActivity, "RFID异常，请重新进入应用连接", Toast.LENGTH_SHORT).show();
+                    mTost.setText("RFID异常，请重新进入应用连接");
+                    mTost.show();
                 }
             }
         });
@@ -200,13 +204,13 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
 
     @Override
     public void onEpcItemClick(WriteEpcBean fileBean) {
-        String s = mCurrentBox.getText().toString();
+       /* String s = mCurrentBox.getText().toString();
         String type = "框".equals(s) ? "K" : "T";
         Intent intent = new Intent();
         intent.putExtra("epcode", fileBean.getEpc());
         intent.putExtra("typeode", type);
         intent.setClass(mainActivity, EpcItemDetailActivity.class);
-        startActivity(intent);
+        startActivity(intent);*/
     }
 
     @Override
@@ -347,10 +351,13 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
                         if ("0000000".equals(lableReportBean.getRtnCode())) {
                             currentWrite.setWrite(true);
                             adapter.notifyDataSetChanged();
-                            Toast.makeText(mainActivity, "写标签上报成功", Toast.LENGTH_SHORT).show();
+                            mTost.setText("写标签上报成功");
+                            mTost.show();
+                            writeDialog.dismiss();
                         } else {
                             String errMes = "写标签上报失败 " + (lableReportBean.getErrorMsg() == null ? "" : lableReportBean.getErrorMsg());
-                            Toast.makeText(mainActivity, errMes, Toast.LENGTH_SHORT).show();
+                            mTost.setText(errMes);
+                            mTost.show();
                         }
                     }
 

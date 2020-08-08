@@ -223,6 +223,13 @@ public class HandleDataFragment extends BaseFragment implements EpcItemAdapter.O
 
     @Override
     public void onEpcItemClick(EpcBean fileBean) {
+        String head = fileBean.getEpc().substring(0,1);
+        String type = ("K".equals(head) || "k".equals(head)) ? "K" : "T";
+        Intent intent = new Intent();
+        intent.putExtra("epcode", fileBean.getEpc());
+        intent.putExtra("typeode", type);
+        intent.setClass(mainActivity, EpcItemDetailActivity.class);
+        startActivity(intent);
     }
 
     class TagThread extends Thread {
