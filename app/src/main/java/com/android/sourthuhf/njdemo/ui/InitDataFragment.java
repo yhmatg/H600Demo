@@ -175,7 +175,7 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
                     return;
                 }
                 labelWrite(new WriteTagInfoParam("K", kStr));
-                imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+                imm.hideSoftInputFromWindow(mainActivity.getCurrentFocus().getWindowToken(), 0);
                 break;
             case R.id.bt_t:
                 mCurrentBox.setText("当前选项：托");
@@ -185,7 +185,7 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
                     mTost.show();
                     return;
                 }
-                imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+                imm.hideSoftInputFromWindow(mainActivity.getCurrentFocus().getWindowToken(), 0);
                 labelWrite(new WriteTagInfoParam("T", tStr));
                 break;
         }
@@ -202,6 +202,7 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
                         if ("0000000".equals(writeTagInfoBean.getRtnCode())) {
                             OneAllDatas.clear();
                             tagList.clear();
+                            currentIndex = 0;
                             for (int i = 0; i < writeTagInfoBean.getTagnumber().size(); i++) {
                                 WriteEpcBean writeEpcBean = new WriteEpcBean(writeTagInfoBean.getTagnumber().get(i), i, false);
                                 tagList.add(writeEpcBean);
@@ -365,7 +366,7 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
         }
         tmp[1] = Utils.AsciiStringToString(tmp[1]);
         ScanEpcBean scanEpcBean = new ScanEpcBean(tmp[1], false, tmp[0]);
-        if (!OneAllDatas.contains(scanEpcBean)) {
+        if (OneAllDatas.size() < oneScanSize && !OneAllDatas.contains(scanEpcBean)) {
             OneAllDatas.add(scanEpcBean);
         }
         if (OneAllDatas.size() == oneScanSize) {
@@ -379,7 +380,20 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
     private Runnable writeRunable = new Runnable() {
         @Override
         public void run() {
-            if (tagList.size() - 1 < currentIndex || tagList.size() - 1 < currentIndex) {
+            if (tagList.size() - 1 < currentIndex || OneAllDatas.size() - 1 < currentIndex) {
+                WriteTagResultParam writeTagResultParam = new WriteTagResultParam();
+                ArrayList<String> sucList = new ArrayList<>();
+                ArrayList<String> errList = new ArrayList<>();
+                for (WriteEpcBean writeEpcBean : tagList) {
+                    if (writeEpcBean.isWrite()){
+                        sucList.add(writeEpcBean.getEpc());
+                    }else {
+                        errList.add(writeEpcBean.getEpc());
+                    }
+                }
+                writeTagResultParam.setOkboxs(sucList);
+                writeTagResultParam.setErrboxs(errList);
+                reportMutiWriteResult(writeTagResultParam);
                 mTost.setText("已经写完，请检查结果");
                 mTost.show();
                 return;
@@ -408,11 +422,11 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
             mTost.show();*/
             writeEpcBean.setWrite(true);
             adapter.notifyDataSetChanged();
-            Toast.makeText(mainActivity,writeEpcBean.getEpc() + i + "写入成功",Toast.LENGTH_SHORT).show();
+            Toast.makeText(mainActivity,writeEpcBean.getEpc()  + "写入成功",Toast.LENGTH_SHORT).show();
         }else {
            /* mTost.setText(writeEpcBean.getEpc() + i + "写入失败1111");
             mTost.show();*/
-            Toast.makeText(mainActivity,writeEpcBean.getEpc() + i + "写入失败",Toast.LENGTH_SHORT).show();
+            Toast.makeText(mainActivity,writeEpcBean.getEpc()  + "写入失败",Toast.LENGTH_SHORT).show();
         }
         return writeResult;
     }
@@ -484,6 +498,35 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
                             mTost.setText("写标签上报成功");
                             mTost.show();
                             writeDialog.dismiss();
+                        } else {
+                            String errMes = "写标签上报失败 " + (lableReportBean.getErrorMsg() == null ? "" : lableReportBean.getErrorMsg());
+                            mTost.setText(errMes);
+                            mTost.show();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    public void reportMutiWriteResult(WriteTagResultParam resultParam) {
+        RetrofitClient.getInstance().create(WmsApi.class).reportWriteResult(resultParam)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ResourceObserver<LableReportBean>() {
+                    @Override
+                    public void onNext(LableReportBean lableReportBean) {
+                        if ("0000000".equals(lableReportBean.getRtnCode())) {
+                            mTost.setText("写标签上报成功");
+                            mTost.show();
                         } else {
                             String errMes = "写标签上报失败 " + (lableReportBean.getErrorMsg() == null ? "" : lableReportBean.getErrorMsg());
                             mTost.setText(errMes);
