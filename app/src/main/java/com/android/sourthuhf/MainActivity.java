@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         //将手持机手柄出发动作改为uhf
         SystemProperties.set("persist.sys.PistolKey", "uhf");
         UhfApplication.setDriver(driver);
+        driver.Read_Tag_Mode_Set(1,false);
     }
 
     private void initDataAndView() {
@@ -237,6 +238,10 @@ public class MainActivity extends AppCompatActivity {
                 boolean minventoryHint = minventoryFragment.getUserVisibleHint();
                 if(minventoryHint){
                     minventoryFragment.startOrStopScan();
+                }
+                boolean mInitDataHint = initDataFragment.getUserVisibleHint();
+                if(mInitDataHint){
+                    initDataFragment.startStopScanning();
                 }
             }
             canRfid = false;

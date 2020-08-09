@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.android.sourthuhf.BaseFragment;
 import com.android.sourthuhf.MainActivity;
 import com.android.sourthuhf.R;
+import com.android.sourthuhf.Utils;
 import com.android.sourthuhf.njdemo.http.RetrofitClient;
 import com.android.sourthuhf.njdemo.http.WmsApi;
 import com.android.sourthuhf.njdemo.responsebean.LableReportBean;
@@ -191,35 +192,6 @@ public class HandleDataFragment extends BaseFragment implements EpcItemAdapter.O
         });
     }
 
-    public String AsciiStringToString(String content) {
-        String result = "";
-        int length = content.length() / 2;
-        for (int i = 0; i < length; i++) {
-            String c = content.substring(i * 2, i * 2 + 2);
-            int a = hexStringToAlgorism(c);
-            char b = (char) a;
-            String d = String.valueOf(b);
-            result += d;
-        }
-        return result;
-    }
-
-    public int hexStringToAlgorism(String hex) {
-        hex = hex.toUpperCase();
-        int max = hex.length();
-        int result = 0;
-        for (int i = max; i > 0; i--) {
-            char c = hex.charAt(i - 1);
-            int algorism = 0;
-            if (c >= '0' && c <= '9') {
-                algorism = c - '0';
-            } else {
-                algorism = c - 55;
-            }
-            result += Math.pow(16, max - i) * algorism;
-        }
-        return result;
-    }
 
     @Override
     public void onEpcItemClick(EpcBean fileBean) {
@@ -262,6 +234,7 @@ public class HandleDataFragment extends BaseFragment implements EpcItemAdapter.O
     }
 
     private void handleEpc(String epc) {
+        Log.e("HandleDataFragment","all data ===" + epc);
         int Hb = 0;
         int Lb = 0;
         int rssi = 0;
@@ -292,7 +265,7 @@ public class HandleDataFragment extends BaseFragment implements EpcItemAdapter.O
        /* if (!mCharType.isChecked()) {
             tmp[1] = AsciiStringToString(tmp[1]);
         }*/
-        tmp[1] = AsciiStringToString(tmp[1]);
+        tmp[1] = Utils.AsciiStringToString(tmp[1]);
         if (hmap.containsKey(tmp[1])) {
             EpcBean epcBean = hmap.get(tmp[1]);
             if (epcBean != null) {
