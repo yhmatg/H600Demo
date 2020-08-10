@@ -26,6 +26,22 @@
         android:text="@string/t_str"
         android:textColor="@color/white" />
 
+    <TextView
+        android:id="@+id/tv_write_status"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@+id/bt_k"
+        android:layout_alignTop="@+id/et_tag_num"
+        android:layout_alignBottom="@+id/et_tag_num"
+        android:layout_marginStart="30dp"
+        android:background="@drawable/button_background_two"
+        android:gravity="center"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:text="正常"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
 
     <TextView
         android:id="@+id/tv_current_box"
@@ -34,7 +50,8 @@
         android:layout_below="@+id/bt_k"
         android:layout_alignTop="@+id/et_tag_num"
         android:layout_alignBottom="@+id/et_tag_num"
-        android:layout_marginStart="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="30dp"
         android:gravity="center"
         android:text="当前选项：框"
         android:textSize="16sp" />
@@ -46,18 +63,19 @@
         android:layout_below="@+id/bt_k"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="60dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="10dp"
         android:digits="1234567890"
-        android:inputType="number"
-        android:hint="@string/tag_nums" />
+        android:hint="@string/tag_nums"
+        android:inputType="number" />
 
     <LinearLayout
         android:id="@+id/layout_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/et_tag_num"
         android:background="@color/grey"
         android:orientation="horizontal"
-        android:layout_below="@+id/et_tag_num"
         android:padding="5dp">
 
         <TextView

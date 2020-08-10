@@ -56,6 +56,8 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
     Button mButtonT;
     @BindView(R.id.tv_current_box)
     TextView mCurrentBox;
+    @BindView(R.id.tv_write_status)
+    TextView mWriteStatsu;
     @BindView(R.id.et_tag_num)
     EditText mEpcSum;
     @BindView(R.id.rv_write_epcs)
@@ -341,6 +343,7 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
     }
 
     private synchronized void handleMultiWroteEpc(String epc) {
+        mWriteStatsu.setText("写入中...");
         Log.e("InitDataFragment", "all data ===" + epc);
         int Hb = 0;
         int Lb = 0;
@@ -394,6 +397,7 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
                 writeTagResultParam.setOkboxs(sucList);
                 writeTagResultParam.setErrboxs(errList);
                 reportMutiWriteResult(writeTagResultParam);
+                mWriteStatsu.setText("正常");
                 mTost.setText("已经写完，请检查结果");
                 mTost.show();
                 return;
