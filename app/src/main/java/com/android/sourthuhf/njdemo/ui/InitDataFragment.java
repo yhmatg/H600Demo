@@ -627,6 +627,35 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
     public void onPause() {
         super.onPause();
         stopInventory();
+        handler.removeMessages(0);
+        writeHandler.removeMessages(0);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (!isVisibleToUser) {
+            stopInventory();
+            if(handler != null){
+                handler.removeMessages(0);
+            }
+            if(writeHandler != null){
+                writeHandler.removeMessages(0);
+            }
+            WriteTagResultParam writeTagResultParam = new WriteTagResultParam();
+            ArrayList<String> sucList = new ArrayList<>();
+            ArrayList<String> errList = new ArrayList<>();
+            for (WriteEpcBean writeEpcBean : tagList) {
+                if (writeEpcBean.isWrite()){
+                    sucList.add(writeEpcBean.getEpc());
+                }else {
+                    errList.add(writeEpcBean.getEpc());
+                }
+            }
+            writeTagResultParam.setOkboxs(sucList);
+            writeTagResultParam.setErrboxs(errList);
+            reportMutiWriteResult(writeTagResultParam);
+        }
     }
 
 }
