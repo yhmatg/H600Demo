@@ -439,9 +439,18 @@ public class InventoryFragment extends BaseFragment {
         return "RFID" + "_" + sdf.format(new Date()) + FILE_EXTENSION;
     }
 
-    @Override
+  /*  @Override
     public void onPause() {
         super.onPause();
         stopInventory();
+    }*/
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(!isVisibleToUser){
+            stopInventory();
+        }
+
     }
 }
