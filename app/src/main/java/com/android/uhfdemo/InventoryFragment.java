@@ -375,7 +375,8 @@ public class InventoryFragment extends BaseFragment {
                         11);
             }
         } else {
-            exportData();
+            //exportData();
+            exportDataToExcel();
         }
 
     }
@@ -385,7 +386,8 @@ public class InventoryFragment extends BaseFragment {
 
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             //todo 保存数据
-            exportData();
+            //exportData();
+            exportDataToExcel();
         } else {
             Toast.makeText(mainActivity, R.string.not_get_storage_permission, Toast.LENGTH_SHORT).show();
         }
@@ -404,6 +406,27 @@ public class InventoryFragment extends BaseFragment {
         try {
             write(fileName, content);
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void exportDataToExcel(){
+        ArrayList<InventoryBean> inventoryBeans = new ArrayList<>();
+        for (int i = 0; i < tagList.size(); i++) {
+            InventoryBean inventoryBean = new InventoryBean();
+            HashMap<String, String> itemMap = tagList.get(i);
+            inventoryBean.setSn(itemMap.get("sn"));
+            inventoryBean.setCount(itemMap.get("count"));
+            inventoryBean.setEpc(itemMap.get("epc"));
+            inventoryBean.setRssi(itemMap.get("rssi"));
+            inventoryBeans.add(inventoryBean);
+        }
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HHmmss");
+            Date d = new Date(System.currentTimeMillis());
+            String dataStr = sdf.format(d);
+            ExcelUtils.writeExcel(getContext(), inventoryBeans, dataStr + ".xls");
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
