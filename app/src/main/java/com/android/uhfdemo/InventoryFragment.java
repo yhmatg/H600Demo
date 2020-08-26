@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
@@ -181,6 +182,9 @@ public class InventoryFragment extends BaseFragment {
             Toast.makeText(mainActivity, R.string.scan_meite_toast, Toast.LENGTH_SHORT).show();
         }else {
             ReportPara reportPara = new ReportPara();
+            for (FileBean dataByEpc : dataByEpcs) {
+                dataByEpc.setDeviceID(Build.SERIAL);
+            }
             reportPara.setList(dataByEpcs);
             reportWriteResult(reportPara);
         }

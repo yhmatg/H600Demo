@@ -13,6 +13,7 @@ public class FileBean {
     private String ProductName;
     private String ProductModel;
     private String ProductColor;
+    private String DeviceID;
 
     public String getEPCID() {
         return EPCID;
@@ -52,5 +53,13 @@ public class FileBean {
 
     public void setProductColor(String productColor) {
         ProductColor = productColor;
+    }
+
+    public String getDeviceID() {
+        return DeviceID;
+    }
+
+    public void setDeviceID(String deviceID) {
+        DeviceID = deviceID;
     }
 }
