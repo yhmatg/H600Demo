@@ -10,15 +10,12 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.SoundPool;
-import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.os.SystemProperties;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,9 +23,15 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.uhfdemo.meite.datebase.DemoDatabase;
+import com.android.uhfdemo.meite.http.RetrofitClient;
+import com.android.uhfdemo.meite.http.WmsApi;
+import com.android.uhfdemo.meite.parambean.FileBean;
+import com.android.uhfdemo.meite.parambean.ReportPara;
+import com.android.uhfdemo.meite.responsebean.ReportResponse;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -37,11 +40,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Objects;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.com.example.rfid.driver.Driver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.ResourceObserver;
+import io.reactivex.schedulers.Schedulers;
 
 public class InventoryFragment extends BaseFragment {
     private static final String FILE_EXTENSION = ".txt";
@@ -95,7 +101,8 @@ public class InventoryFragment extends BaseFragment {
             startOrStopScan();
         }
     };
-
+    //meite
+    List<String> meiScanEpcs = new ArrayList<>();
     @Override
     protected void initEventAndData() {
         soundPool = new SoundPool(10, AudioManager.STREAM_SYSTEM, 5);
@@ -143,7 +150,7 @@ public class InventoryFragment extends BaseFragment {
         return R.layout.activity_inventory;
     }
 
-    @OnClick({R.id.open_or_stop, R.id.clear_btn})
+    @OnClick({R.id.open_or_stop, R.id.clear_btn,R.id.data_report})
     void performClick(View view) {
         switch (view.getId()) {
             case R.id.open_or_stop:
@@ -153,6 +160,7 @@ public class InventoryFragment extends BaseFragment {
                 tagList.clear();
                 //mListView.setAdapter(adapter);
                 //map.clear();
+                meiScanEpcs.clear();
                 adapter.notifyDataSetChanged();
                 hmap.clear();
                 iIndex = 0;
@@ -160,6 +168,21 @@ public class InventoryFragment extends BaseFragment {
                 mEpcSum.setText("");
                 mEpcCount.setText("");
                 break;
+            case R.id.data_report:
+                stopInventory();
+                reportData();
+                break;
+        }
+    }
+
+    private void reportData() {
+        List<FileBean> dataByEpcs = DemoDatabase.getInstance().getReportParamDao().getDataByEpcs(meiScanEpcs);
+        if(dataByEpcs.size() == 0){
+            Toast.makeText(mainActivity, R.string.scan_meite_toast, Toast.LENGTH_SHORT).show();
+        }else {
+            ReportPara reportPara = new ReportPara();
+            reportPara.setList(dataByEpcs);
+            reportWriteResult(reportPara);
         }
     }
 
@@ -295,6 +318,9 @@ public class InventoryFragment extends BaseFragment {
             tagList.add(temp);
             iIndex++;
         }
+        if(!meiScanEpcs.contains(tmp[1])){
+            meiScanEpcs.add(tmp[1]);
+        }
     }
 
     private void stopInventory() {
@@ -333,6 +359,7 @@ public class InventoryFragment extends BaseFragment {
                 //map.clear();
                 adapter.notifyDataSetChanged();
                 hmap.clear();
+                meiScanEpcs.clear();
                 iIndex = 0;
                 Ct = 0;
                 mEpcCount.setText("");
@@ -475,5 +502,32 @@ public class InventoryFragment extends BaseFragment {
             stopInventory();
         }
 
+    }
+
+    public void reportWriteResult(ReportPara reportPara){
+        RetrofitClient.getInstance().create(WmsApi.class).reportData(reportPara)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ResourceObserver<ReportResponse>() {
+                    @Override
+                    public void onNext(ReportResponse reportResponse) {
+                        if ("succ".equals(reportResponse.getResult())) {
+                            Toast.makeText(mainActivity, "上传成功", Toast.LENGTH_SHORT).show();
+                        } else {
+                            String errMes = "上传失败 " + (reportResponse.getError() == null ? "" : reportResponse.getError());
+                            Toast.makeText(mainActivity, errMes, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }

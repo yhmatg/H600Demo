@@ -20,4 +20,8 @@
         android:id="@+id/action_export"
         android:title="@string/export_inventory"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_read"
+        android:title="@string/data_import"
+        app:showAsAction="never" />
 </menu>

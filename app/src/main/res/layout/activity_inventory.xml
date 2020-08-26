@@ -136,7 +136,19 @@
                 android:layout_weight="1"
                 android:background="@drawable/button_background"
                 android:gravity="center"
+                android:layout_marginEnd="5dp"
                 android:text="@string/clear_card"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/data_report"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/button_background"
+                android:gravity="center"
+                android:text="@string/data_report"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
         </LinearLayout>

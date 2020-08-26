@@ -19,6 +19,7 @@
     <string name="scann_start">开始扫描</string>
     <string name="scann_stop">停止扫描</string>
     <string name="clear_card">清空显示</string>
+    <string name="data_report">数据上传</string>
     <string name="current_tem">当前温度: </string>
     <string name="area_name">存储区：</string>
     <string name="ruf_type">RESV</string>
@@ -97,4 +98,6 @@
     <string name="stop_search">停止查找</string>
     <string name="current_search_tag">当前识别标签</string>
     <string name="export_inventory">导出</string>
+    <string name="data_import">导入</string>
+    <string name="scan_meite_toast">请先扫描获取上传数据</string>
 </resources>
