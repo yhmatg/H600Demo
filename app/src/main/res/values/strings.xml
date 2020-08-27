@@ -99,5 +99,5 @@
     <string name="current_search_tag">当前识别标签</string>
     <string name="export_inventory">导出</string>
     <string name="data_import">导入</string>
-    <string name="scan_meite_toast">请先扫描获取上传数据</string>
+    <string name="scan_meite_toast">请先扫描数据或者导入文件</string>
 </resources>

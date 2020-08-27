@@ -328,13 +328,14 @@ public class InventoryFragment extends BaseFragment {
     }
 
     private void stopInventory() {
+        reportHandler.removeMessages(0);
 
         if (loopFlag) {
 
             loopFlag = false;
 
             mDriver.stopRead();
-
+            reportData();
         }
     }
 
@@ -374,6 +375,7 @@ public class InventoryFragment extends BaseFragment {
                 curDate = new Date(System.currentTimeMillis());
                 mStartOrStop.setText(R.string.scann_stop);
                 flag = 1;
+                reportHandler.postDelayed(reportRunable,5000);
                 break;
             case 1:
                 iIndex = 0;
@@ -516,6 +518,7 @@ public class InventoryFragment extends BaseFragment {
                     @Override
                     public void onNext(ReportResponse reportResponse) {
                         if ("succ".equals(reportResponse.getResult())) {
+                            meiScanEpcs.clear();
                             Toast.makeText(mainActivity, "上传成功", Toast.LENGTH_SHORT).show();
                         } else {
                             String errMes = "上传失败 " + (reportResponse.getError() == null ? "" : reportResponse.getError());
@@ -534,4 +537,13 @@ public class InventoryFragment extends BaseFragment {
                     }
                 });
     }
+
+    private Handler reportHandler = new Handler();
+    private Runnable reportRunable = new Runnable() {
+        @Override
+        public void run() {
+            reportData();
+            reportHandler.postDelayed(this,5000);
+        }
+    };
 }
