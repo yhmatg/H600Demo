@@ -21,6 +21,7 @@ import com.android.sourthuhf.njdemo.http.StringUtils;
 import com.android.sourthuhf.njdemo.http.WmsApi;
 import com.android.sourthuhf.njdemo.parambean.LoginParam;
 import com.android.sourthuhf.njdemo.responsebean.LoginResponse;
+import com.android.sourthuhf.njdemo.ui.activity.HomeActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -93,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onNext(LoginResponse loginResponse) {
                         if("0000000".equals(loginResponse.getCode())){
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                             SharePreferenceUtils.getInstance().setUserName(loginParam.getUsername());
                             SharePreferenceUtils.getInstance().setPassWord(loginParam.getPassword());
                             finish();

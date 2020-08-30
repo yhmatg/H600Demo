@@ -1,13 +1,15 @@
-package com.android.sourthuhf.njdemo.ui;
+package com.android.sourthuhf.njdemo.ui.activity;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,9 +29,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.sourthuhf.BaseFragment;
 import com.android.sourthuhf.MainActivity;
 import com.android.sourthuhf.R;
+import com.android.sourthuhf.UhfApplication;
 import com.android.sourthuhf.Utils;
 import com.android.sourthuhf.njdemo.http.RetrofitClient;
 import com.android.sourthuhf.njdemo.http.WmsApi;
@@ -37,19 +39,26 @@ import com.android.sourthuhf.njdemo.parambean.WriteTagInfoParam;
 import com.android.sourthuhf.njdemo.parambean.WriteTagResultParam;
 import com.android.sourthuhf.njdemo.responsebean.LableReportBean;
 import com.android.sourthuhf.njdemo.responsebean.WriteTagInfoBean;
+import com.android.sourthuhf.njdemo.ui.ScanEpcBean;
+import com.android.sourthuhf.njdemo.ui.WriteEpcBean;
+import com.android.sourthuhf.njdemo.ui.WriteEpcItemAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import cn.com.example.rfid.driver.Driver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.ResourceObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapter.WriteEpcItemClickListener {
+public class InitDataActivity extends AppCompatActivity implements WriteEpcItemAdapter.WriteEpcItemClickListener {
+    @BindView(R.id.title_content)
+    TextView title;
     @BindView(R.id.bt_k)
     Button mButtonK;
     @BindView(R.id.bt_t)
@@ -62,9 +71,9 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
     EditText mEpcSum;
     @BindView(R.id.rv_write_epcs)
     RecyclerView mListView;
+    private Unbinder unBinder;
     private ArrayList<WriteEpcBean> tagList = new ArrayList<>();
     private WriteEpcItemAdapter adapter;
-    MainActivity mainActivity;
     Driver mDriver;
     public static final String TAG = "ReadAndWriteFragment";
     private Dialog writeDialog;
@@ -91,17 +100,25 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
     private int currentIndex;
     private int repeatTime;
     private boolean isReport;
-
     @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_initdata_layout);
+        unBinder = ButterKnife.bind(this);
+        initEventAndData();
+    }
+
     protected void initEventAndData() {
-        mTost = Toast.makeText(mainActivity, "", Toast.LENGTH_SHORT);
-        adapter = new WriteEpcItemAdapter(tagList, mainActivity);
+        title.setText("RFID数据初始化");
+        mDriver = UhfApplication.getDriver();
+        mTost = Toast.makeText(this, "", Toast.LENGTH_SHORT);
+        adapter = new WriteEpcItemAdapter(tagList, this);
         adapter.setWriteClickListener(this);
-        mListView.setLayoutManager(new LinearLayoutManager(mainActivity));
-        mListView.addItemDecoration(new DividerItemDecoration(mainActivity, LinearLayoutManager.VERTICAL));
+        mListView.setLayoutManager(new LinearLayoutManager(this));
+        mListView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         mListView.setAdapter(adapter);
         //写标签布局
-        writeView = LayoutInflater.from(mainActivity).inflate(R.layout.activity_write_layout, null);
+        writeView = LayoutInflater.from(this).inflate(R.layout.activity_write_layout, null);
         confirm = writeView.findViewById(R.id.btn_confirm_write);
         spinImg = writeView.findViewById(R.id.iv_spin);
         identify = writeView.findViewById(R.id.identify_tips);
@@ -113,6 +130,7 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
                     int reslut = writeEpcTag(selectEpc, hexEpcode);
                     if (0 == reslut) {
                         identify.setText("写入成功");
+                        identify.setTextColor(getColor(R.color.green_color));
                         WriteTagResultParam writeTagResultParam = new WriteTagResultParam();
                         ArrayList<String> sucList = new ArrayList<>();
                         ArrayList<String> errList = new ArrayList<>();
@@ -153,21 +171,9 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
         anim1.setRepeatMode(Animation.RESTART);
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mainActivity = ((MainActivity) getActivity());
-        mDriver = mainActivity.getDriver();
-    }
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.fragment_initdata_layout;
-    }
-
-    @OnClick({R.id.bt_k, R.id.bt_t})
+    @OnClick({R.id.bt_k, R.id.bt_t,R.id.title_back})
     void performClick(View view) {
-        InputMethodManager imm = (InputMethodManager) mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
         switch (view.getId()) {
             case R.id.bt_k:
                 mCurrentBox.setText("当前选项：框");
@@ -178,7 +184,7 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
                     return;
                 }
                 labelWrite(new WriteTagInfoParam("K", kStr));
-                imm.hideSoftInputFromWindow(mainActivity.getCurrentFocus().getWindowToken(), 0);
+                imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
                 break;
             case R.id.bt_t:
                 mCurrentBox.setText("当前选项：托");
@@ -188,14 +194,17 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
                     mTost.show();
                     return;
                 }
-                imm.hideSoftInputFromWindow(mainActivity.getCurrentFocus().getWindowToken(), 0);
+                imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
                 labelWrite(new WriteTagInfoParam("T", tStr));
+                break;
+            case R.id.title_back:
+                finish();
                 break;
         }
     }
 
     public void labelWrite(WriteTagInfoParam infoParam) {
-        RetrofitClient.getInstance().create(WmsApi.class).labelWrite(infoParam)
+       /* RetrofitClient.getInstance().create(WmsApi.class).labelWrite(infoParam)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new ResourceObserver<WriteTagInfoBean>() {
@@ -206,6 +215,7 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
                             OneAllDatas.clear();
                             tagList.clear();
                             currentIndex = 0;
+                            isReport = false;
                             for (int i = 0; i < writeTagInfoBean.getTagnumber().size(); i++) {
                                 WriteEpcBean writeEpcBean = new WriteEpcBean(writeTagInfoBean.getTagnumber().get(i), i, false);
                                 tagList.add(writeEpcBean);
@@ -223,29 +233,34 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
                     public void onComplete() {
 
                     }
-                });
+                });*/
+       testGetTag();
     }
 
+    public void testGetTag(){
+        OneAllDatas.clear();
+        tagList.clear();
+        currentIndex = 0;
+        isReport = false;
+        WriteEpcBean writeEpcBean1 = new WriteEpcBean("K00000000001", 0, false);
+        WriteEpcBean writeEpcBean2 = new WriteEpcBean("K00000000002", 1, false);
+        tagList.add(writeEpcBean1);
+        tagList.add(writeEpcBean2);
+        adapter.notifyDataSetChanged();
+    }
+
+    public void testReport(){
+        isReport = true;
+        mTost.setText("写标签上报成功");
+        mTost.show();
+    }
     @Override
     public void onEpcItemClick(WriteEpcBean fileBean) {
-       /* String s = mCurrentBox.getText().toString();
-        String type = "框".equals(s) ? "K" : "T";
-        Intent intent = new Intent();
-        intent.putExtra("epcode", fileBean.getEpc());
-        intent.putExtra("typeode", type);
-        intent.setClass(mainActivity, EpcItemDetailActivity.class);
-        startActivity(intent);*/
+
     }
 
     @Override
     public void onWriteEpcClick(WriteEpcBean fileBean) {
-       /* String s = mCurrentBox.getText().toString();
-        String type = "框".equals(s) ? "K" : "T";
-        Intent intent = new Intent();
-        intent.putExtra("epcode", fileBean.getEpc());
-        intent.putExtra("typeode", type);
-        intent.setClass(mainActivity, WriteEpcActivity.class);
-        startActivity(intent);*/
         currentWrite = fileBean;
         epcode = fileBean.getEpc();
         hexEpcode = asciiToHex(epcode);
@@ -256,7 +271,7 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
         if (writeDialog != null) {
             writeDialog.show();
         } else {
-            writeDialog = new Dialog(mainActivity) {
+            writeDialog = new Dialog(this) {
                 @Override
                 public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {
                     if (canRfid) {
@@ -279,8 +294,9 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
                 public void onDismiss(DialogInterface dialogInterface) {
                     isSingleWrite = false;
                     identify.setText("扣动扳机 识别标签");
+                    identify.setTextColor(getColor(R.color.black));
                     confirm.setEnabled(false);
-                    confirm.setBackground(mainActivity.getDrawable(R.drawable.button_background_three));
+                    confirm.setBackground(InitDataActivity.this.getDrawable(R.drawable.button_background_three));
                 }
             });
             writeDialog.setOnShowListener(new DialogInterface.OnShowListener() {
@@ -334,12 +350,13 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
         }
         if (scanEpcs.size() == 1) {
             identify.setText(R.string.identify_success);
+            identify.setTextColor(getColor(R.color.black));
             stopInventory();
             confirm.setEnabled(true);
-            confirm.setBackground(mainActivity.getDrawable(R.drawable.button_background_two));
+            confirm.setBackground(this.getDrawable(R.drawable.button_background_two));
         } else {
             confirm.setEnabled(false);
-            confirm.setBackground(mainActivity.getDrawable(R.drawable.button_background_three));
+            confirm.setBackground(this.getDrawable(R.drawable.button_background_three));
         }
     }
 
@@ -372,11 +389,12 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
         ScanEpcBean scanEpcBean = new ScanEpcBean(tmp[1], false, tmp[0]);
         if (OneAllDatas.size() < oneScanSize && !OneAllDatas.contains(scanEpcBean)) {
             OneAllDatas.add(scanEpcBean);
+            if (OneAllDatas.size() == oneScanSize) {
+                stopInventory();
+                writeHandler.postDelayed(writeRunable,2000);
+            }
         }
-        if (OneAllDatas.size() == oneScanSize) {
-            stopInventory();
-            writeHandler.postDelayed(writeRunable,2000);
-        }
+
 
     }
 
@@ -427,11 +445,11 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
             mTost.show();*/
             writeEpcBean.setWrite(true);
             adapter.notifyDataSetChanged();
-            Toast.makeText(mainActivity,writeEpcBean.getEpc()  + "写入成功",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,writeEpcBean.getEpc()  + "写入成功",Toast.LENGTH_SHORT).show();
         }else {
            /* mTost.setText(writeEpcBean.getEpc() + i + "写入失败1111");
             mTost.show();*/
-            Toast.makeText(mainActivity,writeEpcBean.getEpc()  + "写入失败",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,writeEpcBean.getEpc()  + "写入失败",Toast.LENGTH_SHORT).show();
         }
         return writeResult;
     }
@@ -523,7 +541,7 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
     }
 
     public void reportMutiWriteResult(WriteTagResultParam resultParam) {
-        RetrofitClient.getInstance().create(WmsApi.class).reportWriteResult(resultParam)
+        /*RetrofitClient.getInstance().create(WmsApi.class).reportWriteResult(resultParam)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new ResourceObserver<LableReportBean>() {
@@ -549,7 +567,9 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
                     public void onComplete() {
 
                     }
-                });
+                });*/
+
+        testReport();
     }
 
     public void startInventory() {
@@ -559,7 +579,7 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
                 scanEpcs.clear();
                 spinImg.startAnimation(anim1);
                 confirm.setEnabled(false);
-                confirm.setBackground(mainActivity.getDrawable(R.drawable.button_background_three));
+                confirm.setBackground(this.getDrawable(R.drawable.button_background_three));
                 int status = mDriver.readMore();
                 new TagThread().start();
             }
@@ -585,8 +605,12 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
         } else {
             oneScanSize = Integer.parseInt(kStr);
         }
+
+
         try {
             if (!loopFlag) {
+                OneAllDatas.clear();
+                currentIndex = 0;
                 startInventory();
             } else {
                 stopInventory();
@@ -629,38 +653,43 @@ public class InitDataFragment extends BaseFragment implements WriteEpcItemAdapte
     public void onPause() {
         super.onPause();
         stopInventory();
-        handler.removeMessages(0);
-        writeHandler.removeMessages(0);
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (!isVisibleToUser) {
-            stopInventory();
-            if(handler != null){
-                handler.removeMessages(0);
-            }
-            if(writeHandler != null){
-                writeHandler.removeMessages(0);
-            }
-            if(!isReport && tagList != null && tagList.size() > 0){
-                WriteTagResultParam writeTagResultParam = new WriteTagResultParam();
-                ArrayList<String> sucList = new ArrayList<>();
-                ArrayList<String> errList = new ArrayList<>();
-                for (WriteEpcBean writeEpcBean : tagList) {
-                    if (writeEpcBean.isWrite()){
-                        sucList.add(writeEpcBean.getEpc());
-                    }else {
-                        errList.add(writeEpcBean.getEpc());
-                    }
+        if(handler != null){
+            handler.removeMessages(0);
+        }
+        if(writeHandler != null){
+            writeHandler.removeMessages(0);
+        }
+        if(!isReport && tagList != null && tagList.size() > 0){
+            WriteTagResultParam writeTagResultParam = new WriteTagResultParam();
+            ArrayList<String> sucList = new ArrayList<>();
+            ArrayList<String> errList = new ArrayList<>();
+            for (WriteEpcBean writeEpcBean : tagList) {
+                if (writeEpcBean.isWrite()){
+                    sucList.add(writeEpcBean.getEpc());
+                }else {
+                    errList.add(writeEpcBean.getEpc());
                 }
-                writeTagResultParam.setOkboxs(sucList);
-                writeTagResultParam.setErrboxs(errList);
-                reportMutiWriteResult(writeTagResultParam);
             }
-
+            writeTagResultParam.setOkboxs(sucList);
+            writeTagResultParam.setErrboxs(errList);
+            reportMutiWriteResult(writeTagResultParam);
         }
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(canRfid){
+            if (mDriver!= null && keyCode == KeyEvent.KEYCODE_F1) {
+                    startStopScanning();
+            }
+            canRfid = false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        canRfid = true;
+        return super.onKeyUp(keyCode, event);
+    }
 }

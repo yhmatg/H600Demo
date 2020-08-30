@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.android.sourthuhf.njdemo.ui.HandleDataFragment;
 import com.android.sourthuhf.njdemo.ui.InitDataFragment;
+import com.android.sourthuhf.njdemo.ui.SingleInitDataFragment;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String STOP_SCAN = "com.spd.action.stop_uhf";
     private HandleDataFragment minventoryFragment;
     private InitDataFragment initDataFragment;
+    private SingleInitDataFragment singleInitDataFragment;
     private Boolean canRfid = true;
 
     @Override
@@ -103,10 +105,13 @@ public class MainActivity extends AppCompatActivity {
         fragments.add(new SettingsFragment());*/
         titles.add("异常处理");
         titles.add("RFID数据初始化");
+        titles.add("单盘数据初始化");
         minventoryFragment = new HandleDataFragment();
         fragments.add(minventoryFragment);
         initDataFragment = new InitDataFragment();
         fragments.add(initDataFragment);
+        singleInitDataFragment = new SingleInitDataFragment();
+        fragments.add(singleInitDataFragment);
         for (int i = 0; i < titles.size(); i++) {
             mTablayout.addTab(mTablayout.newTab());
         }
@@ -242,6 +247,10 @@ public class MainActivity extends AppCompatActivity {
                 boolean mInitDataHint = initDataFragment.getUserVisibleHint();
                 if(mInitDataHint){
                     initDataFragment.startStopScanning();
+                }
+                boolean mSingleHint = singleInitDataFragment.getUserVisibleHint();
+                if(mSingleHint){
+                    singleInitDataFragment.startStopScanning();
                 }
             }
             canRfid = false;

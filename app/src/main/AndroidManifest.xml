@@ -16,13 +16,7 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan">
-            <!--<intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
-        </activity>
+            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
         <activity
             android:name=".njdemo.ui.EpcItemDetailActivity"
             android:screenOrientation="portrait"></activity>
@@ -32,12 +26,30 @@
         <activity
             android:name=".njdemo.ui.LoginActivity"
             android:screenOrientation="portrait">
+            <!--  <intent-filter>
+                  <action android:name="android.intent.action.MAIN" />
+
+                  <category android:name="android.intent.category.LAUNCHER" />
+              </intent-filter>-->
+        </activity>
+        <activity
+            android:name=".njdemo.ui.activity.HomeActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".njdemo.ui.activity.HandleDataActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".njdemo.ui.activity.InitDataActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".njdemo.ui.activity.SingleInitDataActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
