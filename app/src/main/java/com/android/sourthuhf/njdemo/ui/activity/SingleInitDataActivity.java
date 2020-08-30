@@ -183,7 +183,7 @@ public class SingleInitDataActivity extends AppCompatActivity implements WriteEp
     }
 
     public void labelWrite(WriteTagInfoParam infoParam) {
-       /* RetrofitClient.getInstance().create(WmsApi.class).labelWrite(infoParam)
+        RetrofitClient.getInstance().create(WmsApi.class).labelWrite(infoParam)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new ResourceObserver<WriteTagInfoBean>() {
@@ -212,14 +212,14 @@ public class SingleInitDataActivity extends AppCompatActivity implements WriteEp
                     public void onComplete() {
 
                     }
-                });*/
-        tagList.clear();
+                });
+       /* tagList.clear();
         currentWrite = new WriteEpcBean("K00000000003", 0, false);
         tagList.add(currentWrite);
         hexEpcode = asciiToHex("K00000000003");
         adapter.notifyDataSetChanged();
         mButtonT.setEnabled(false);
-        mButtonK.setEnabled(false);
+        mButtonK.setEnabled(false);*/
     }
 
     private void handleEpc(String epc) {
@@ -351,7 +351,7 @@ public class SingleInitDataActivity extends AppCompatActivity implements WriteEp
     }
 
     public void reportWriteResult(WriteTagResultParam resultParam) {
-       /* RetrofitClient.getInstance().create(WmsApi.class).reportWriteResult(resultParam)
+        RetrofitClient.getInstance().create(WmsApi.class).reportWriteResult(resultParam)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new ResourceObserver<LableReportBean>() {
@@ -382,16 +382,16 @@ public class SingleInitDataActivity extends AppCompatActivity implements WriteEp
                     public void onComplete() {
 
                     }
-                });*/
+                });
 
-        writeEpcs.clear();
+      /*  writeEpcs.clear();
         currentWrite.setWrite(true);
         adapter.notifyDataSetChanged();
         mButtonT.setEnabled(true);
         mButtonK.setEnabled(true);
         mTost.setText("写标签上报成功");
         writeStatus.setText("请写入下一个托盘");
-        mTost.show();
+        mTost.show();*/
     }
 
     public void startInventory() {

@@ -204,7 +204,7 @@ public class InitDataActivity extends AppCompatActivity implements WriteEpcItemA
     }
 
     public void labelWrite(WriteTagInfoParam infoParam) {
-       /* RetrofitClient.getInstance().create(WmsApi.class).labelWrite(infoParam)
+        RetrofitClient.getInstance().create(WmsApi.class).labelWrite(infoParam)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new ResourceObserver<WriteTagInfoBean>() {
@@ -233,8 +233,8 @@ public class InitDataActivity extends AppCompatActivity implements WriteEpcItemA
                     public void onComplete() {
 
                     }
-                });*/
-       testGetTag();
+                });
+       //testGetTag();
     }
 
     public void testGetTag(){
@@ -541,7 +541,7 @@ public class InitDataActivity extends AppCompatActivity implements WriteEpcItemA
     }
 
     public void reportMutiWriteResult(WriteTagResultParam resultParam) {
-        /*RetrofitClient.getInstance().create(WmsApi.class).reportWriteResult(resultParam)
+        RetrofitClient.getInstance().create(WmsApi.class).reportWriteResult(resultParam)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new ResourceObserver<LableReportBean>() {
@@ -567,9 +567,9 @@ public class InitDataActivity extends AppCompatActivity implements WriteEpcItemA
                     public void onComplete() {
 
                     }
-                });*/
+                });
 
-        testReport();
+        //testReport();
     }
 
     public void startInventory() {
