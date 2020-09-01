@@ -82,6 +82,7 @@ public class SingleInitDataActivity extends AppCompatActivity implements WriteEp
     private WriteEpcBean currentWrite;
     private Toast mTost;
     private String hexEpcode;
+    private String assiiEpcode;
     private boolean isSingleWrite;
     //写入成功的标签
     List<String> writeEpcs = new ArrayList<>();
@@ -171,7 +172,7 @@ public class SingleInitDataActivity extends AppCompatActivity implements WriteEp
                 WriteTagResultParam writeTagResultParam = new WriteTagResultParam();
                 ArrayList<String> sucList = new ArrayList<>();
                 ArrayList<String> errList = new ArrayList<>();
-                sucList.add(hexEpcode);
+                sucList.add(assiiEpcode);
                 writeTagResultParam.setOkboxs(sucList);
                 writeTagResultParam.setErrboxs(errList);
                 reportWriteResult(writeTagResultParam);
@@ -196,6 +197,8 @@ public class SingleInitDataActivity extends AppCompatActivity implements WriteEp
                                 WriteEpcBean writeEpcBean = new WriteEpcBean(writeTagInfoBean.getTagnumber().get(i), i, false);
                                 tagList.add(writeEpcBean);
                                 hexEpcode = asciiToHex(writeTagInfoBean.getTagnumber().get(i));
+                                assiiEpcode = writeTagInfoBean.getTagnumber().get(i);
+                                currentWrite = writeEpcBean;
                             }
                         }
                         adapter.notifyDataSetChanged();
@@ -301,7 +304,7 @@ public class SingleInitDataActivity extends AppCompatActivity implements WriteEp
                         WriteTagResultParam writeTagResultParam = new WriteTagResultParam();
                         ArrayList<String> sucList = new ArrayList<>();
                         ArrayList<String> errList = new ArrayList<>();
-                        sucList.add(hexEpcode);
+                        sucList.add(assiiEpcode);
                         writeTagResultParam.setOkboxs(sucList);
                         writeTagResultParam.setErrboxs(errList);
                         reportWriteResult(writeTagResultParam);
