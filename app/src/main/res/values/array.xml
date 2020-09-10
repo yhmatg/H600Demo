@@ -39,10 +39,11 @@
     </string-array>
 
     <string-array name="mode_array">
-        <item>S0</item>
-        <item>S1</item>
-        <item>S2</item>
-        <item>S3</item>
+        <item>多标签</item>
+        <item>快速盘点</item>
+        <item>模式3</item>
+        <item>模式4</item>
+        <item>自适应模式</item>
     </string-array>
 
 

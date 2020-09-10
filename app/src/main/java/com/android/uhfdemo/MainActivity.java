@@ -77,15 +77,16 @@ public class MainActivity extends AppCompatActivity {
         }
         int Status;
         Status = driver.initRFID("/dev/ttyMT0");
-        if (-1000 == Status) {
+        if (1000 != Status) {
+            ToastUtils.showShort(R.string.device_connect_failed);
             return;
         }
-        String Fw_buffer;
+     /*   String Fw_buffer;
         Fw_buffer = driver.readUM7fwOnce();
 
         if (Fw_buffer.equals("-1000") || Fw_buffer.equals("-1020") || Fw_buffer == null) {
             ToastUtils.showShort(R.string.device_connect_failed);
-        }
+        }*/
         //将手持机手柄出发动作改为uhf
         SystemProperties.set("persist.sys.PistolKey", "uhf");
 
