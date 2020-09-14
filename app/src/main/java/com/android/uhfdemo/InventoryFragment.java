@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.media.ToneGenerator;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
@@ -38,6 +39,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -98,6 +101,7 @@ public class InventoryFragment extends BaseFragment {
 
     @Override
     protected void initEventAndData() {
+        beeperSettings();
         soundPool = new SoundPool(10, AudioManager.STREAM_SYSTEM, 5);
         soundId = soundPool.load(mainActivity, R.raw.barcodebeep, 1);
         adapter = new SimpleAdapter(mainActivity, tagList, R.layout.item,
@@ -267,7 +271,8 @@ public class InventoryFragment extends BaseFragment {
         }
 
         if (1 == SoundFlag) {
-            soundPool.play(soundId, 1, 1, 0, 1, 1);
+            //soundPool.play(soundId, 1, 1, 0, 1, 1);
+            startbeepingTimer();
         }
         //显示读取ecp个格式，默认16进制
         if (!mCharType.isChecked()) {
@@ -475,5 +480,47 @@ public class InventoryFragment extends BaseFragment {
             stopInventory();
         }
 
+    }
+
+    private static ToneGenerator toneGenerator;
+    private boolean beepON = false;
+    private Timer tbeep;
+
+    public static void beeperSettings() {
+        int streamType = AudioManager.STREAM_DTMF;
+        int percantageVolume = 100;
+        toneGenerator = new ToneGenerator(streamType, percantageVolume);
+    }
+
+    private void startbeepingTimer() {
+        if (!beepON) {
+            beepON = true;
+            beep();
+            if (tbeep == null) {
+                TimerTask task = new TimerTask() {
+                    @Override
+                    public void run() {
+                        stopbeepingTimer();
+                        beepON = false;
+                    }
+                };
+                tbeep = new Timer();
+                tbeep.schedule(task, 80);
+            }
+        }
+    }
+
+    private synchronized void stopbeepingTimer() {
+        if (tbeep != null) {
+            toneGenerator.stopTone();
+            tbeep.cancel();
+            tbeep.purge();
+        }
+        tbeep = null;
+    }
+
+    public static void beep() {
+        int toneType = ToneGenerator.TONE_PROP_BEEP;
+        toneGenerator.startTone(toneType);
     }
 }

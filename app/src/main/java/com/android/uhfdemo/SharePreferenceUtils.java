@@ -30,6 +30,22 @@ public class SharePreferenceUtils {
         return mPreferences.getString("filter_data", "");
     }
 
+    public void setWorkTime(String workTime) {
+        mPreferences.edit().putString("work_time", workTime).apply();
+    }
+
+    public String getWorkTime() {
+        return mPreferences.getString("work_time", "");
+    }
+
+    public void setWaitTime(String waitTime) {
+        mPreferences.edit().putString("wait_time", waitTime).apply();
+    }
+
+    public String getWaitTime() {
+        return mPreferences.getString("wait_time", "");
+    }
+
     public void setFilterStartArea(String startArea) {
         mPreferences.edit().putString("filter_start_area", startArea).apply();
     }

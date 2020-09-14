@@ -67,6 +67,17 @@ public class SettingsFragment extends BaseFragment {
     CheckBox mModeSave;
     ArrayAdapter<String> modeAdapter;
 
+    @BindView(R.id.time_get)
+    TextView mTimeGet;
+    @BindView(R.id.time_set)
+    TextView mTimeSet;
+    @BindView(R.id.time_save)
+    CheckBox mTimeSave;
+    @BindView(R.id.et_work_time)
+    EditText mEtWorkTime;
+    @BindView(R.id.et_wait_time)
+    EditText mEtWaitTime;
+
     @BindView(R.id.filter_clear)
     TextView mFilterClear;
     @BindView(R.id.filter_set)
@@ -109,6 +120,8 @@ public class SettingsFragment extends BaseFragment {
         mData.setText(SharePreferenceUtils.getInstance().getFilterData());
         mStart.setText(SharePreferenceUtils.getInstance().getFilterStartArea());
         mLength.setText(SharePreferenceUtils.getInstance().getFilterLength());
+        mEtWorkTime.setText(SharePreferenceUtils.getInstance().getWorkTime());
+        mEtWaitTime.setText(SharePreferenceUtils.getInstance().getWaitTime());
        /* mOutputSpinner.setSelection(SharePreferenceUtils.getInstance().getOutput());
         mFrequenceSpinner.setSelection(SharePreferenceUtils.getInstance().getfrequence());
         mModeSpinner.setSelection(SharePreferenceUtils.getInstance().getWorkMode());*/
@@ -159,7 +172,7 @@ public class SettingsFragment extends BaseFragment {
     }
 
     @OnClick({R.id.output_get, R.id.output_set, R.id.frequence_get, R.id.frequence_set, R.id.mode_get,
-            R.id.mode_set, R.id.filter_set, R.id.filter_clear, R.id.choose_file, R.id.update_set})
+            R.id.mode_set, R.id.filter_set, R.id.filter_clear, R.id.choose_file, R.id.update_set, R.id.time_get, R.id.time_set})
     void performClick(View view) {
         switch (view.getId()) {
             case R.id.output_get:
@@ -180,6 +193,12 @@ public class SettingsFragment extends BaseFragment {
             case R.id.mode_set:
                 setMode();
                 break;
+            case R.id.time_get:
+                getTime(true);
+                break;
+            case R.id.time_set:
+                setTime();
+                break;
             case R.id.filter_set:
                 filterSet();
                 break;
@@ -193,6 +212,47 @@ public class SettingsFragment extends BaseFragment {
                 requestPermission();
                 break;
         }
+    }
+
+    private void setTime() {
+        boolean res ;
+        if (mEtWorkTime.getText().toString().isEmpty()) {
+            Toast.makeText(mainActivity, R.string.work_time_null, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (mEtWaitTime.getText().toString().isEmpty()) {
+            Toast.makeText(mainActivity, R.string.wait_time_null, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        res = mDriver.ScanWaitTime_Set(Integer.valueOf(mEtWorkTime.getText().toString()), Integer.valueOf(mEtWaitTime.getText().toString()), mTimeSave.isChecked());
+        if (res) {
+            SharePreferenceUtils.getInstance().setWorkTime(mEtWorkTime.getText().toString());
+            SharePreferenceUtils.getInstance().setWaitTime(mEtWaitTime.getText().toString());
+            Toast.makeText(mainActivity, R.string.set_time_succ, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(mainActivity, R.string.set_time_fail, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void getTime(boolean b) {
+        String value = mDriver.ScanWaitTime_Get();
+        //Log.e("ScanWaitTime", "" + value);
+        if (null == value || value.equals("-1000") || value.equals("-1020")) {
+            Toast.makeText(mainActivity, R.string.get_time_fail, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String tmp = value.substring(2);
+        //Log.e("tmp", "" + tmp);
+        int ScanTime = Integer.parseInt(tmp.substring(0, 2), 16) * 256 + Integer.parseInt(tmp.substring(2, 4), 16);
+        Log.e("ScanWaitTime", "" + ScanTime);
+        int WaitTime = Integer.parseInt(tmp.substring(4, 6), 16) * 256 + Integer.parseInt(tmp.substring(6, 8), 16);
+        Log.e("ScanWaitTime", "" + WaitTime);
+        mEtWorkTime.setText(String.valueOf(ScanTime));
+        mEtWaitTime.setText(String.valueOf(WaitTime));
+        int i = Integer.parseInt("FE", 16);//(0xFE-256+1) * 256;
+        int j = 0xDB - 256;
+        Log.e("Text", "" + i);
+        Toast.makeText(mainActivity, R.string.get_time_succ, Toast.LENGTH_SHORT).show();
     }
 
     private void showUpdateDialog() {

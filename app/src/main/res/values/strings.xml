@@ -72,6 +72,7 @@
     <string name="frequence_str">频段</string>
     <string name="region_str">区域：</string>
     <string name="work_mode">工作模式：</string>
+    <string name="work_time">工作及等待时间(单位ms)：</string>
     <string name="session_str">Session：</string>
     <string name="inv_filter_str">盘存过滤：</string>
     <string name="address_bit">地址(bit)：</string>
@@ -89,6 +90,12 @@
     <string name="start_area_null">起始地址不能为空！</string>
     <string name="length_null">数据长度不能为空！</string>
     <string name="data_null">数据内容不能为空！</string>
+    <string name="work_time_null">工作时间不能为空！</string>
+    <string name="wait_time_null">等待时间不能为空！</string>
+    <string name="set_time_succ">时间设置成功！</string>
+    <string name="set_time_fail">时间设置失败！</string>
+    <string name="get_time_succ">获取时间成功！</string>
+    <string name="get_time_fail">获取时间失败！</string>
     <string name="not_get_storage_permission">请先获取存储空间权限！</string>
     <string name="update_success">升级成功！</string>
     <string name="update_failed">升级失败！</string>
