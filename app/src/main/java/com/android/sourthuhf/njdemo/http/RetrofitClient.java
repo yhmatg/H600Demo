@@ -50,7 +50,7 @@ public class RetrofitClient {
         return SingletonHolder.INSTANCE;
     }
     private RetrofitClient() {
-        url = "http://101.37.15.178:8033";
+        url = "http://192.168.1.103:8033";
         retrofit = createRetrofit(provideClient(), url);
 
     }
