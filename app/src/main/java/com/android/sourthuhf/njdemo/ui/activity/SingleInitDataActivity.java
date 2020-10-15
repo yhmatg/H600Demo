@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -90,6 +92,7 @@ public class SingleInitDataActivity extends AppCompatActivity implements WriteEp
     private Boolean canRfid = true;
     private Dialog writeDialog;
     private View writeView;
+    private boolean isBox = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -97,6 +100,7 @@ public class SingleInitDataActivity extends AppCompatActivity implements WriteEp
         setContentView(R.layout.fragment_singleinit_layout);
         unBinder = ButterKnife.bind(this);
         initEventAndData();
+        beeperSettings();
     }
 
     protected void initEventAndData() {
@@ -121,6 +125,7 @@ public class SingleInitDataActivity extends AppCompatActivity implements WriteEp
                     if (0 == reslut) {
                         identify.setText("写入成功");
                         identify.setTextColor(getColor(R.color.green_color));
+                        beep();
                     } else {
                         mTost.setText("写入失败，请重试");
                         mTost.show();
@@ -159,12 +164,14 @@ public class SingleInitDataActivity extends AppCompatActivity implements WriteEp
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         switch (view.getId()) {
             case R.id.bt_k:
-                mCurrentBox.setText("当前选项：框");
+                mCurrentBox.setText("当前选项：筐");
                 labelWrite(new WriteTagInfoParam("K", "1"));
+                isBox = true;
                 imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                 break;
             case R.id.bt_t:
                 mCurrentBox.setText("当前选项：托");
+                isBox = false;
                 imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                 labelWrite(new WriteTagInfoParam("T", "1"));
                 break;
@@ -298,9 +305,20 @@ public class SingleInitDataActivity extends AppCompatActivity implements WriteEp
                     if (writeEpcs.size() == 0) {
                         writeEpcs.add(tmp[1]);
                         writeStatus.setText("第一边写入成功");
-                    } else if (writeEpcs.size() == 1 && !writeEpcs.contains(tmp[1])) {
+                        beep();
+                        if(isBox){
+                            WriteTagResultParam writeTagResultParam = new WriteTagResultParam();
+                            ArrayList<String> sucList = new ArrayList<>();
+                            ArrayList<String> errList = new ArrayList<>();
+                            sucList.add(assiiEpcode);
+                            writeTagResultParam.setOkboxs(sucList);
+                            writeTagResultParam.setErrboxs(errList);
+                            reportWriteResult(writeTagResultParam);
+                        }
+                    } else if (!isBox && writeEpcs.size() == 1 && !writeEpcs.contains(tmp[1])) {
                         writeEpcs.add(tmp[1]);
                         writeStatus.setText("第二边写入成功");
+                        beep();
                         WriteTagResultParam writeTagResultParam = new WriteTagResultParam();
                         ArrayList<String> sucList = new ArrayList<>();
                         ArrayList<String> errList = new ArrayList<>();
@@ -367,7 +385,13 @@ public class SingleInitDataActivity extends AppCompatActivity implements WriteEp
                             mButtonT.setEnabled(true);
                             mButtonK.setEnabled(true);
                             mTost.setText("写标签上报成功");
-                            writeStatus.setText("请写入下一个托盘");
+                            if(isBox){
+                                writeStatus.setText("请写入下一个筐");
+                                labelWrite(new WriteTagInfoParam("K", "1"));
+                            }else {
+                                writeStatus.setText("请写入下一个托盘");
+                                labelWrite(new WriteTagInfoParam("T", "1"));
+                            }
                             mTost.show();
                         } else {
                             String errMes = "写标签上报失败 " + (lableReportBean.getErrorMsg() == null ? "" : lableReportBean.getErrorMsg());
@@ -549,6 +573,19 @@ public class SingleInitDataActivity extends AppCompatActivity implements WriteEp
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         canRfid = true;
         return super.onKeyUp(keyCode, event);
+    }
+
+    private  ToneGenerator toneGenerator;
+
+    public  void beeperSettings() {
+        int streamType = AudioManager.STREAM_DTMF;
+        int percantageVolume = 100;
+        toneGenerator = new ToneGenerator(streamType, percantageVolume);
+    }
+
+    public  void beep() {
+        int toneType = ToneGenerator.TONE_PROP_BEEP;
+        toneGenerator.startTone(toneType);
     }
 
 }

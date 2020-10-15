@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">UHFdemo</string>
+    <string name="app_name">RFID手持</string>
     <string name="inventory">盘存</string>
     <string name="read_write">读写</string>
     <string name="lock_tag">锁定</string>
