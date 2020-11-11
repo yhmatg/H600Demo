@@ -39,11 +39,11 @@
     </string-array>
 
     <string-array name="mode_array">
-        <item>多标签</item>
-        <item>快速盘点</item>
-        <item>模式3</item>
-        <item>模式4</item>
-        <item>自适应模式</item>
+        <item>Multi-label</item>
+        <item>Quick inventory</item>
+        <item>S3</item>
+        <item>S4</item>
+        <item>Adaptive mode</item>
     </string-array>
 
 

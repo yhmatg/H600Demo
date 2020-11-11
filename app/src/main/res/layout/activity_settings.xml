@@ -178,7 +178,7 @@
 
                 <CheckBox
                     android:id="@+id/time_save"
-                    android:layout_marginStart="80dp"
+                    android:layout_marginStart="40dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/save" />
@@ -197,7 +197,7 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:paddingTop="18dp"
-                    android:text="工作时间:" />
+                    android:text="@string/operating_time_str" />
                 <EditText
                     android:id="@+id/et_work_time"
                     android:layout_width="0dp"
@@ -212,7 +212,7 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:paddingTop="18dp"
-                    android:text="等待时间:" />
+                    android:text="@string/wait_time_str" />
 
                 <EditText
                     android:id="@+id/et_wait_time"
@@ -283,7 +283,7 @@
 
                 <CheckBox
                     android:id="@+id/cb_save"
-                    android:layout_marginStart="180dp"
+                    android:layout_marginStart="160dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/save" />
@@ -370,7 +370,7 @@
 
                 <CheckBox
                     android:id="@+id/filter_save"
-                    android:layout_marginStart="180dp"
+                    android:layout_marginStart="160dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/save" />

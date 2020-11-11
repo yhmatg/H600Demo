@@ -66,7 +66,6 @@ public class SettingsFragment extends BaseFragment {
     @BindView(R.id.cb_save)
     CheckBox mModeSave;
     ArrayAdapter<String> modeAdapter;
-
     @BindView(R.id.time_get)
     TextView mTimeGet;
     @BindView(R.id.time_set)

@@ -95,11 +95,11 @@ public class MainActivity extends AppCompatActivity {
     private void initDataAndView() {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        titles.add("盘存");
-        titles.add("读写");
-        titles.add("锁定");
-        titles.add("销毁");
-        titles.add("设置");
+        titles.add("Inventory");
+        titles.add("Read and write");
+        titles.add("Lock");
+        titles.add("Destroy");
+        titles.add("Settings");
         minventoryFragment = new InventoryFragment();
         fragments.add(minventoryFragment);
         fragments.add(new ReadAndWriteFragment());

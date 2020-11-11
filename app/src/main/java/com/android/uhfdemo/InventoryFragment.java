@@ -443,11 +443,11 @@ public class InventoryFragment extends BaseFragment {
         if (!file.exists()) {
             File path = new File(file.getParent());
             if (!path.exists() && !path.mkdirs()) {   // 判断文件夹是否存在，不存在则创建文件夹
-                Toast.makeText(mainActivity.getApplicationContext(), "文件夹创建失败", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mainActivity.getApplicationContext(), "Folder creation failed", Toast.LENGTH_SHORT).show();
                 return;
             }
             if (!file.createNewFile()) {    // 创建文件
-                Toast.makeText(mainActivity.getApplicationContext(), "文件创建失败", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mainActivity.getApplicationContext(), "File creation failed", Toast.LENGTH_SHORT).show();
                 return;
             }
         }
@@ -459,7 +459,7 @@ public class InventoryFragment extends BaseFragment {
         fileOutputStream.flush();
         // 关闭输出流
         fileOutputStream.close();
-        Toast.makeText(mainActivity.getApplicationContext(), "导出成功", Toast.LENGTH_SHORT).show();
+        Toast.makeText(mainActivity.getApplicationContext(), "Export successfully", Toast.LENGTH_SHORT).show();
     }
 
     private String getFilename() {

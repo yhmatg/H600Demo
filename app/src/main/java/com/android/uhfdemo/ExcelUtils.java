@@ -48,14 +48,14 @@ public class ExcelUtils {
     public static void writeExcel(Context context, List<InventoryBean> exportOrder,
                                   String fileName) throws Exception {
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED) && getAvailableStorage() > 1000000) {
-            Toast.makeText(context, "SD卡不可用", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "SD card is not available", Toast.LENGTH_LONG).show();
             return;
         }
 
         //这些是你要导出的字段
         String[] title = {"sn","epc","count", "rssi"};
         File file;
-        File dir = new File(Environment.getExternalStorageDirectory() + "/新文件夹/");
+        File dir = new File(Environment.getExternalStorageDirectory() + "/New folder/");
         file = new File(dir, fileName);
         if (!dir.exists()) {
             dir.mkdirs();
