@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         StringBuilder fw = new StringBuilder(getDesignatedDecimalData(Fw_buffer));
-        fw.insert(0, "固件版本：");
+        fw.insert(0, "Firmware version：");
         String Sfw = fw.toString();
         Toast.makeText(this, Sfw, Toast.LENGTH_SHORT).show();
 

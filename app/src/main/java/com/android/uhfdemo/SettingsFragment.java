@@ -256,9 +256,9 @@ public class SettingsFragment extends BaseFragment {
 
     private void showUpdateDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(mainActivity);
-        builder.setTitle("提示");
-        builder.setMessage("确定升级模块？");
-        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        builder.setTitle("Prompt");
+        builder.setMessage("Determine the upgrade module？");
+        builder.setPositiveButton("Sure", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String temp = mDriver.readUM7fwOnce();
