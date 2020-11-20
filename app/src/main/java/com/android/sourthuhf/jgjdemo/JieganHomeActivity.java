@@ -68,10 +68,10 @@ public class JieganHomeActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        ToolBean toolOne = new ToolBean("111111111111111111111111", "000001", "设备1");
-        ToolBean toolTwo = new ToolBean("222222222222222222222222", "000002", "设备2");
-        initMap.put("111111111111111111111111",toolOne);
-        initMap.put("222222222222222222222222",toolTwo);
+        ToolBean toolOne = new ToolBean("300833B2DDD9014000000256", "000001", "设备1");
+        //ToolBean toolTwo = new ToolBean("222222222222222222222222", "000002", "设备2");
+        initMap.put("300833B2DDD9014000000256",toolOne);
+        //initMap.put("222222222222222222222222",toolTwo);`
         mAdapter = new TooltemAdapter(invBeans,this);
         toolsView.setLayoutManager(new LinearLayoutManager(this));
         toolsView.setAdapter(mAdapter);
