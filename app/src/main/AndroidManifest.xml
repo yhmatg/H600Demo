@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_uhf_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
+        <!--<activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"></activity>
@@ -35,11 +35,11 @@
         <activity
             android:name=".njdemo.ui.activity.HomeActivity"
             android:screenOrientation="portrait">
-            <!--<intent-filter>
+            &lt;!&ndash;<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>&ndash;&gt;
         </activity>
         <activity
             android:name=".njdemo.ui.activity.HandleDataActivity"
@@ -49,7 +49,19 @@
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".njdemo.ui.activity.SingleInitDataActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"></activity>-->
+        <activity
+            android:name=".jgjdemo.JieganHomeActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".jgjdemo.DetailActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
