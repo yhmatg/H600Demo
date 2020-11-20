@@ -174,6 +174,7 @@ public class JieganHomeActivity extends AppCompatActivity {
             if (!loopFlag) {
                 loopFlag = true;
                 invBeans.clear();
+                mAdapter.notifyDataSetChanged();
                 mDriver.readMore();
                 new TagThread().start();
                 status.setText("扫描中...");

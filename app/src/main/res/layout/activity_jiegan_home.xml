@@ -5,50 +5,11 @@
 
     <include layout="@layout/title_layout" />
 
-    <LinearLayout
-        android:id="@+id/colum_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/title_layout"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_marginStart="80dp"
-            android:id="@+id/tv_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="名称"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/tv_epc"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:gravity="center"
-            android:text="EPC"
-            android:textSize="16sp" />
-
-        <TextView
-            android:visibility="gone"
-            android:id="@+id/tv_code"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="编号"
-            android:textSize="16sp" />
-    </LinearLayout>
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_tool_epcs"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/colum_layout"
+        android:layout_below="@+id/title_layout"
         android:layout_above="@+id/tv_status"/>
 
     <TextView

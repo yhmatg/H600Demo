@@ -1,6 +1,7 @@
 package com.android.sourthuhf.jgjdemo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.sourthuhf.R;
@@ -35,11 +37,10 @@ public class TooltemAdapter extends RecyclerView.Adapter<TooltemAdapter.MyHoder>
         final ToolBean epcBean = toolBeans.get(i);
         myHoder.mName.setText(epcBean.getName());
         myHoder.mEpc.setText(epcBean.getEpc());
-        myHoder.mCode.setText(epcBean.getCode());
         myHoder.toolLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                mContext.startActivity(new Intent(mContext,DetailActivity.class));
             }
         });
     }
@@ -54,15 +55,14 @@ public class TooltemAdapter extends RecyclerView.Adapter<TooltemAdapter.MyHoder>
         private TextView mName;
         private TextView mEpc;
         private TextView mCode; 
-        private LinearLayout toolLayout;
+        private RelativeLayout toolLayout;
 
         private MyHoder(View itemView) {
             super(itemView);
 
             mName = (TextView) itemView.findViewById(R.id.tv_name);
             mEpc = (TextView) itemView.findViewById(R.id.tv_epc);
-            mCode = (TextView) itemView.findViewById(R.id.tv_code);
-            toolLayout = (LinearLayout) itemView.findViewById(R.id.tool_layout);
+            toolLayout = (RelativeLayout) itemView.findViewById(R.id.tool_layout);
         }
     }
 }
