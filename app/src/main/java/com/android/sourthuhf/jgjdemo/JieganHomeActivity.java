@@ -1,6 +1,8 @@
 package com.android.sourthuhf.jgjdemo;
 
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -27,6 +29,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -65,7 +69,50 @@ public class JieganHomeActivity extends AppCompatActivity {
         title.setText("首页");
         initData();
         initRfid();
+        beeperSettings();
     }
+    private static ToneGenerator toneGenerator;
+    private boolean beepON = false;
+    private Timer tbeep;
+
+    public static void beeperSettings() {
+        int streamType = AudioManager.STREAM_DTMF;
+        int percantageVolume = 100;
+        toneGenerator = new ToneGenerator(streamType, percantageVolume);
+    }
+
+    private void startbeepingTimer() {
+        if (!beepON) {
+            beepON = true;
+            beep();
+            if (tbeep == null) {
+                TimerTask task = new TimerTask() {
+                    @Override
+                    public void run() {
+                        stopbeepingTimer();
+                        beepON = false;
+                    }
+                };
+                tbeep = new Timer();
+                tbeep.schedule(task, 80);
+            }
+        }
+    }
+
+    private synchronized void stopbeepingTimer() {
+        if (tbeep != null) {
+            toneGenerator.stopTone();
+            tbeep.cancel();
+            tbeep.purge();
+        }
+        tbeep = null;
+    }
+
+    public static void beep() {
+        int toneType = ToneGenerator.TONE_PROP_BEEP;
+        toneGenerator.startTone(toneType);
+    }
+
 
     private void initData() {
         ToolBean toolOne = new ToolBean("300833B2DDD9014000000256", "000001", "造粒机");
@@ -85,6 +132,7 @@ public class JieganHomeActivity extends AppCompatActivity {
     }
 
     private void handleEpc(String epc) {
+        startbeepingTimer();
         Log.e("InitDataFragment", "all data ===" + epc);
         int Hb = 0;
         int Lb = 0;
@@ -128,12 +176,6 @@ public class JieganHomeActivity extends AppCompatActivity {
         Status = mDriver.initRFID("/dev/ttyMT0");
         if (-1000 == Status) {
             return;
-        }
-        String Fw_buffer;
-        Fw_buffer = mDriver.readUM7fwOnce();
-
-        if (Fw_buffer.equals("-1000") || Fw_buffer.equals("-1020") || Fw_buffer == null) {
-            ToastUtils.showShort(R.string.device_connect_failed);
         }
         //将手持机手柄出发动作改为uhf
         SystemProperties.set("persist.sys.PistolKey", "uhf");
