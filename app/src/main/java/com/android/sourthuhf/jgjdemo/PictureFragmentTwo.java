@@ -11,6 +11,6 @@ public class PictureFragmentTwo extends BaseFragment {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_one;
+        return R.layout.fragment_two;
     }
 }
