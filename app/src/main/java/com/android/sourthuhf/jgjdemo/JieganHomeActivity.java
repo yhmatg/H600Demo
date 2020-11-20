@@ -15,6 +15,9 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -47,7 +50,7 @@ public class JieganHomeActivity extends AppCompatActivity {
     @BindView(R.id.title_content)
     TextView title;
     @BindView(R.id.tv_status)
-    TextView status;
+    ImageView status;
     @BindView(R.id.rv_tool_epcs)
     RecyclerView toolsView;
     private Unbinder unBinder;
@@ -60,6 +63,7 @@ public class JieganHomeActivity extends AppCompatActivity {
     private Boolean canRfid = true;
     private boolean loopFlag = false;
     Handler handler;
+    private Animation mRadarAnim;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +74,15 @@ public class JieganHomeActivity extends AppCompatActivity {
         initData();
         initRfid();
         beeperSettings();
+        initAnim();
+    }
+    private void initAnim() {
+        mRadarAnim = new RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        mRadarAnim.setFillAfter(true); // 设置保持动画最后的状态
+        mRadarAnim.setDuration(2000); // 设置动画时间
+        mRadarAnim.setRepeatCount(Animation.INFINITE);//设置动画重复次数 无限循环
+        mRadarAnim.setInterpolator(new LinearInterpolator());
+        mRadarAnim.setRepeatMode(Animation.RESTART);
     }
     private static ToneGenerator toneGenerator;
     private boolean beepON = false;
@@ -219,7 +232,7 @@ public class JieganHomeActivity extends AppCompatActivity {
                 mAdapter.notifyDataSetChanged();
                 mDriver.readMore();
                 new TagThread().start();
-                status.setText("扫描中...");
+                status.startAnimation(mRadarAnim);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -230,7 +243,7 @@ public class JieganHomeActivity extends AppCompatActivity {
         if (loopFlag) {
             loopFlag = false;
             mDriver.stopRead();
-            status.setText("已停止");
+            status.clearAnimation();
         }
     }
 

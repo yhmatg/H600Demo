@@ -9,21 +9,17 @@
         android:id="@+id/rv_tool_epcs"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/title_layout"
-        android:layout_above="@+id/tv_status"/>
+        android:layout_above="@+id/tv_status"
+        android:layout_below="@+id/title_layout" />
 
-    <TextView
+    <ImageView
         android:id="@+id/tv_status"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp"
-        android:background="@drawable/status_background"
-        android:padding="10dp"
-        android:text="状态"
-        android:textColor="@color/white"
-        android:textSize="18sp" />
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="60dp"
+        android:src="@drawable/round_icon" />
 
 </RelativeLayout>
