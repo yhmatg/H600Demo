@@ -29,23 +29,23 @@
     </RelativeLayout>
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        app:logo="@mipmap/app_icon"
-        android:theme="@style/MyToolbarTheme"
-        app:popupTheme="@style/OverFlowMenuTheme"
-        android:background="?attr/colorPrimary">
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    app:logo="@mipmap/app_icon"
+    android:theme="@style/MyToolbarTheme"
+    app:popupTheme="@style/OverFlowMenuTheme"
+    android:background="?attr/colorPrimary">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity = "center"
-            android:text="UHF DEMO"
-            android:textSize="20dp"
-            android:textColor="@color/white"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity = "center"
+        android:text="UHF DEMO"
+        android:textSize="20dp"
+        android:textColor="@color/white"/>
 
-    </android.support.v7.widget.Toolbar>
+</android.support.v7.widget.Toolbar>
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tablayout"
