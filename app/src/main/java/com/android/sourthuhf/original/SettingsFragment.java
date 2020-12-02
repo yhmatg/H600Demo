@@ -1,4 +1,4 @@
-package com.android.sourthuhf;
+package com.android.sourthuhf.original;
 
 import android.Manifest;
 import android.app.Activity;
@@ -23,6 +23,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.sourthuhf.R;
+import com.android.sourthuhf.SharePreferenceUtils;
 
 import java.util.Date;
 

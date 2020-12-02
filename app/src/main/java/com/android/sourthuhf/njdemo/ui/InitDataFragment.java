@@ -3,7 +3,6 @@ package com.android.sourthuhf.njdemo.ui;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
@@ -27,8 +26,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.sourthuhf.BaseFragment;
-import com.android.sourthuhf.MainActivity;
+import com.android.sourthuhf.original.BaseFragment;
+import com.android.sourthuhf.original.MainActivity;
 import com.android.sourthuhf.R;
 import com.android.sourthuhf.Utils;
 import com.android.sourthuhf.njdemo.http.RetrofitClient;

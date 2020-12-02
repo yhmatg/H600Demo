@@ -1,35 +1,25 @@
 package com.android.sourthuhf.njdemo.ui;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.sourthuhf.BaseFragment;
-import com.android.sourthuhf.MainActivity;
+import com.android.sourthuhf.original.BaseFragment;
+import com.android.sourthuhf.original.MainActivity;
 import com.android.sourthuhf.R;
-import com.android.sourthuhf.Utils;
 import com.android.sourthuhf.njdemo.http.RetrofitClient;
 import com.android.sourthuhf.njdemo.http.WmsApi;
 import com.android.sourthuhf.njdemo.parambean.WriteTagInfoParam;

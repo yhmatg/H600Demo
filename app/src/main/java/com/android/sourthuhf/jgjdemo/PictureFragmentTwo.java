@@ -1,6 +1,6 @@
 package com.android.sourthuhf.jgjdemo;
 
-import com.android.sourthuhf.BaseFragment;
+import com.android.sourthuhf.original.BaseFragment;
 import com.android.sourthuhf.R;
 
 public class PictureFragmentTwo extends BaseFragment {

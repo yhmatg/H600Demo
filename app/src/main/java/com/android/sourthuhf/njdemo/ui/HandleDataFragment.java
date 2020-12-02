@@ -24,8 +24,8 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.sourthuhf.BaseFragment;
-import com.android.sourthuhf.MainActivity;
+import com.android.sourthuhf.original.BaseFragment;
+import com.android.sourthuhf.original.MainActivity;
 import com.android.sourthuhf.R;
 import com.android.sourthuhf.Utils;
 import com.android.sourthuhf.njdemo.http.RetrofitClient;

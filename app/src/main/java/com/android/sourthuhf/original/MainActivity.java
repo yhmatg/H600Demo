@@ -1,6 +1,5 @@
-package com.android.sourthuhf;
+package com.android.sourthuhf.original;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemProperties;
 import android.serialport.DeviceControlSpd;
@@ -16,6 +15,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.android.sourthuhf.R;
+import com.android.sourthuhf.ToastUtils;
+import com.android.sourthuhf.UhfApplication;
 import com.android.sourthuhf.njdemo.ui.HandleDataFragment;
 import com.android.sourthuhf.njdemo.ui.InitDataFragment;
 import com.android.sourthuhf.njdemo.ui.SingleInitDataFragment;

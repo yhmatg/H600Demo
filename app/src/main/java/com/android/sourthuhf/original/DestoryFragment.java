@@ -1,4 +1,4 @@
-package com.android.sourthuhf;
+package com.android.sourthuhf.original;
 
 import android.content.Context;
 import android.util.Log;
@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.sourthuhf.R;
 
 import butterknife.BindView;
 import butterknife.OnClick;

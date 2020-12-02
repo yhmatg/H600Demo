@@ -30,7 +30,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.sourthuhf.MainActivity;
 import com.android.sourthuhf.R;
 import com.android.sourthuhf.UhfApplication;
 import com.android.sourthuhf.njdemo.http.RetrofitClient;
@@ -39,7 +38,6 @@ import com.android.sourthuhf.njdemo.parambean.WriteTagInfoParam;
 import com.android.sourthuhf.njdemo.parambean.WriteTagResultParam;
 import com.android.sourthuhf.njdemo.responsebean.LableReportBean;
 import com.android.sourthuhf.njdemo.responsebean.WriteTagInfoBean;
-import com.android.sourthuhf.njdemo.ui.SingleInitDataFragment;
 import com.android.sourthuhf.njdemo.ui.WriteEpcBean;
 import com.android.sourthuhf.njdemo.ui.WriteEpcItemAdapter;
 

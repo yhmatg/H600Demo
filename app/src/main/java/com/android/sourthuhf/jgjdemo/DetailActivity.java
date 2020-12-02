@@ -7,11 +7,9 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
-import com.android.sourthuhf.BaseFragment;
+import com.android.sourthuhf.original.BaseFragment;
 import com.android.sourthuhf.R;
-import com.youth.banner.Banner;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.BindView;

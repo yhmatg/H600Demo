@@ -1,4 +1,4 @@
-package com.android.sourthuhf;
+package com.android.sourthuhf.original;
 
 import android.content.Context;
 import android.media.AudioAttributes;
@@ -13,6 +13,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.sourthuhf.R;
+import com.android.sourthuhf.SharePreferenceUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;

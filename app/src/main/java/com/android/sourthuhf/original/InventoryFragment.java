@@ -1,4 +1,4 @@
-package com.android.sourthuhf;
+package com.android.sourthuhf.original;
 
 import android.Manifest;
 import android.content.BroadcastReceiver;
@@ -25,6 +25,8 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.sourthuhf.R;
 
 import java.io.File;
 import java.io.FileOutputStream;

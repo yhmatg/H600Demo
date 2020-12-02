@@ -2,6 +2,7 @@ package com.android.sourthuhf;
 
 import android.app.Application;
 
+import com.android.sourthuhf.original.MyCrashListener;
 import com.xuexiang.xlog.XLog;
 import com.xuexiang.xlog.crash.CrashHandler;
 

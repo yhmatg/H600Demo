@@ -29,7 +29,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.sourthuhf.MainActivity;
 import com.android.sourthuhf.R;
 import com.android.sourthuhf.UhfApplication;
 import com.android.sourthuhf.Utils;
