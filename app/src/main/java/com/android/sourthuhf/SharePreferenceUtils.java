@@ -85,5 +85,13 @@ public class SharePreferenceUtils {
     public String getPassWord() {
         return mPreferences.getString("pass_word", "");
     }
+
+    public void setIsFirst(boolean isFirst) {
+        mPreferences.edit().putBoolean("is_first", isFirst).apply();
+    }
+
+    public boolean getIsFirst() {
+        return mPreferences.getBoolean("is_first", true);
+    }
 }
 

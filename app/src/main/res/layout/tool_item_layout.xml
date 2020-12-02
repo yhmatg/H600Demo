@@ -12,21 +12,21 @@
         android:id="@+id/iv_icon"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@mipmap/tool_icon" />
+        android:src="@mipmap/icon_one" />
 
     <LinearLayout
-        android:layout_marginTop="30dp"
         android:id="@+id/name_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:layout_toEndOf="@+id/iv_icon"
         android:gravity="center"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_marginEnd="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
             android:gravity="center"
             android:text="名称:"
             android:textSize="15sp" />
@@ -41,22 +41,22 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/name_layout"
-        android:layout_toEndOf="@+id/iv_icon"
         android:id="@+id/epc_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/name_layout"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
+        android:layout_toEndOf="@+id/iv_icon"
         android:gravity="center"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
             android:gravity="center"
             android:text="EPC:"
-            android:layout_marginEnd="12dp"
             android:textSize="15sp" />
 
         <TextView
@@ -68,5 +68,12 @@
             android:textSize="15sp" />
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@color/grey" />
 
 </RelativeLayout>

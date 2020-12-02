@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.android.sourthuhf.R;
 import com.android.sourthuhf.UhfApplication;
+import com.android.sourthuhf.jgjdemo.database.bean.ToolBean;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -122,7 +123,7 @@ public class JieganHomeActivity extends AppCompatActivity {
 
 
     private void initData() {
-        ToolBean toolOne = new ToolBean("300833B2DDD9014000000256", "000001", "造粒机");
+        ToolBean toolOne = new ToolBean("300833B2DDD9014000000256", "000001", "造粒机",0);
         //ToolBean toolTwo = new ToolBean("222222222222222222222222", "000002", "设备2");
         initMap.put("300833B2DDD9014000000256",toolOne);
         //initMap.put("222222222222222222222222",toolTwo);`
