@@ -1,4 +1,4 @@
-package com.android.sourthuhf.jgjdemo;
+package com.android.sourthuhf.jgjdemo.ui.scandetail;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -28,15 +28,6 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tool_detail_two);
         unBinder = ButterKnife.bind(this);
-       /* ArrayList<Integer> images = new ArrayList<>();
-        images.add(R.mipmap.pic_four);
-        images.add(R.mipmap.pic_five);
-        banner.setImageLoader(new GlideImageLoader());
-        //设置图片集合
-        banner.setImages(images);
-        banner.isAutoPlay(false);
-        //banner设置方法全部调用完毕时最后调用
-        banner.start();*/
         fragments.add(new PictureFragmentOne());
         fragments.add(new PictureFragmentTwo());
         mViewpager.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {

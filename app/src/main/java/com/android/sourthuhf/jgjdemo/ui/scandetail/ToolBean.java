@@ -1,4 +1,4 @@
-package com.android.sourthuhf.jgjdemo;
+package com.android.sourthuhf.jgjdemo.ui.scandetail;
 
 import java.util.Objects;
 

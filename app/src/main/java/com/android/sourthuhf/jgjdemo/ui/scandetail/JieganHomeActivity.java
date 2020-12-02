@@ -1,6 +1,5 @@
-package com.android.sourthuhf.jgjdemo;
+package com.android.sourthuhf.jgjdemo.ui.scandetail;
 
-import android.content.Intent;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.Bundle;
@@ -22,11 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.sourthuhf.R;
-import com.android.sourthuhf.ToastUtils;
 import com.android.sourthuhf.UhfApplication;
-import com.android.sourthuhf.njdemo.ui.activity.HandleDataActivity;
-import com.android.sourthuhf.njdemo.ui.activity.InitDataActivity;
-import com.android.sourthuhf.njdemo.ui.activity.SingleInitDataActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,7 +32,6 @@ import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
 import cn.com.example.rfid.driver.Driver;
 import cn.com.example.rfid.driver.RfidDriver;
