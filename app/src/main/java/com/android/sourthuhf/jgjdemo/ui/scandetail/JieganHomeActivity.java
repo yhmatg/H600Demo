@@ -23,6 +23,8 @@ import android.widget.TextView;
 import com.android.sourthuhf.R;
 import com.android.sourthuhf.UhfApplication;
 import com.android.sourthuhf.jgjdemo.database.bean.ToolBean;
+import com.android.sourthuhf.jgjdemo.database.room.BaseDb;
+import com.android.sourthuhf.original.BaseActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,7 +41,7 @@ import cn.com.example.rfid.driver.RfidDriver;
 
 import static android.serialport.DeviceControlSpd.PowerType.EXPAND;
 
-public class JieganHomeActivity extends AppCompatActivity {
+public class JieganHomeActivity extends BaseActivity {
     @BindView(R.id.title_back)
     ImageView titleLeft;
     @BindView(R.id.title_content)
@@ -48,29 +50,19 @@ public class JieganHomeActivity extends AppCompatActivity {
     ImageView status;
     @BindView(R.id.rv_tool_epcs)
     RecyclerView toolsView;
-    private Unbinder unBinder;
     private Driver mDriver;
     private DeviceControlSpd newUHFDeviceControl;
     private List<ToolBean> initBeans = new ArrayList<>();
     private List<ToolBean> invBeans = new ArrayList<>();
-    private HashMap<String,ToolBean> initMap = new HashMap<>();
+    private HashMap<String, ToolBean> initMap = new HashMap<>();
     private TooltemAdapter mAdapter;
     private Boolean canRfid = true;
     private boolean loopFlag = false;
     Handler handler;
     private Animation mRadarAnim;
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_jiegan_home);
-        unBinder = ButterKnife.bind(this);
-        titleLeft.setVisibility(View.GONE);
-        title.setText("首页");
-        initData();
-        initRfid();
-        beeperSettings();
-        initAnim();
-    }
+    //数据库中所有的设备
+    private List<ToolBean> allTools;
+
     private void initAnim() {
         mRadarAnim = new RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         mRadarAnim.setFillAfter(true); // 设置保持动画最后的状态
@@ -79,6 +71,7 @@ public class JieganHomeActivity extends AppCompatActivity {
         mRadarAnim.setInterpolator(new LinearInterpolator());
         mRadarAnim.setRepeatMode(Animation.RESTART);
     }
+
     private static ToneGenerator toneGenerator;
     private boolean beepON = false;
     private Timer tbeep;
@@ -123,17 +116,17 @@ public class JieganHomeActivity extends AppCompatActivity {
 
 
     private void initData() {
-        ToolBean toolOne = new ToolBean("300833B2DDD9014000000256", "000001", "造粒机",0);
-        //ToolBean toolTwo = new ToolBean("222222222222222222222222", "000002", "设备2");
-        initMap.put("300833B2DDD9014000000256",toolOne);
-        //initMap.put("222222222222222222222222",toolTwo);`
-        mAdapter = new TooltemAdapter(invBeans,this);
+        allTools = BaseDb.getInstance().getToolDao().findAllTools();
+        for (ToolBean toolBean : allTools) {
+            initMap.put(toolBean.getEpc(), toolBean);
+        }
+        mAdapter = new TooltemAdapter(invBeans, this);
         toolsView.setLayoutManager(new LinearLayoutManager(this));
         toolsView.setAdapter(mAdapter);
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                    handleEpc((String) msg.obj);
+                handleEpc((String) msg.obj);
 
             }
         };
@@ -165,7 +158,7 @@ public class JieganHomeActivity extends AppCompatActivity {
             rssi = ((Hb - 256 + 1) * 256 + (Lb - 256)) / 10;
         }
         ToolBean toolBean = initMap.get(tmp[1]);
-        if(toolBean != null && !invBeans.contains(toolBean)){
+        if (toolBean != null && !invBeans.contains(toolBean)) {
             invBeans.add(toolBean);
             mAdapter.notifyDataSetChanged();
         }
@@ -188,7 +181,7 @@ public class JieganHomeActivity extends AppCompatActivity {
         //将手持机手柄出发动作改为uhf
         SystemProperties.set("persist.sys.PistolKey", "uhf");
         UhfApplication.setDriver(mDriver);
-        mDriver.Read_Tag_Mode_Set(1,false);
+        mDriver.Read_Tag_Mode_Set(1, false);
         UhfApplication.setDriver(mDriver);
     }
 
@@ -200,10 +193,21 @@ public class JieganHomeActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (unBinder != null && unBinder != Unbinder.EMPTY) {
-            unBinder.unbind();
-            unBinder = null;
-        }
+    }
+
+    @Override
+    protected void initEventAndData() {
+        titleLeft.setVisibility(View.GONE);
+        title.setText("盘点设备");
+        initData();
+        initRfid();
+        beeperSettings();
+        initAnim();
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_jiegan_home;
     }
 
     public void startStopScanning() {
@@ -276,6 +280,7 @@ public class JieganHomeActivity extends AppCompatActivity {
         stopInventory();
         handler.removeMessages(0);
     }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (canRfid) {

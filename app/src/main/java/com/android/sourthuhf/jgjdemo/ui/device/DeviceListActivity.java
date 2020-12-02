@@ -1,5 +1,6 @@
 package com.android.sourthuhf.jgjdemo.ui.device;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +14,9 @@ import com.android.sourthuhf.R;
 import com.android.sourthuhf.SharePreferenceUtils;
 import com.android.sourthuhf.jgjdemo.database.bean.ToolBean;
 import com.android.sourthuhf.jgjdemo.database.room.BaseDb;
+import com.android.sourthuhf.jgjdemo.ui.scandetail.JieganHomeActivity;
 import com.android.sourthuhf.jgjdemo.ui.scandetail.TooltemAdapter;
+import com.android.sourthuhf.original.BaseActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,27 +26,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class DeviceListActivity extends AppCompatActivity {
+public class DeviceListActivity extends BaseActivity {
     @BindView(R.id.rv_devices)
     RecyclerView recyclerView;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     TooltemAdapter deviceAdapter;
     private List<ToolBean> mDevices = new ArrayList<>();
-    private Unbinder unBinder;
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_device);
-        unBinder = ButterKnife.bind(this);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        deviceAdapter = new TooltemAdapter(mDevices, this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(deviceAdapter);
-        initData();
-    }
 
     private void initData() {
         if(SharePreferenceUtils.getInstance().getIsFirst()){
@@ -79,17 +68,24 @@ public class DeviceListActivity extends AppCompatActivity {
             case R.id.add_device:
                 return true;
             case R.id.scan_device:
+                startActivity(new Intent(this, JieganHomeActivity.class));
                 return true;
             default:
                 return false;
         }
     }
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (unBinder != null && unBinder != Unbinder.EMPTY) {
-            unBinder.unbind();
-            unBinder = null;
-        }
+    protected void initEventAndData() {
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        deviceAdapter = new TooltemAdapter(mDevices, this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(deviceAdapter);
+        initData();
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_device;
     }
 }
