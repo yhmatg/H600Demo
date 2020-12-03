@@ -45,5 +45,19 @@
         <item>S3</item>
     </string-array>
 
+    <string-array name="device_type">
+        <item>造粒机</item>
+        <item>粗粉旋切机</item>
+        <item>细粉旋切机</item>
+        <item>除尘机</item>
+        <item>烘干机</item>
+        <item>搅拌机</item>
+        <item>抛圆机</item>
+        <item>筛分机</item>
+        <item>主料进料机</item>
+        <item>自动包装机</item>
+        <item>辅料进料机</item>
+    </string-array>
+
 
 </resources>

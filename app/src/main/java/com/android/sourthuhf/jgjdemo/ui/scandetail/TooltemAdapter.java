@@ -14,12 +14,14 @@ import android.widget.TextView;
 import com.android.sourthuhf.R;
 import com.android.sourthuhf.UhfApplication;
 import com.android.sourthuhf.jgjdemo.database.bean.ToolBean;
+import com.android.sourthuhf.njdemo.ui.EpcBean;
 
 import java.util.List;
 
 public class TooltemAdapter extends RecyclerView.Adapter<TooltemAdapter.MyHoder> {
     private List<ToolBean> toolBeans;
     private Context mContext;
+    private OnItemClickListener onItemClickListener;
 
     public TooltemAdapter(List<ToolBean> toolBeans, Context mContext) {
         this.toolBeans = toolBeans;
@@ -41,8 +43,13 @@ public class TooltemAdapter extends RecyclerView.Adapter<TooltemAdapter.MyHoder>
         myHoder.toolLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UhfApplication.getInstance().setCurrentDeviceId(epcBean.getId());
-                mContext.startActivity(new Intent(mContext, DetailActivity.class));
+                if(onItemClickListener != null){
+                    onItemClickListener.onDeviceItemClick(epcBean);
+                }else {
+                    UhfApplication.getInstance().setCurrentDeviceId(epcBean.getId());
+                    mContext.startActivity(new Intent(mContext, DetailActivity.class));
+                }
+
             }
         });
         switch (epcBean.getType()) {
@@ -103,5 +110,13 @@ public class TooltemAdapter extends RecyclerView.Adapter<TooltemAdapter.MyHoder>
             mImage = (ImageView) itemView.findViewById(R.id.iv_icon);
             toolLayout = (RelativeLayout) itemView.findViewById(R.id.tool_layout);
         }
+    }
+
+    public interface OnItemClickListener {
+        void onDeviceItemClick(ToolBean toolBean);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 }
