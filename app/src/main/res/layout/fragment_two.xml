@@ -2,8 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <include layout="@layout/title_layout" />
 
     <TextView
+        android:layout_below="@+id/title_layout"
         android:id="@+id/tv_next_maintenance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,8 +29,8 @@
         android:id="@+id/tv_maintenance_history"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_below="@+id/tv_next_maintenance_time"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:text="维保记录"
         android:textColor="@color/green_color"
@@ -38,7 +40,6 @@
         android:id="@+id/rv_maintenance_history"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tv_maintenance_history"
-        android:layout_marginTop="10dp" />
+        android:layout_below="@+id/tv_maintenance_history" />
 
 </RelativeLayout>

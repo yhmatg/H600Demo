@@ -11,6 +11,7 @@ import cn.com.example.rfid.driver.Driver;
 public class UhfApplication extends Application {
     private static UhfApplication instance;
     private static Driver mDriver;
+    private int currentDeviceId;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -30,5 +31,13 @@ public class UhfApplication extends Application {
 
     public static void setDriver(Driver driver){
         mDriver = driver;
+    }
+
+    public int getCurrentDeviceId() {
+        return currentDeviceId;
+    }
+
+    public void setCurrentDeviceId(int currentDeviceId) {
+        this.currentDeviceId = currentDeviceId;
     }
 }

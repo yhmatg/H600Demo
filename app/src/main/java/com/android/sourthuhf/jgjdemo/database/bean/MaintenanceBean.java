@@ -10,12 +10,12 @@ public class MaintenanceBean {
     @PrimaryKey(autoGenerate = true)
     private int id;
     private int deviceId;
-    private long time;
+    private String time;
     private String name;
     //1 维保记录，0下次维保时间
     private int type;
 
-    public MaintenanceBean(int deviceId, long time, String name, int type) {
+    public MaintenanceBean(int deviceId, String time, String name, int type) {
         this.deviceId = deviceId;
         this.time = time;
         this.name = name;
@@ -38,11 +38,11 @@ public class MaintenanceBean {
         this.deviceId = deviceId;
     }
 
-    public long getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(long time) {
+    public void setTime(String time) {
         this.time = time;
     }
 

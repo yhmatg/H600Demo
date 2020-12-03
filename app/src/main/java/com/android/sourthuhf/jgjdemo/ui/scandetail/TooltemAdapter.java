@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.sourthuhf.R;
+import com.android.sourthuhf.UhfApplication;
 import com.android.sourthuhf.jgjdemo.database.bean.ToolBean;
 
 import java.util.List;
@@ -40,6 +41,7 @@ public class TooltemAdapter extends RecyclerView.Adapter<TooltemAdapter.MyHoder>
         myHoder.toolLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                UhfApplication.getInstance().setCurrentDeviceId(epcBean.getId());
                 mContext.startActivity(new Intent(mContext, DetailActivity.class));
             }
         });

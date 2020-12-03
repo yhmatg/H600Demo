@@ -10,8 +10,8 @@ import java.util.List;
 
 @Dao
 public interface MaintenanceDao extends BaseDao<MaintenanceBean> {
-    @Query("SELECT * FROM MaintenanceBean where deviceId = :deviceId")
-    public List<MaintenanceBean> findMaintenanceByDeviceId(int deviceId);
+    @Query("SELECT * FROM MaintenanceBean where deviceId = :deviceId and type = :type")
+    public List<MaintenanceBean> findMaintenanceByDeviceId(int deviceId,int type);
 
     @Query("DELETE FROM MaintenanceBean")
     public void deleteAllData();
