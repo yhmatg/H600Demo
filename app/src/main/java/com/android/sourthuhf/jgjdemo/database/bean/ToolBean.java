@@ -66,12 +66,12 @@ public class ToolBean {
         if (this == o) return true;
         if (!(o instanceof ToolBean)) return false;
         ToolBean toolBean = (ToolBean) o;
-        return getEpc().equals(toolBean.getEpc()) &&
-                getCode().equals(toolBean.getCode());
+        return getId() == toolBean.getId() &&
+                getEpc().equals(toolBean.getEpc());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getEpc(), getCode());
+        return Objects.hash(getId(), getEpc());
     }
 }

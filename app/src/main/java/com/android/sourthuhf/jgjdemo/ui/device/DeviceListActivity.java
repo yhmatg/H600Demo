@@ -52,6 +52,8 @@ public class DeviceListActivity extends BaseActivity implements TooltemAdapter.O
     private Spinner typeSpinner;
     private ToolBean mSelectToolBean;
     private boolean isChange;
+    private Button confirmBt;
+    private Button deleteBt;
 
     private void initData() {
         if (SharePreferenceUtils.getInstance().getIsFirst()) {
@@ -97,6 +99,12 @@ public class DeviceListActivity extends BaseActivity implements TooltemAdapter.O
         switch (item.getItemId()) {
             case R.id.add_device:
                 isChange = false;
+                if(openDialog != null){
+                    deviceName.setText("");
+                    deviceCode.setText("");
+                    epcCode.setText("");
+                    typeSpinner.setSelection(0);
+                }
                 showOpenDialog();
                 return true;
             case R.id.scan_device:
@@ -128,7 +136,8 @@ public class DeviceListActivity extends BaseActivity implements TooltemAdapter.O
             openDialog.show();
         } else {
             View contentView = LayoutInflater.from(this).inflate(R.layout.new_device_dialog, null);
-            Button confirmBt = contentView.findViewById(R.id.bt_add_device);
+            confirmBt = contentView.findViewById(R.id.bt_add_device);
+            deleteBt = contentView.findViewById(R.id.bt_delete_device);
             deviceName = contentView.findViewById(R.id.et_device_name);
             deviceCode = contentView.findViewById(R.id.et_device_code);
             epcCode = contentView.findViewById(R.id.et_epc);
@@ -137,33 +146,44 @@ public class DeviceListActivity extends BaseActivity implements TooltemAdapter.O
                 @Override
                 public void onClick(View v) {
                     String nameStr = deviceName.getText().toString();
-                    if(StringUtils.isEmpty(nameStr)){
+                    if (StringUtils.isEmpty(nameStr)) {
                         ToastUtils.showShort("设备名称不能为空");
                         return;
                     }
                     String codeStr = deviceCode.getText().toString();
-                    if(StringUtils.isEmpty(codeStr)){
+                    if (StringUtils.isEmpty(codeStr)) {
                         ToastUtils.showShort("设备编号不能为空");
                         return;
                     }
                     String epcStr = epcCode.getText().toString();
-                    if(StringUtils.isEmpty(epcStr)){
+                    if (StringUtils.isEmpty(epcStr)) {
                         ToastUtils.showShort("EPC数据不能为空");
                         return;
                     }
                     int selectedItemPosition = typeSpinner.getSelectedItemPosition();
-                    if(isChange){
+                    if (isChange) {
                         mSelectToolBean.setName(nameStr);
                         mSelectToolBean.setCode(codeStr);
                         mSelectToolBean.setEpc(epcStr);
                         mSelectToolBean.setType(selectedItemPosition);
                         BaseDb.getInstance().getToolDao().insertItem(mSelectToolBean);
-                    }else {
+                    } else {
                         ToolBean toolBean = new ToolBean(epcStr, codeStr, nameStr, selectedItemPosition);
                         mDevices.add(toolBean);
                         BaseDb.getInstance().getToolDao().insertItem(toolBean);
                     }
                     deviceAdapter.notifyDataSetChanged();
+                    dismissUpdateDialog();
+                }
+            });
+            deleteBt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(isChange){
+                        mDevices.remove(mSelectToolBean);
+                        deviceAdapter.notifyDataSetChanged();
+                        BaseDb.getInstance().getToolDao().deleteItem(mSelectToolBean);
+                    }
                     dismissUpdateDialog();
                 }
             });

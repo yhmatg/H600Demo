@@ -3,93 +3,147 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="260dp"
-        android:layout_height="400dp"
+    <RelativeLayout
+        android:layout_width="360dp"
+        android:layout_height="300dp"
         android:layout_gravity="center"
         android:background="@color/white"
-        android:orientation="vertical">
+        android:padding="20dp">
 
-        <TextView
+        <LinearLayout
+            android:id="@+id/ll_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="40dp"
-            android:text="设备名称"
-            android:textSize="18sp" />
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/et_device_name"
+            <TextView
+                android:id="@+id/tv_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="设备类型"
+                android:textSize="18sp" />
+
+            <Spinner
+                android:id="@+id/spinner_type"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginStart="24dp"
+                android:backgroundTint="@color/black"
+                android:entries="@array/device_type"
+                android:spinnerMode="dropdown" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="12dp"
-            android:background="@null"
-            android:gravity="center"
-            android:hint="设备名称"
-            android:textSize="16sp" />
+            android:layout_below="@+id/ll_type"
+            android:layout_alignStart="@+id/ll_type"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
 
-        <TextView
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="设备名称"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/et_device_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="20dp"
+                android:background="@null"
+                android:hint="设备名称"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="12dp"
-            android:text="设备编号"
-            android:textSize="18sp" />
+            android:layout_below="@+id/ll_name"
+            android:layout_alignStart="@+id/ll_type"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/et_device_code"
+            <TextView
+                android:id="@+id/tv_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="设备编号"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/et_device_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="20dp"
+                android:background="@null"
+                android:hint="设备编号"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_epc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="12dp"
-            android:background="@null"
-            android:gravity="center"
-            android:hint="设备编号"
-            android:textSize="16sp" />
+            android:layout_below="@+id/ll_code"
+            android:layout_alignStart="@+id/ll_type"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
 
-        <TextView
+            <TextView
+                android:id="@+id/tv_epc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="EPC数据"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/et_epc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="34dp"
+                android:layout_marginEnd="20dp"
+                android:background="@null"
+                android:digits="0123456789ABCDEF"
+                android:hint="epc数据"
+                android:maxLength="24"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="12dp"
-            android:text="EPC数据"
-            android:textSize="18sp" />
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="24dp"
+            android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/et_epc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="12dp"
-            android:background="@null"
-            android:gravity="center"
-            android:hint="epc数据"
-            android:digits="0123456789ABCDEF"
-            android:maxLength="24"
-            android:textSize="16sp" />
+            <Button
+                android:id="@+id/bt_add_device"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:background="@color/green_color"
+                android:text="确定"
+                android:textColor="@color/white" />
 
-        <Spinner
-            android:id="@+id/spinner_type"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:backgroundTint="@color/black"
-            android:dropDownVerticalOffset="75dp"
-            android:entries="@array/device_type"
-            android:gravity="center"
-            android:spinnerMode="dropdown" />
-
-        <Button
-            android:id="@+id/bt_add_device"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
-            android:background="@color/green_color"
-            android:text="确定"
-            android:textColor="@color/white" />
-    </LinearLayout>
+            <Button
+                android:id="@+id/bt_delete_device"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="40dp"
+                android:background="@color/green_color"
+                android:text="删除"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </RelativeLayout>
 </FrameLayout>
