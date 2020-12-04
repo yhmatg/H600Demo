@@ -184,6 +184,7 @@ public class DeviceListActivity extends BaseActivity implements TooltemAdapter.O
                         mDevices.remove(mSelectToolBean);
                         deviceAdapter.notifyDataSetChanged();
                         BaseDb.getInstance().getToolDao().deleteItem(mSelectToolBean);
+                        BaseDb.getInstance().getMaintenanceDao().deleteDataByDeviceId(mSelectToolBean.getId());
                     }
                     dismissUpdateDialog();
                 }

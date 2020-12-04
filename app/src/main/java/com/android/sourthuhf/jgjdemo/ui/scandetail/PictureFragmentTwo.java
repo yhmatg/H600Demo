@@ -35,7 +35,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class PictureFragmentTwo extends BaseFragment {
+public class PictureFragmentTwo extends BaseFragment implements MaintenanceAdapter.OnItemClickListener {
     @BindView(R.id.tv_next_maintenance_time)
     TextView nextTime;
     @BindView(R.id.rv_maintenance_history)
@@ -52,7 +52,11 @@ public class PictureFragmentTwo extends BaseFragment {
     private MaterialDialog openDialog;
     private EditText name;
     private EditText time;
-    private int nextId;
+    private int nextId = -1;
+    private Button confirmBt;
+    private Button cancleBt;
+    private MaintenanceBean selectBean;
+    private boolean isChange;
 
     @Override
     protected void initEventAndData() {
@@ -61,6 +65,7 @@ public class PictureFragmentTwo extends BaseFragment {
         newHistory.setText("添加");
         newHistory.setVisibility(View.VISIBLE);
         mAdapter = new MaintenanceAdapter(maintenanceHistory,getActivity());
+        mAdapter.setOnItemClickListener(this);
         mRecycleView.setAdapter(mAdapter);
         mRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
         currentDeviceId = UhfApplication.getInstance().getCurrentDeviceId();
@@ -83,7 +88,11 @@ public class PictureFragmentTwo extends BaseFragment {
     public void performClick(View view){
         switch (view.getId()){
             case R.id.tv_sure:
+                isChange = false;
                 showOpenDialog();
+                name.setText("");
+                time.setText("");
+                cancleBt.setText("取消");
                 break;
         }
     }
@@ -93,13 +102,16 @@ public class PictureFragmentTwo extends BaseFragment {
             openDialog.show();
         } else {
             View contentView = LayoutInflater.from(getActivity()).inflate(R.layout.new_history_dialog, null);
-            Button confirmBt = contentView.findViewById(R.id.bt_add_history);
+            confirmBt = contentView.findViewById(R.id.bt_sure);
+            cancleBt = contentView.findViewById(R.id.bt_cancel);
             name = contentView.findViewById(R.id.et_maintenance_name);
             time = contentView.findViewById(R.id.et_maintenance_time);
             confirmBt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(StringUtils.isEmpty(name.getText().toString())){
+                    String nameStr = name.getText().toString();
+                    String timeStr = time.getText().toString();
+                    if(StringUtils.isEmpty(nameStr)){
                         ToastUtils.showShort("请输入维保人");
                         return;
                     }
@@ -107,7 +119,7 @@ public class PictureFragmentTwo extends BaseFragment {
                     boolean isCorrect = false;
                     Date parse = new Date();
                     try {
-                        parse = format.parse(time.getText().toString());
+                        parse = format.parse(timeStr);
                         isCorrect = true;
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -116,17 +128,45 @@ public class PictureFragmentTwo extends BaseFragment {
                         ToastUtils.showShort("请输入正确格式的维保日期");
                         return;
                     }
-                    MaintenanceBean maintenanceBean = new MaintenanceBean(currentDeviceId, time.getText().toString(), name.getText().toString(),0);
-                    if(parse.getTime() > System.currentTimeMillis()){
-                        maintenanceBean.setType(0);
-                        maintenanceBean.setId(nextId);
-                        nextTime.setText(maintenanceBean.getTime());
-                    }else {
-                        maintenanceBean.setType(1);
-                        maintenanceHistory.add(maintenanceBean);
+                    if(isChange){
+                        selectBean.setName(nameStr);
+                        selectBean.setTime(timeStr);
+                        if(parse.getTime() > System.currentTimeMillis()){
+                            selectBean.setType(0);
+                            if(nextId != -1){
+                                selectBean.setId(nextId);
+                            }
+                            nextTime.setText(selectBean.getTime());
+                            maintenanceHistory.remove(selectBean);
+                        }
                         mAdapter.notifyDataSetChanged();
+                        BaseDb.getInstance().getMaintenanceDao().insertItem(selectBean);
+                    }else {
+                        MaintenanceBean maintenanceBean = new MaintenanceBean(currentDeviceId, timeStr, nameStr,0);
+                        if(parse.getTime() > System.currentTimeMillis()){
+                            maintenanceBean.setType(0);
+                            if(nextId != -1){
+                                maintenanceBean.setId(nextId);
+                            }
+                            nextTime.setText(maintenanceBean.getTime());
+                        }else {
+                            maintenanceBean.setType(1);
+                            maintenanceHistory.add(maintenanceBean);
+                            mAdapter.notifyDataSetChanged();
+                        }
+                        BaseDb.getInstance().getMaintenanceDao().insertItem(maintenanceBean);
                     }
-                    BaseDb.getInstance().getMaintenanceDao().insertItem(maintenanceBean);
+                    dismissUpdateDialog();
+                }
+            });
+            cancleBt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(isChange){
+                        maintenanceHistory.remove(selectBean);
+                        mAdapter.notifyDataSetChanged();
+                        BaseDb.getInstance().getMaintenanceDao().deleteItem(selectBean);
+                    }
                     dismissUpdateDialog();
                 }
             });
@@ -143,5 +183,15 @@ public class PictureFragmentTwo extends BaseFragment {
         if (openDialog != null && openDialog.isShowing()) {
             openDialog.dismiss();
         }
+    }
+
+    @Override
+    public void onMaintenanceClick(MaintenanceBean maintenanceBean) {
+        selectBean = maintenanceBean;
+        isChange = true;
+        showOpenDialog();
+        name.setText(maintenanceBean.getName());
+        time.setText(maintenanceBean.getTime());
+        cancleBt.setText("删除");
     }
 }

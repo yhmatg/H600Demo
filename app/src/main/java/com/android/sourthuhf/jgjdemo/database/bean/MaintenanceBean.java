@@ -61,4 +61,18 @@ public class MaintenanceBean {
     public void setType(int type) {
         this.type = type;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MaintenanceBean)) return false;
+        MaintenanceBean that = (MaintenanceBean) o;
+        return getId() == that.getId() &&
+                getName().equals(that.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName());
+    }
 }

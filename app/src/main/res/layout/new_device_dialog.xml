@@ -129,20 +129,20 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/bt_add_device"
+                android:id="@+id/bt_delete_device"
                 android:layout_width="80dp"
                 android:layout_height="30dp"
                 android:background="@color/green_color"
-                android:text="确定"
+                android:text="删除"
                 android:textColor="@color/white" />
 
             <Button
-                android:id="@+id/bt_delete_device"
+                android:id="@+id/bt_add_device"
                 android:layout_width="80dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="40dp"
                 android:background="@color/green_color"
-                android:text="删除"
+                android:text="确定"
                 android:textColor="@color/white" />
         </LinearLayout>
     </RelativeLayout>

@@ -21,6 +21,7 @@ import java.util.List;
 public class MaintenanceAdapter extends RecyclerView.Adapter<MaintenanceAdapter.MyHoder> {
     private List<MaintenanceBean> maintenanceBeans;
     private Context mContext;
+    private OnItemClickListener onItemClickListener;
 
     public MaintenanceAdapter(List<MaintenanceBean> maintenanceBeans, Context mContext) {
         this.maintenanceBeans = maintenanceBeans;
@@ -36,9 +37,17 @@ public class MaintenanceAdapter extends RecyclerView.Adapter<MaintenanceAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull final MyHoder myHoder, int i) {
-        MaintenanceBean maintenanceBean = maintenanceBeans.get(i);
+        final MaintenanceBean maintenanceBean = maintenanceBeans.get(i);
         myHoder.mTime.setText(maintenanceBean.getTime());
         myHoder.mName.setText(maintenanceBean.getName());
+        myHoder.mLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(onItemClickListener != null){
+                    onItemClickListener.onMaintenanceClick(maintenanceBean);
+                }
+            }
+        });
     }
 
     @Override
@@ -50,11 +59,21 @@ public class MaintenanceAdapter extends RecyclerView.Adapter<MaintenanceAdapter.
 
         private TextView mTime;
         private TextView mName;
+        private RelativeLayout mLayout;
 
         private MyHoder(View itemView) {
             super(itemView);
             mTime = (TextView) itemView.findViewById(R.id.tv_time);
             mName = (TextView) itemView.findViewById(R.id.tv_name);
+            mLayout = (RelativeLayout) itemView.findViewById(R.id.maintenance_layout);
         }
+    }
+
+    public interface OnItemClickListener {
+        void onMaintenanceClick(MaintenanceBean maintenanceBean);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 }

@@ -22,7 +22,7 @@
         android:layout_below="@+id/tv_next_maintenance"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:text="2020年12月24日"
+        android:text=""
         android:textSize="16sp" />
 
     <TextView
