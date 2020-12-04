@@ -12,6 +12,7 @@ public class UhfApplication extends Application {
     private static UhfApplication instance;
     private static Driver mDriver;
     private int currentDeviceId;
+    private int currentDeviceType;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -39,5 +40,13 @@ public class UhfApplication extends Application {
 
     public void setCurrentDeviceId(int currentDeviceId) {
         this.currentDeviceId = currentDeviceId;
+    }
+
+    public int getCurrentDeviceType() {
+        return currentDeviceType;
+    }
+
+    public void setCurrentDeviceType(int currentDeviceType) {
+        this.currentDeviceType = currentDeviceType;
     }
 }

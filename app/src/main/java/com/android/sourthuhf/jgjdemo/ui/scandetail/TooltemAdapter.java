@@ -46,6 +46,7 @@ public class TooltemAdapter extends RecyclerView.Adapter<TooltemAdapter.MyHoder>
                 if(onItemClickListener != null){
                     onItemClickListener.onDeviceItemClick(epcBean);
                 }else {
+                    UhfApplication.getInstance().setCurrentDeviceType(epcBean.getType());
                     UhfApplication.getInstance().setCurrentDeviceId(epcBean.getId());
                     mContext.startActivity(new Intent(mContext, DetailActivity.class));
                 }

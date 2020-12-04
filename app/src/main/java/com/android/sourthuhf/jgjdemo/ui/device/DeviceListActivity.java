@@ -99,13 +99,14 @@ public class DeviceListActivity extends BaseActivity implements TooltemAdapter.O
         switch (item.getItemId()) {
             case R.id.add_device:
                 isChange = false;
+                showOpenDialog();
                 if(openDialog != null){
                     deviceName.setText("");
                     deviceCode.setText("");
                     epcCode.setText("");
+                    deleteBt.setText("取消");
                     typeSpinner.setSelection(0);
                 }
-                showOpenDialog();
                 return true;
             case R.id.scan_device:
                 startActivity(new Intent(this, JieganHomeActivity.class));
@@ -210,6 +211,7 @@ public class DeviceListActivity extends BaseActivity implements TooltemAdapter.O
         deviceCode.setText(toolBean.getCode());
         epcCode.setText(toolBean.getEpc());
         typeSpinner.setSelection(toolBean.getType());
+        deleteBt.setText("删除");
         mSelectToolBean = toolBean;
     }
 }

@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
+import com.android.sourthuhf.UhfApplication;
 import com.android.sourthuhf.original.BaseActivity;
 import com.android.sourthuhf.original.BaseFragment;
 import com.android.sourthuhf.R;
@@ -24,7 +25,9 @@ public class DetailActivity extends BaseActivity {
 
     @Override
     protected void initEventAndData() {
-        fragments.add(new PictureFragmentOne());
+        if(UhfApplication.getInstance().getCurrentDeviceType() == 0){
+            fragments.add(new PictureFragmentOne());
+        }
         fragments.add(new PictureFragmentTwo());
         mViewpager.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
             @Override
