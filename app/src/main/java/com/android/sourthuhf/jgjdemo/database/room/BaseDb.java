@@ -46,7 +46,9 @@ public abstract class BaseDb extends RoomDatabase {
             public void onOpen(@NonNull SupportSQLiteDatabase db) {
                 super.onOpen(db);
             }
-        }).allowMainThreadQueries().build();
+        }).allowMainThreadQueries()
+                .fallbackToDestructiveMigration()
+                .build();
         return build;
     }
 

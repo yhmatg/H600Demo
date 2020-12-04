@@ -14,6 +14,7 @@ public class MaintenanceBean {
     private String name;
     //1 维保记录，0下次维保时间
     private int type;
+    private String content;
 
     public MaintenanceBean(int deviceId, String time, String name, int type) {
         this.deviceId = deviceId;
@@ -60,6 +61,14 @@ public class MaintenanceBean {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     @Override

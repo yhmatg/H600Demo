@@ -52,6 +52,7 @@ public class PictureFragmentTwo extends BaseFragment implements MaintenanceAdapt
     private MaterialDialog openDialog;
     private EditText name;
     private EditText time;
+    private EditText content;
     private int nextId = -1;
     private Button confirmBt;
     private Button cancleBt;
@@ -92,6 +93,7 @@ public class PictureFragmentTwo extends BaseFragment implements MaintenanceAdapt
                 showOpenDialog();
                 name.setText("");
                 time.setText("");
+                content.setText("");
                 cancleBt.setText("取消");
                 break;
         }
@@ -106,13 +108,19 @@ public class PictureFragmentTwo extends BaseFragment implements MaintenanceAdapt
             cancleBt = contentView.findViewById(R.id.bt_cancel);
             name = contentView.findViewById(R.id.et_maintenance_name);
             time = contentView.findViewById(R.id.et_maintenance_time);
+            content = contentView.findViewById(R.id.et_maintenance_content);
             confirmBt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     String nameStr = name.getText().toString();
                     String timeStr = time.getText().toString();
+                    String contentStr = content.getText().toString();
                     if(StringUtils.isEmpty(nameStr)){
                         ToastUtils.showShort("请输入维保人");
+                        return;
+                    }
+                    if(StringUtils.isEmpty(contentStr)){
+                        ToastUtils.showShort("请输入维保内容");
                         return;
                     }
                     SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
@@ -131,6 +139,7 @@ public class PictureFragmentTwo extends BaseFragment implements MaintenanceAdapt
                     if(isChange){
                         selectBean.setName(nameStr);
                         selectBean.setTime(timeStr);
+                        selectBean.setContent(contentStr);
                         if(parse.getTime() > System.currentTimeMillis()){
                             selectBean.setType(0);
                             if(nextId != -1){
@@ -143,6 +152,7 @@ public class PictureFragmentTwo extends BaseFragment implements MaintenanceAdapt
                         BaseDb.getInstance().getMaintenanceDao().insertItem(selectBean);
                     }else {
                         MaintenanceBean maintenanceBean = new MaintenanceBean(currentDeviceId, timeStr, nameStr,0);
+                        maintenanceBean.setContent(contentStr);
                         if(parse.getTime() > System.currentTimeMillis()){
                             maintenanceBean.setType(0);
                             if(nextId != -1){
@@ -192,6 +202,7 @@ public class PictureFragmentTwo extends BaseFragment implements MaintenanceAdapt
         showOpenDialog();
         name.setText(maintenanceBean.getName());
         time.setText(maintenanceBean.getTime());
+        content.setText(maintenanceBean.getContent());
         cancleBt.setText("删除");
     }
 }
