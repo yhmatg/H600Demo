@@ -52,12 +52,20 @@
             android:screenOrientation="portrait"></activity>-->
         <activity
             android:name=".jgjdemo.ui.scandetail.ScanDeviceActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".jgjdemo.ui.scandetail.DetailActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
             android:name=".jgjdemo.ui.device.DeviceListActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".jgjdemo.ui.home.DeviceHomeActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
