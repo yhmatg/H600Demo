@@ -10,11 +10,20 @@
         android:background="@color/white"
         android:padding="20dp">
 
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="维保详情"
+            android:textSize="20sp" />
+
         <LinearLayout
             android:id="@+id/ll_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/tv_title"
+            android:layout_marginStart="30dp"
             android:layout_marginTop="20dp"
             android:orientation="horizontal">
 
@@ -25,13 +34,12 @@
                 android:text="维保人"
                 android:textSize="18sp" />
 
-            <EditText
+            <TextView
                 android:id="@+id/et_maintenance_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="50dp"
                 android:background="@null"
-                android:hint="维保人"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -40,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ll_name"
-            android:layout_alignStart="@+id/ll_name"
+            android:layout_marginStart="30dp"
             android:layout_marginTop="20dp"
             android:orientation="horizontal">
 
@@ -51,57 +59,26 @@
                 android:text="维保日期"
                 android:textSize="18sp" />
 
-            <EditText
+            <TextView
                 android:id="@+id/et_maintenance_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginStart="30dp"
                 android:background="@null"
-                android:hint="年/月/日"
                 android:textSize="16sp" />
         </LinearLayout>
 
-        <EditText
+        <TextView
             android:id="@+id/et_maintenance_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ll_time"
-            android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
-            android:background="@null"
-            android:hint="维保内容"
+            android:text="维保内容"
             android:textSize="16sp" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/et_maintenance_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/bt_cancel"
-                android:layout_width="80dp"
-                android:layout_height="30dp"
-                android:background="@color/green_color"
-                android:text="取消"
-                android:textColor="@color/white" />
-
-            <Button
-                android:id="@+id/bt_sure"
-                android:layout_width="80dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginStart="40dp"
-                android:background="@color/green_color"
-                android:text="确定"
-                android:textColor="@color/white" />
-        </LinearLayout>
 
     </RelativeLayout>
 </FrameLayout>

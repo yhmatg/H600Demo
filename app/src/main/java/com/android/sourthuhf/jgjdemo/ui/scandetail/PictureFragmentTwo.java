@@ -50,12 +50,16 @@ public class PictureFragmentTwo extends BaseFragment implements MaintenanceAdapt
     private List<MaintenanceBean> maintenanceHistory = new ArrayList<>();
     private MaintenanceAdapter mAdapter;
     private MaterialDialog openDialog;
+    private MaterialDialog detailDialog;
     private EditText name;
     private EditText time;
     private EditText content;
     private int nextId = -1;
     private Button confirmBt;
     private Button cancleBt;
+    private TextView detailName;
+    private TextView detailTime;
+    private TextView detailContent;
     private MaintenanceBean selectBean;
     private boolean isChange;
 
@@ -65,13 +69,13 @@ public class PictureFragmentTwo extends BaseFragment implements MaintenanceAdapt
         title.setText("维保记录");
         newHistory.setText("添加");
         newHistory.setVisibility(View.VISIBLE);
-        mAdapter = new MaintenanceAdapter(maintenanceHistory,getActivity());
+        mAdapter = new MaintenanceAdapter(maintenanceHistory, getActivity());
         mAdapter.setOnItemClickListener(this);
         mRecycleView.setAdapter(mAdapter);
         mRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
         currentDeviceId = UhfApplication.getInstance().getCurrentDeviceId();
         List<MaintenanceBean> nextMaintenance = BaseDb.getInstance().getMaintenanceDao().findMaintenanceByDeviceId(currentDeviceId, 0);
-        if(nextMaintenance.size() > 0){
+        if (nextMaintenance.size() > 0) {
             MaintenanceBean maintenanceBean = nextMaintenance.get(0);
             nextTime.setText(maintenanceBean.getTime());
             nextId = maintenanceBean.getId();
@@ -86,8 +90,8 @@ public class PictureFragmentTwo extends BaseFragment implements MaintenanceAdapt
     }
 
     @OnClick({R.id.tv_sure})
-    public void performClick(View view){
-        switch (view.getId()){
+    public void performClick(View view) {
+        switch (view.getId()) {
             case R.id.tv_sure:
                 isChange = false;
                 showOpenDialog();
@@ -115,11 +119,11 @@ public class PictureFragmentTwo extends BaseFragment implements MaintenanceAdapt
                     String nameStr = name.getText().toString();
                     String timeStr = time.getText().toString();
                     String contentStr = content.getText().toString();
-                    if(StringUtils.isEmpty(nameStr)){
+                    if (StringUtils.isEmpty(nameStr)) {
                         ToastUtils.showShort("请输入维保人");
                         return;
                     }
-                    if(StringUtils.isEmpty(contentStr)){
+                    if (StringUtils.isEmpty(contentStr)) {
                         ToastUtils.showShort("请输入维保内容");
                         return;
                     }
@@ -132,17 +136,17 @@ public class PictureFragmentTwo extends BaseFragment implements MaintenanceAdapt
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    if(!isCorrect){
+                    if (!isCorrect) {
                         ToastUtils.showShort("请输入正确格式的维保日期");
                         return;
                     }
-                    if(isChange){
+                    if (isChange) {
                         selectBean.setName(nameStr);
                         selectBean.setTime(timeStr);
                         selectBean.setContent(contentStr);
-                        if(parse.getTime() > System.currentTimeMillis()){
+                        if (parse.getTime() > System.currentTimeMillis()) {
                             selectBean.setType(0);
-                            if(nextId != -1){
+                            if (nextId != -1) {
                                 selectBean.setId(nextId);
                             }
                             nextTime.setText(selectBean.getTime());
@@ -150,16 +154,16 @@ public class PictureFragmentTwo extends BaseFragment implements MaintenanceAdapt
                         }
                         mAdapter.notifyDataSetChanged();
                         BaseDb.getInstance().getMaintenanceDao().insertItem(selectBean);
-                    }else {
-                        MaintenanceBean maintenanceBean = new MaintenanceBean(currentDeviceId, timeStr, nameStr,0);
+                    } else {
+                        MaintenanceBean maintenanceBean = new MaintenanceBean(currentDeviceId, timeStr, nameStr, 0);
                         maintenanceBean.setContent(contentStr);
-                        if(parse.getTime() > System.currentTimeMillis()){
+                        if (parse.getTime() > System.currentTimeMillis()) {
                             maintenanceBean.setType(0);
-                            if(nextId != -1){
+                            if (nextId != -1) {
                                 maintenanceBean.setId(nextId);
                             }
                             nextTime.setText(maintenanceBean.getTime());
-                        }else {
+                        } else {
                             maintenanceBean.setType(1);
                             maintenanceHistory.add(maintenanceBean);
                             mAdapter.notifyDataSetChanged();
@@ -195,13 +199,36 @@ public class PictureFragmentTwo extends BaseFragment implements MaintenanceAdapt
         }
     }
 
+    public void showDetailDialog() {
+        if (detailDialog != null) {
+            detailDialog.show();
+        } else {
+            View contentView = LayoutInflater.from(getActivity()).inflate(R.layout.mainteance_detail_dialog, null);
+            detailName = contentView.findViewById(R.id.et_maintenance_name);
+            detailTime = contentView.findViewById(R.id.et_maintenance_time);
+            detailContent = contentView.findViewById(R.id.et_maintenance_content);
+            detailDialog = new MaterialDialog.Builder(getActivity())
+                    .customView(contentView, false)
+                    .show();
+            Window window = detailDialog.getWindow();
+            window.setBackgroundDrawableResource(android.R.color.transparent);
+        }
+
+    }
+
+    public void dismissDetailDialog() {
+        if (detailDialog != null && detailDialog.isShowing()) {
+            detailDialog.dismiss();
+        }
+    }
+
     @Override
     public void onMaintenanceClick(MaintenanceBean maintenanceBean) {
         selectBean = maintenanceBean;
         isChange = true;
-        showOpenDialog();
-        name.setText(maintenanceBean.getName());
-        time.setText(maintenanceBean.getTime());
-        content.setText(maintenanceBean.getContent());
+        showDetailDialog();
+        detailName.setText(maintenanceBean.getName());
+        detailTime.setText(maintenanceBean.getTime());
+        detailContent.setText(maintenanceBean.getContent());
     }
 }
