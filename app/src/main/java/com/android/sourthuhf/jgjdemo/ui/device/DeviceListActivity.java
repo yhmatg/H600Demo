@@ -1,9 +1,6 @@
 package com.android.sourthuhf.jgjdemo.ui.device;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -23,20 +20,15 @@ import com.android.sourthuhf.ToastUtils;
 import com.android.sourthuhf.jgjdemo.database.bean.MaintenanceBean;
 import com.android.sourthuhf.jgjdemo.database.bean.ToolBean;
 import com.android.sourthuhf.jgjdemo.database.room.BaseDb;
-import com.android.sourthuhf.jgjdemo.ui.scandetail.JieganHomeActivity;
+import com.android.sourthuhf.jgjdemo.ui.scandetail.ScanDeviceActivity;
 import com.android.sourthuhf.jgjdemo.ui.scandetail.TooltemAdapter;
 import com.android.sourthuhf.njdemo.http.StringUtils;
 import com.android.sourthuhf.original.BaseActivity;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 public class DeviceListActivity extends BaseActivity implements TooltemAdapter.OnItemClickListener {
     @BindView(R.id.rv_devices)
@@ -109,7 +101,7 @@ public class DeviceListActivity extends BaseActivity implements TooltemAdapter.O
                 }
                 return true;
             case R.id.scan_device:
-                startActivity(new Intent(this, JieganHomeActivity.class));
+                startActivity(new Intent(this, ScanDeviceActivity.class));
                 return true;
             default:
                 return false;

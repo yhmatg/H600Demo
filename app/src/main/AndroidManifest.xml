@@ -51,7 +51,7 @@
             android:name=".njdemo.ui.activity.SingleInitDataActivity"
             android:screenOrientation="portrait"></activity>-->
         <activity
-            android:name=".jgjdemo.ui.scandetail.JieganHomeActivity"
+            android:name=".jgjdemo.ui.scandetail.ScanDeviceActivity"
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".jgjdemo.ui.scandetail.DetailActivity"

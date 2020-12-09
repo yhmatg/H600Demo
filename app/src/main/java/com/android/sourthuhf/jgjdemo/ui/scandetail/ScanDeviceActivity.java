@@ -41,7 +41,7 @@ import cn.com.example.rfid.driver.RfidDriver;
 
 import static android.serialport.DeviceControlSpd.PowerType.EXPAND;
 
-public class JieganHomeActivity extends BaseActivity {
+public class ScanDeviceActivity extends BaseActivity {
     @BindView(R.id.title_back)
     ImageView titleLeft;
     @BindView(R.id.title_content)
