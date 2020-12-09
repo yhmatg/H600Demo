@@ -2,13 +2,10 @@ package com.android.sourthuhf.jgjdemo.ui.scandetail;
 
 import android.media.AudioManager;
 import android.media.ToneGenerator;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemProperties;
 import android.serialport.DeviceControlSpd;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -34,8 +31,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import cn.com.example.rfid.driver.Driver;
 import cn.com.example.rfid.driver.RfidDriver;
 
@@ -207,7 +202,7 @@ public class ScanDeviceActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_jiegan_home;
+        return R.layout.activity_scan_device;
     }
 
     public void startStopScanning() {
