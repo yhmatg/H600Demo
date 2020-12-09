@@ -26,7 +26,10 @@ import com.android.sourthuhf.njdemo.http.StringUtils;
 import com.android.sourthuhf.original.BaseActivity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import butterknife.BindView;
 
@@ -38,6 +41,7 @@ public class DeviceListActivity extends BaseActivity implements TooltemAdapter.O
     TooltemAdapter deviceAdapter;
     private List<ToolBean> mDevices = new ArrayList<>();
     private MaterialDialog openDialog;
+    private MaterialDialog deleteDialog;
     private EditText deviceName;
     private EditText deviceCode;
     private EditText epcCode;
@@ -46,6 +50,8 @@ public class DeviceListActivity extends BaseActivity implements TooltemAdapter.O
     private boolean isChange;
     private Button confirmBt;
     private Button deleteBt;
+    private Button deleteConfirm;
+    private Button deleteCancle;
 
     private void initData() {
         mDevices.clear();
@@ -65,16 +71,16 @@ public class DeviceListActivity extends BaseActivity implements TooltemAdapter.O
             case R.id.add_device:
                 isChange = false;
                 showOpenDialog();
-                if(openDialog != null){
+                if (openDialog != null) {
                     deviceName.setText("");
                     deviceCode.setText("");
                     epcCode.setText("");
-                    deleteBt.setText("取消");
                     typeSpinner.setSelection(0);
                 }
                 return true;
             case R.id.delete_device:
                 //todo 删除设备
+                showDeleteDialog();
                 return true;
             default:
                 return false;
@@ -139,19 +145,19 @@ public class DeviceListActivity extends BaseActivity implements TooltemAdapter.O
                         BaseDb.getInstance().getToolDao().insertItem(toolBean);
                     }
                     deviceAdapter.notifyDataSetChanged();
-                    dismissUpdateDialog();
+                    dismissOpenDialog();
                 }
             });
             deleteBt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(isChange){
+                    /*if(isChange){
                         mDevices.remove(mSelectToolBean);
                         deviceAdapter.notifyDataSetChanged();
                         BaseDb.getInstance().getToolDao().deleteItem(mSelectToolBean);
                         BaseDb.getInstance().getMaintenanceDao().deleteDataByDeviceId(mSelectToolBean.getId());
-                    }
-                    dismissUpdateDialog();
+                    }*/
+                    dismissOpenDialog();
                 }
             });
             openDialog = new MaterialDialog.Builder(this)
@@ -163,9 +169,67 @@ public class DeviceListActivity extends BaseActivity implements TooltemAdapter.O
 
     }
 
-    public void dismissUpdateDialog() {
+    public void dismissOpenDialog() {
         if (openDialog != null && openDialog.isShowing()) {
             openDialog.dismiss();
+        }
+    }
+
+    public void showDeleteDialog() {
+        if (deleteDialog != null) {
+            deleteDialog.show();
+        } else {
+            View contentView = LayoutInflater.from(this).inflate(R.layout.delete_device_dialog, null);
+            deleteConfirm = contentView.findViewById(R.id.bt_delete_sure);
+            deleteCancle = contentView.findViewById(R.id.bt_delete_cancel);
+            deleteConfirm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    List<ToolBean> selectBeans = deviceAdapter.getSelectBeans();
+                    if (selectBeans.size() == 0) {
+                        ToastUtils.showShort("请选择需要删除的设备！");
+                    } else {
+                        mDevices.removeAll(selectBeans);
+                        deviceAdapter.notifyDataSetChanged();
+                        List<Integer> collect = selectBeans.stream().map(new Function<ToolBean, Integer>() {
+                            @Override
+                            public Integer apply(ToolBean toolBean) {
+                                return toolBean.getId();
+                            }
+                        }).collect(Collectors.toList());
+                        BaseDb.getInstance().getToolDao().deleteItems(selectBeans);
+                        BaseDb.getInstance().getMaintenanceDao().deleteDataByDeviceId(collect);
+                    }
+                    dismissDeleteDialog();
+                }
+            });
+            deleteCancle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dismissDeleteDialog();
+                }
+            });
+            deleteDialog = new MaterialDialog.Builder(this)
+                    .customView(contentView, false)
+                    .show();
+            Window window = deleteDialog.getWindow();
+            window.setBackgroundDrawableResource(android.R.color.transparent);
+        }
+
+    }
+
+    public void dismissDeleteDialog() {
+        if (deleteDialog != null && deleteDialog.isShowing()) {
+            deleteDialog.dismiss();
+        }
+        //取出偶数
+        List<Integer> list = Arrays.asList(1,2,3,4);
+        //1.for循环
+        List<Integer> newList1 = new ArrayList<>();
+        for (Integer integer : list) {
+            if(integer % 2 == 0){
+                newList1.add(integer);
+            }
         }
     }
 
@@ -177,7 +241,6 @@ public class DeviceListActivity extends BaseActivity implements TooltemAdapter.O
         deviceCode.setText(toolBean.getCode());
         epcCode.setText(toolBean.getEpc());
         typeSpinner.setSelection(toolBean.getType());
-        deleteBt.setText("删除");
         mSelectToolBean = toolBean;
     }
 }

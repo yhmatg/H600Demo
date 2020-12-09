@@ -172,11 +172,11 @@ public class PictureFragmentTwo extends BaseFragment implements MaintenanceAdapt
             cancleBt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(isChange){
+                    /*if(isChange){
                         maintenanceHistory.remove(selectBean);
                         mAdapter.notifyDataSetChanged();
                         BaseDb.getInstance().getMaintenanceDao().deleteItem(selectBean);
-                    }
+                    }*/
                     dismissUpdateDialog();
                 }
             });
@@ -203,6 +203,5 @@ public class PictureFragmentTwo extends BaseFragment implements MaintenanceAdapt
         name.setText(maintenanceBean.getName());
         time.setText(maintenanceBean.getTime());
         content.setText(maintenanceBean.getContent());
-        cancleBt.setText("删除");
     }
 }

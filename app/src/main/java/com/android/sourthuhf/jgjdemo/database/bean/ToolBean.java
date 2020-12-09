@@ -1,6 +1,7 @@
 package com.android.sourthuhf.jgjdemo.database.bean;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.util.Objects;
@@ -13,6 +14,8 @@ public class ToolBean {
     private String code;
     private String name;
     private int type;
+    @Ignore
+    private boolean isSelected;
 
     public ToolBean(String epc, String code, String name, int type) {
         this.epc = epc;
@@ -59,6 +62,14 @@ public class ToolBean {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 
     @Override

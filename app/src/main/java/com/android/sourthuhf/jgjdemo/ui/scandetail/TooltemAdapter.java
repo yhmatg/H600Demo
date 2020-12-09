@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -16,12 +17,14 @@ import com.android.sourthuhf.UhfApplication;
 import com.android.sourthuhf.jgjdemo.database.bean.ToolBean;
 import com.android.sourthuhf.njdemo.ui.EpcBean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TooltemAdapter extends RecyclerView.Adapter<TooltemAdapter.MyHoder> {
     private List<ToolBean> toolBeans;
     private Context mContext;
     private OnItemClickListener onItemClickListener;
+    private List<ToolBean> selectBeans = new ArrayList<>();
 
     public TooltemAdapter(List<ToolBean> toolBeans, Context mContext) {
         this.toolBeans = toolBeans;
@@ -40,7 +43,7 @@ public class TooltemAdapter extends RecyclerView.Adapter<TooltemAdapter.MyHoder>
         final ToolBean epcBean = toolBeans.get(i);
         myHoder.mName.setText(epcBean.getName());
         myHoder.mEpc.setText(epcBean.getEpc());
-        myHoder.toolLayout.setOnClickListener(new View.OnClickListener() {
+        myHoder.mImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(onItemClickListener != null){
@@ -53,6 +56,9 @@ public class TooltemAdapter extends RecyclerView.Adapter<TooltemAdapter.MyHoder>
 
             }
         });
+        if(onItemClickListener != null){
+            myHoder.mCheck.setVisibility(View.VISIBLE);
+        }
         switch (epcBean.getType()) {
             case 0:
                 myHoder.mImage.setImageResource(R.mipmap.icon_one);
@@ -87,8 +93,27 @@ public class TooltemAdapter extends RecyclerView.Adapter<TooltemAdapter.MyHoder>
             case 10:
                 myHoder.mImage.setImageResource(R.mipmap.icon_eleven);
                 break;
-
         }
+
+        if(epcBean.isSelected()){
+            myHoder.mCheck.setChecked(true);
+        }else {
+            myHoder.mCheck.setChecked(false);
+        }
+        myHoder.mCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(epcBean.isSelected()){
+                    epcBean.setSelected(false);
+                    selectBeans.remove(epcBean);
+                }else {
+                    epcBean.setSelected(true);
+                    if(!selectBeans.contains(epcBean)){
+                        selectBeans.add(epcBean);
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -102,14 +127,16 @@ public class TooltemAdapter extends RecyclerView.Adapter<TooltemAdapter.MyHoder>
         private TextView mEpc;
         private TextView mCode;
         private ImageView mImage;
+        private CheckBox mCheck;
         private RelativeLayout toolLayout;
 
         private MyHoder(View itemView) {
             super(itemView);
-            mName = (TextView) itemView.findViewById(R.id.tv_name);
-            mEpc = (TextView) itemView.findViewById(R.id.tv_epc);
-            mImage = (ImageView) itemView.findViewById(R.id.iv_icon);
-            toolLayout = (RelativeLayout) itemView.findViewById(R.id.tool_layout);
+            mName = itemView.findViewById(R.id.tv_name);
+            mEpc =  itemView.findViewById(R.id.tv_epc);
+            mImage =  itemView.findViewById(R.id.iv_icon);
+            toolLayout =  itemView.findViewById(R.id.tool_layout);
+            mCheck = itemView.findViewById(R.id.cb_delete);
         }
     }
 
@@ -119,5 +146,9 @@ public class TooltemAdapter extends RecyclerView.Adapter<TooltemAdapter.MyHoder>
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
+    }
+
+    public List<ToolBean> getSelectBeans() {
+        return selectBeans;
     }
 }
