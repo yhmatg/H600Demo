@@ -9,15 +9,18 @@ import android.support.annotation.NonNull;
 
 import com.android.sourthuhf.UhfApplication;
 import com.android.sourthuhf.jgjdemo.database.bean.MaintenanceBean;
+import com.android.sourthuhf.jgjdemo.database.bean.ParameterBean;
 import com.android.sourthuhf.jgjdemo.database.bean.ToolBean;
 import com.android.sourthuhf.jgjdemo.database.dao.MaintenanceDao;
+import com.android.sourthuhf.jgjdemo.database.dao.ParameterDao;
 import com.android.sourthuhf.jgjdemo.database.dao.ToolDao;
 
 @Database(entities = {
         ToolBean.class,
-        MaintenanceBean.class
+        MaintenanceBean.class,
+        ParameterBean.class
 }
-        , version = 1)
+        , version = 2)
 @TypeConverters(DateConverter.class)
 public abstract class BaseDb extends RoomDatabase {
     public static final String DB_NAME = "straw.db";
@@ -55,4 +58,6 @@ public abstract class BaseDb extends RoomDatabase {
     public abstract ToolDao getToolDao();
 
     public abstract MaintenanceDao getMaintenanceDao();
+
+    public abstract ParameterDao getParameterDao();
 }

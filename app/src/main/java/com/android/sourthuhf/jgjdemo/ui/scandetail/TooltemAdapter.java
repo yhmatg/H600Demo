@@ -43,7 +43,7 @@ public class TooltemAdapter extends RecyclerView.Adapter<TooltemAdapter.MyHoder>
         final ToolBean epcBean = toolBeans.get(i);
         myHoder.mName.setText(epcBean.getName());
         myHoder.mEpc.setText(epcBean.getEpc());
-        myHoder.mImage.setOnClickListener(new View.OnClickListener() {
+        myHoder.toolLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(onItemClickListener != null){

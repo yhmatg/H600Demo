@@ -52,6 +52,7 @@
 
     <style name="CustomRepairCheckboxTheme" parent="@android:style/Widget.CompoundButton.CheckBox">
         <item name="android:button">@drawable/choose_checkbox</item>
+        <item name="android:paddingStart">20dp</item>
     </style>
 
 </resources>

@@ -1,50 +1,47 @@
 package com.android.sourthuhf.jgjdemo.ui.scandetail;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.sourthuhf.R;
-import com.android.sourthuhf.UhfApplication;
-import com.android.sourthuhf.jgjdemo.database.bean.MaintenanceBean;
-import com.android.sourthuhf.jgjdemo.database.bean.ToolBean;
+import com.android.sourthuhf.jgjdemo.database.bean.ParameterBean;
 
 import java.util.List;
 
-public class MaintenanceAdapter extends RecyclerView.Adapter<MaintenanceAdapter.MyHoder> {
-    private List<MaintenanceBean> maintenanceBeans;
+public class ParameterAdapter extends RecyclerView.Adapter<ParameterAdapter.MyHoder> {
+    private List<ParameterBean> paraBeans;
     private Context mContext;
     private OnItemClickListener onItemClickListener;
 
-    public MaintenanceAdapter(List<MaintenanceBean> maintenanceBeans, Context mContext) {
-        this.maintenanceBeans = maintenanceBeans;
+    public ParameterAdapter(List<ParameterBean> paraBeans, Context mContext) {
+        this.paraBeans = paraBeans;
         this.mContext = mContext;
     }
 
     @NonNull
     @Override
     public MyHoder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View inflate = LayoutInflater.from(mContext).inflate(R.layout.maintenance_item_layout, viewGroup, false);
+        View inflate = LayoutInflater.from(mContext).inflate(R.layout.param_item_layout, viewGroup, false);
         return new MyHoder(inflate);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final MyHoder myHoder, int i) {
-        MaintenanceBean maintenanceBean = maintenanceBeans.get(i);
-        myHoder.mTime.setText(maintenanceBean.getTime());
-        myHoder.mName.setText(maintenanceBean.getName());
+        ParameterBean parameterBean = paraBeans.get(i);
+        myHoder.mIndex.setText(String.valueOf(i + 1));
+        myHoder.mPerformance.setText(parameterBean.getPerformance());
+        myHoder.mSkill.setText(parameterBean.getSkill());
         myHoder.mLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(onItemClickListener != null){
-                    onItemClickListener.onMaintenanceClick(maintenanceBean);
+                    onItemClickListener.onParamClick(parameterBean);
                 }
             }
         });
@@ -52,25 +49,27 @@ public class MaintenanceAdapter extends RecyclerView.Adapter<MaintenanceAdapter.
 
     @Override
     public int getItemCount() {
-        return maintenanceBeans == null ? 0 : maintenanceBeans.size();
+        return paraBeans == null ? 0 : paraBeans.size();
     }
 
     class MyHoder extends RecyclerView.ViewHolder {
 
-        private TextView mTime;
-        private TextView mName;
+        private TextView mIndex;
+        private TextView mPerformance;
+        private TextView mSkill;
         private RelativeLayout mLayout;
 
         private MyHoder(View itemView) {
             super(itemView);
-            mTime = (TextView) itemView.findViewById(R.id.tv_time);
-            mName = (TextView) itemView.findViewById(R.id.tv_name);
-            mLayout = (RelativeLayout) itemView.findViewById(R.id.maintenance_layout);
+            mIndex = itemView.findViewById(R.id.tv_index);
+            mPerformance =  itemView.findViewById(R.id.tv_performance);
+            mSkill = itemView.findViewById(R.id.tv_skill);
+            mLayout = itemView.findViewById(R.id.parameter_layout);
         }
     }
 
     public interface OnItemClickListener {
-        void onMaintenanceClick(MaintenanceBean maintenanceBean);
+        void onParamClick(ParameterBean parameterBean);
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {

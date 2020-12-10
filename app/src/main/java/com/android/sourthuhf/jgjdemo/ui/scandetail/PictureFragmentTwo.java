@@ -60,6 +60,8 @@ public class PictureFragmentTwo extends BaseFragment implements MaintenanceAdapt
     private TextView detailName;
     private TextView detailTime;
     private TextView detailContent;
+    private Button detailDelete;
+    private Button detailCancle;
     private MaintenanceBean selectBean;
     private boolean isChange;
 
@@ -207,6 +209,23 @@ public class PictureFragmentTwo extends BaseFragment implements MaintenanceAdapt
             detailName = contentView.findViewById(R.id.et_maintenance_name);
             detailTime = contentView.findViewById(R.id.et_maintenance_time);
             detailContent = contentView.findViewById(R.id.et_maintenance_content);
+            detailDelete = contentView.findViewById(R.id.bt_sure);
+            detailCancle = contentView.findViewById(R.id.bt_cancel);
+            detailDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    maintenanceHistory.remove(selectBean);
+                    mAdapter.notifyDataSetChanged();
+                    BaseDb.getInstance().getMaintenanceDao().deleteItem(selectBean);
+                    dismissDetailDialog();
+                }
+            });
+            detailCancle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dismissDetailDialog();
+                }
+            });
             detailDialog = new MaterialDialog.Builder(getActivity())
                     .customView(contentView, false)
                     .show();
