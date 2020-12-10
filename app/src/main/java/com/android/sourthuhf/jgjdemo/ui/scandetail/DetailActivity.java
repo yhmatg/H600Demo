@@ -25,9 +25,7 @@ public class DetailActivity extends BaseActivity {
 
     @Override
     protected void initEventAndData() {
-        if(UhfApplication.getInstance().getCurrentDeviceType() == 0){
-            fragments.add(new PictureFragmentOne());
-        }
+        fragments.add(new PictureFragmentOne());
         fragments.add(new PictureFragmentTwo());
         mViewpager.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
             @Override
