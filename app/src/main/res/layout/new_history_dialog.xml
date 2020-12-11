@@ -27,6 +27,7 @@
                 android:textSize="18sp" />
 
             <EditText
+                android:padding="5dp"
                 android:id="@+id/et_maintenance_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -54,6 +55,7 @@
                 android:textSize="18sp" />
 
             <EditText
+                android:padding="5dp"
                 android:id="@+id/et_maintenance_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -66,6 +68,7 @@
 
         <EditText
             android:id="@+id/et_maintenance_content"
+            android:padding="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ll_time"

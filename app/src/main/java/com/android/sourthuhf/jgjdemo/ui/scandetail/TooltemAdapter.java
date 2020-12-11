@@ -25,6 +25,7 @@ public class TooltemAdapter extends RecyclerView.Adapter<TooltemAdapter.MyHoder>
     private Context mContext;
     private OnItemClickListener onItemClickListener;
     private List<ToolBean> selectBeans = new ArrayList<>();
+    private boolean showCheckbox;
 
     public TooltemAdapter(List<ToolBean> toolBeans, Context mContext) {
         this.toolBeans = toolBeans;
@@ -56,8 +57,10 @@ public class TooltemAdapter extends RecyclerView.Adapter<TooltemAdapter.MyHoder>
 
             }
         });
-        if(onItemClickListener != null){
+        if(showCheckbox && onItemClickListener != null){
             myHoder.mCheck.setVisibility(View.VISIBLE);
+        }else {
+            myHoder.mCheck.setVisibility(View.GONE);
         }
         switch (epcBean.getType()) {
             case 0:
@@ -150,5 +153,9 @@ public class TooltemAdapter extends RecyclerView.Adapter<TooltemAdapter.MyHoder>
 
     public List<ToolBean> getSelectBeans() {
         return selectBeans;
+    }
+
+    public void setShowCheckbox(boolean showCheckbox) {
+        this.showCheckbox = showCheckbox;
     }
 }

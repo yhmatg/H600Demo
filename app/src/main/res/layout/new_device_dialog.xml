@@ -5,7 +5,7 @@
 
     <RelativeLayout
         android:layout_width="360dp"
-        android:layout_height="300dp"
+        android:layout_height="320dp"
         android:layout_gravity="center"
         android:background="@color/white"
         android:padding="20dp">
@@ -59,6 +59,7 @@
                 android:layout_marginEnd="20dp"
                 android:background="@null"
                 android:hint="设备名称"
+                android:padding="5dp"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -87,6 +88,7 @@
                 android:layout_marginEnd="20dp"
                 android:background="@null"
                 android:hint="设备编号"
+                android:padding="5dp"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -117,6 +119,7 @@
                 android:digits="0123456789ABCDEF"
                 android:hint="epc数据"
                 android:maxLength="24"
+                android:padding="5dp"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -125,7 +128,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="18dp"
             android:orientation="horizontal">
 
             <Button

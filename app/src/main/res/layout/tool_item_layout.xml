@@ -85,6 +85,6 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="20dp"
         android:focusable="false"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package com.android.sourthuhf.jgjdemo.ui.device;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.sourthuhf.R;
@@ -32,12 +34,15 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class DeviceListActivity extends BaseActivity implements TooltemAdapter.OnItemClickListener {
     @BindView(R.id.rv_devices)
     RecyclerView recyclerView;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.tv_delete_device)
+    TextView mDelete;
     TooltemAdapter deviceAdapter;
     private List<ToolBean> mDevices = new ArrayList<>();
     private MaterialDialog openDialog;
@@ -80,7 +85,9 @@ public class DeviceListActivity extends BaseActivity implements TooltemAdapter.O
                 return true;
             case R.id.delete_device:
                 //todo 删除设备
-                showDeleteDialog();
+                deviceAdapter.setShowCheckbox(true);
+                deviceAdapter.notifyDataSetChanged();
+                mDelete.setVisibility(View.VISIBLE);
                 return true;
             default:
                 return false;
@@ -212,6 +219,14 @@ public class DeviceListActivity extends BaseActivity implements TooltemAdapter.O
             deleteDialog = new MaterialDialog.Builder(this)
                     .customView(contentView, false)
                     .show();
+            deleteDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    deviceAdapter.setShowCheckbox(false);
+                    deviceAdapter.notifyDataSetChanged();
+                    mDelete.setVisibility(View.GONE);
+                }
+            });
             Window window = deleteDialog.getWindow();
             window.setBackgroundDrawableResource(android.R.color.transparent);
         }
@@ -242,5 +257,14 @@ public class DeviceListActivity extends BaseActivity implements TooltemAdapter.O
         epcCode.setText(toolBean.getEpc());
         typeSpinner.setSelection(toolBean.getType());
         mSelectToolBean = toolBean;
+    }
+
+    @OnClick({R.id.tv_delete_device})
+    public void performClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_delete_device:
+                showDeleteDialog();
+                break;
+        }
     }
 }
